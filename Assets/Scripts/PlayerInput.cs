@@ -15,12 +15,14 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private bool fired = false;
     [Space]
     [SerializeField] private Transform myCamera; //set in the inspector.
+    [SerializeField] private Vector3 Offset = new Vector3(0,0.8f,0);
+    [SerializeField] private float fireRate = 0.25f;
+    private float canFire = 0;
     private float cameraOrthoSize = 5;
     private float cameraAspectRatio = 1.7777778f;
     private float xBounds = 0;
     private float yBounds = 0;
     private Vector2 xyBounds = Vector2.zero;
-    [SerializeField] private Vector3 Offset = new Vector3(0,0.8f,0);
     [Space]
     [SerializeField] private Transform LaserAsset;
     [SerializeField] private List<Transform> lasers;
@@ -56,11 +58,14 @@ public class PlayerInput : MonoBehaviour
 
         movePlayer = movement;
     }
+
     private void FixedUpdate()
     {
         if(fired)
         {
             fired = false;
+            if (canFire + fireRate > Time.time) return;
+            canFire = Time.time;
             if(lasers.Count < maxPool && !isPoolMaxed)
             {
                 lasers.Add(Instantiate(LaserAsset, transform.position + Offset, Quaternion.identity, transform.parent));
