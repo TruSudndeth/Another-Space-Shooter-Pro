@@ -19,6 +19,7 @@ public class PlayerInput : MonoBehaviour
     private float cameraAspectRatio = 1.7777778f;
     private float xBounds = 0;
     private float yBounds = 0;
+    private Vector2 xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private Transform LaserAsset;
     [SerializeField] private List<Transform> lasers;
@@ -38,6 +39,7 @@ public class PlayerInput : MonoBehaviour
         cameraOrthoSize = myCamera.GetComponent<Camera>().orthographicSize;
         xBounds = cameraOrthoSize * cameraAspectRatio;
         yBounds = cameraOrthoSize;
+        xyBounds = new Vector2(xBounds, yBounds);
         EnableInputs();
         SubscribeToInputs();
     }
@@ -48,7 +50,8 @@ public class PlayerInput : MonoBehaviour
         //Bounds set
         //Fix bound clipping due to frame rate.
         Vector2 movement = WSAD.ReadValue <Vector2>();
-        movement = CalculateMove(movement); // with bounds
+        movement *= Time.fixedDeltaTime * speed;
+        movement = OutOfBounds.CalculateMove(transform, movement, xyBounds); // with bounds
 
         movePlayer = movement;
     }

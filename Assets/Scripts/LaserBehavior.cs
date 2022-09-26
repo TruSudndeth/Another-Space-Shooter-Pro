@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class LaserBehavior : MonoBehaviour
 {
+    private Camera _camera;
+    private float cameraAspecRatio = 1.7777778f;
+    private float xBounds = 0;
+    private float yBounds = 0;
+    private Vector2 xyBounds;
+    [Space]
     [SerializeField] private float speed = 10;
     private bool move = false;
-    private WaitForSeconds laserLife;
 
     private void Awake()
     {
-        laserLife = new(5.0f);
+        _camera = Camera.main;
+        yBounds = _camera.orthographicSize;
+        xBounds = yBounds * cameraAspecRatio;
+        xyBounds = new Vector2(xBounds, yBounds);
     }
     private void OnEnable()
     {
         move = true;
-        StartCoroutine("KillLaser");
-        //move this transform in player script not ideal but fix later.
-        //make laser a child to player then grab the parents transfom (spawn Point)
-        //null check if there is a parent
     }
 
     private void OnDisable()
@@ -26,17 +30,23 @@ public class LaserBehavior : MonoBehaviour
         transform.position = Vector3.zero;
         move = false;
     }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (move)
-            transform.position += transform.up * speed * Time.fixedDeltaTime;
+        {
+            Vector3 moveLaser = speed * Time.fixedDeltaTime * transform.up;
+            moveLaser = OutOfBounds.CalculateMove(transform, moveLaser, xyBounds);
+            if(moveLaser == Vector3.zero)
+            {
+                KillLaser();
+                return;
+            }
+            transform.position += moveLaser;
+        }
     }
 
-    IEnumerator KillLaser()
+    private void KillLaser()
     {
-        yield return laserLife;
         transform.gameObject.SetActive(false);
     }
 }
