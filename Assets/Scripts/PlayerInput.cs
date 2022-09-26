@@ -57,7 +57,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(true)//fired)
+        if(fired)
         {
             fired = false;
             if(lasers.Count < maxPool && !isPoolMaxed)
