@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,12 +10,27 @@ public class PlayerInput : MonoBehaviour
     private MyBaseInputs playerInputs;
     private Vector2 movePlayer;
     [SerializeField] private float speed = 1;
-    [SerializeField] private InputAction WSAD; //Debugit unSerialize private fild
+    private InputAction WSAD;
+    private InputAction fire;
+    [SerializeField] private bool fired = false;
+    [Space]
     [SerializeField] private Transform myCamera; //set in the inspector.
     private float cameraOrthoSize = 5;
     private float cameraAspectRatio = 1.7777778f;
     private float xBounds = 0;
     private float yBounds = 0;
+    [Space]
+    [SerializeField] private Transform LaserAsset;
+    [SerializeField] private List<Transform> lasers;
+    [SerializeField] private int maxPool = 10;
+    [SerializeField] private int iterateLaser = 0; //Debugit remove serialized field
+    private bool isPoolMaxed = false;
+
+    private void Awake()
+    {
+        playerInputs = new(); //Create a new instance of MyBaseInputs
+        lasers = new(10); // create a fixed size for performance reasons on Awake
+    }
 
     // Add Some movement interperlation Plz (Mooth out)
     void Start()
@@ -22,13 +38,8 @@ public class PlayerInput : MonoBehaviour
         cameraOrthoSize = myCamera.GetComponent<Camera>().orthographicSize;
         xBounds = cameraOrthoSize * cameraAspectRatio;
         yBounds = cameraOrthoSize;
-        playerInputs = new(); //Create a new instance of MyBaseInputs
-        WSAD = playerInputs.Player.Move;
-        WSAD.Enable();
-    }
-    private void OnDestroy()
-    {
-        WSAD.Disable();
+        EnableInputs();
+        SubscribeToInputs();
     }
 
     // Update is called once per frame
@@ -40,6 +51,40 @@ public class PlayerInput : MonoBehaviour
         movement = CalculateMove(movement); // with bounds
 
         movePlayer = movement;
+    }
+    private void FixedUpdate()
+    {
+        if(fired)
+        {
+            fired = false;
+            if(lasers.Count < maxPool && !isPoolMaxed)
+            {
+                lasers.Add(Instantiate(LaserAsset, transform.position, Quaternion.identity, transform.parent));
+                iterateLaser++;
+                if (iterateLaser == maxPool)
+                {
+                    iterateLaser = 0;
+                    isPoolMaxed = true;
+                }
+            }
+            else if(isPoolMaxed)
+            {
+                //fire rate must not surpass laser pool check if object is disabled before using.
+                //Lock rotations add recochet later
+                for(int i = 0; i < lasers.Count; i++)
+                {
+                    if (!lasers[i].gameObject.activeSelf)
+                    {
+                        Debug.Log("this code is running");
+                        lasers[i].gameObject.SetActive(true);
+                        lasers[i].position = transform.position;
+                        break;
+                    }
+                }
+            }
+        }
+        // Might not need to set translate if there is no input hmmmm
+        transform.Translate(movePlayer, Space.World); //Moves the transfomr in the direction and distance of translation
     }
 
     private Vector2 CalculateMove(Vector2 _movement)
@@ -55,10 +100,22 @@ public class PlayerInput : MonoBehaviour
         }
         return _movement;
     }
-
-    private void FixedUpdate()
+    private void EnableInputs()
     {
-        // Might not need to set translate if there is no input hmmmm
-        transform.Translate(movePlayer, Space.World); //Moves the transfomr in the direction and distance of translation
+        WSAD = playerInputs.Player.Move;
+        WSAD.Enable();
+        fire = playerInputs.Player.Fire;
+        fire.Enable();
     }
+
+    private void SubscribeToInputs()
+    {
+        fire.performed += _ => fired = true;
+    }
+    private void OnDestroy()
+    {
+        WSAD.Disable();
+        fire.Disable();
+    }
+
 }
