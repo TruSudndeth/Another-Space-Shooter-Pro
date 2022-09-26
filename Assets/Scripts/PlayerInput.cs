@@ -36,32 +36,23 @@ public class PlayerInput : MonoBehaviour
     {
         //Bounds set
         //Fix bound clipping due to frame rate.
-        Vector2 movement = WSAD.ReadValue < Vector2> ();
-        if (movement != Vector2.zero) // Not so redundent now :)
+        Vector2 movement = WSAD.ReadValue <Vector2> ();
+        movement *= speed * Time.fixedDeltaTime;
+        if(Mathf.Abs(transform.position.x + movement.x) > xBounds)
         {
-            if (transform.position.x > xBounds && movement.x > 0)
-            {
-                movement.x = 0;
-            }else if(transform.position.x < -xBounds && movement.x < 0)
-            {
-                movement.x = 0;
-            }
-
-            if(transform.position.y > yBounds && movement.y > 0)
-            {
-                movement.y = 0;
-            }
-            else if(transform.position.y < -yBounds && movement.y < 0)
-            {
-                movement.y = 0;
-            }
+            movement.x = (xBounds * Mathf.Sign(movement.x)) - transform.position.x;
         }
+        if(Mathf.Abs(transform.position.y + movement.y) > yBounds)
+        {
+            movement.y = (yBounds * Mathf.Sign(movement.y)) - transform.position.y;
+        }
+
         movePlayer = movement;
     }
 
     private void FixedUpdate()
     {
         // Might not need to set translate if there is no input hmmmm
-        transform.Translate(movePlayer * speed * Time.fixedDeltaTime, Space.World); //Moves the transfomr in the direction and distance of translation
+        transform.Translate(movePlayer, Space.World); //Moves the transfomr in the direction and distance of translation
     }
 }
