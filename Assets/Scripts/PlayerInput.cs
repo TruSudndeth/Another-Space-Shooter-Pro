@@ -44,7 +44,7 @@ public class PlayerInput : MonoBehaviour
 
     private Vector2 CalculateMove(Vector2 _movement)
     {
-        _movement *= speed * Time.fixedDeltaTime;
+        _movement *= speed * Time.fixedDeltaTime; //using Fixed Delta time to check if passed bounds in FixedUpdate
         if (Mathf.Abs(transform.position.x + _movement.x) > xBounds)
         {
             _movement.x = (xBounds * Mathf.Sign(_movement.x)) - transform.position.x;
