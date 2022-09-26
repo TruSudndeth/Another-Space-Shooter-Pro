@@ -12,9 +12,7 @@ public class Enemy : MonoBehaviour
     private Vector2 xyBounds;
     [Space]
     private bool move = false;
-    [Space]
-    private float randomRandx = 0;
-    private float boundsOffset = 0;
+
 
     private void Awake()
     {
@@ -22,15 +20,16 @@ public class Enemy : MonoBehaviour
         yBounds = _camera.orthographicSize;
         xBounds = yBounds * cameraAspecRatio;
         xyBounds = new Vector2(xBounds, yBounds);
-
-        boundsOffset = transform.localScale.x * 0.5f;
     }
     void FixedUpdate()
     {
-        Vector3 movePlayer = speed * Vector3.down * Time.fixedDeltaTime;
-        movePlayer = OutOfBounds.CalculateMove(transform, movePlayer, xyBounds);
-        if (movePlayer == Vector3.zero) RandomEnemySpawn();// gameObject.SetActive(false);
-        transform.Translate(movePlayer); 
+        if (move)
+        {
+            Vector3 movePlayer = speed * Vector3.down * Time.fixedDeltaTime;
+            movePlayer = OutOfBounds.CalculateMove(transform, movePlayer, xyBounds);
+            if (movePlayer == Vector3.zero) gameObject.SetActive(false);
+            transform.Translate(movePlayer);
+        }
     }
     private void OnEnable()
     {
@@ -43,11 +42,20 @@ public class Enemy : MonoBehaviour
         move = false;
     }
 
-    private void RandomEnemySpawn() // DebugIt Move this script to EnemySpawnManager
+    private void OnTriggerEnter(Collider other)
     {
-        randomRandx = Random.Range(-(xBounds - boundsOffset) * 1000, xBounds * 1000);
-        randomRandx *= 0.001f;
-        transform.position = new Vector3(randomRandx, yBounds, 0);
-        //return new Vector3(randomRandx, yBounds, 0);
+        if(other.CompareTag(Type.Tags.Laser.ToString()))
+        {
+            other.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
+        if(other.CompareTag(Type.Tags.Player.ToString()))
+        {
+            if(other.TryGetComponent(out PlayerInput _input))
+            {
+                _input.Health = 1;
+                gameObject.SetActive(false);
+            }
+        }
     }
 }

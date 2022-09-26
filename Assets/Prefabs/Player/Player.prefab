@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 3601489092092978911}
   - component: {fileID: 5959882290079443629}
   - component: {fileID: 4074515337567151936}
-  m_Layer: 0
+  - component: {fileID: 4437789336506565962}
+  m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,12 +111,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc68625bc485ae2419d5b30c0cf67a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
+  speed: 10
   fired: 0
   myCamera: {fileID: 0}
   Offset: {x: 0, y: 0.8, z: 0}
+  fireRate: 0.25
   LaserAsset: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
     type: 3}
   lasers: []
   maxPool: 10
   iterateLaser: 0
+--- !u!54 &4437789336506565962
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514788668074744003}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

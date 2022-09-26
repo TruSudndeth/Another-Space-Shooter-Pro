@@ -15,7 +15,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private bool fired = false;
     [Space]
     [SerializeField] private Transform myCamera; //set in the inspector.
-    [SerializeField] private Vector3 Offset = new Vector3(0,0.8f,0);
+    [SerializeField] private Vector3 Offset = new Vector3(0, 0.8f, 0);
     [SerializeField] private float fireRate = 0.25f;
     private float canFire = 0;
     private float cameraOrthoSize = 5;
@@ -29,6 +29,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private int maxPool = 10;
     [SerializeField] private int iterateLaser = 0; //Debugit remove serialized field
     private bool isPoolMaxed = false;
+    [SerializeField] private int health = 3;
 
     private void Awake()
     {
@@ -52,7 +53,7 @@ public class PlayerInput : MonoBehaviour
     {
         //Bounds set
         //Fix bound clipping due to frame rate.
-        Vector2 movement = WSAD.ReadValue <Vector2>();
+        Vector2 movement = WSAD.ReadValue<Vector2>();
         movement *= Time.fixedDeltaTime * speed;
         movement = OutOfBounds.CalculateMove(transform, movement, xyBounds); // with bounds
 
@@ -61,12 +62,12 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(fired)
+        if (fired)
         {
             fired = false;
             if (canFire + fireRate > Time.time) return;
             canFire = Time.time;
-            if(lasers.Count < maxPool && !isPoolMaxed)
+            if (lasers.Count < maxPool && !isPoolMaxed)
             {
                 lasers.Add(Instantiate(LaserAsset, transform.position + Offset, Quaternion.identity, transform.parent));
                 iterateLaser++;
@@ -76,11 +77,11 @@ public class PlayerInput : MonoBehaviour
                     isPoolMaxed = true;
                 }
             }
-            else if(isPoolMaxed)
+            else if (isPoolMaxed)
             {
                 //fire rate must not surpass laser pool check if object is disabled before using.
                 //Lock rotations add recochet later
-                for(int i = 0; i < lasers.Count; i++)
+                for (int i = 0; i < lasers.Count; i++)
                 {
                     if (!lasers[i].gameObject.activeSelf)
                     {
@@ -91,6 +92,10 @@ public class PlayerInput : MonoBehaviour
                     }
                 }
             }
+        }
+        if(health <= 0)
+        {
+            gameObject.SetActive(false); // DebugIt look for Disable Bugs
         }
         // Might not need to set translate if there is no input hmmmm
         transform.Translate(movePlayer, Space.World); //Moves the transfomr in the direction and distance of translation
@@ -127,4 +132,5 @@ public class PlayerInput : MonoBehaviour
         fire.Disable();
     }
 
+    public int Health { private get { return health; } set { health -= value; } }
 }
