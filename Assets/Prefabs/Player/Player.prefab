@@ -110,14 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc68625bc485ae2419d5b30c0cf67a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  WSAD:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c055cc5c-49c0-42c1-89d8-ddc9c0f83318
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  speed: 30
+  fired: 0
   myCamera: {fileID: 0}
+  Offset: {x: 0, y: 0.8, z: 0}
+  LaserAsset: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
+    type: 3}
+  lasers: []
+  maxPool: 10
+  iterateLaser: 0

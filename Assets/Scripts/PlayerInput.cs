@@ -20,6 +20,7 @@ public class PlayerInput : MonoBehaviour
     private float xBounds = 0;
     private float yBounds = 0;
     private Vector2 xyBounds = Vector2.zero;
+    [SerializeField] private Vector3 Offset = new Vector3(0,0.8f,0);
     [Space]
     [SerializeField] private Transform LaserAsset;
     [SerializeField] private List<Transform> lasers;
@@ -62,7 +63,7 @@ public class PlayerInput : MonoBehaviour
             fired = false;
             if(lasers.Count < maxPool && !isPoolMaxed)
             {
-                lasers.Add(Instantiate(LaserAsset, transform.position, Quaternion.identity, transform.parent));
+                lasers.Add(Instantiate(LaserAsset, transform.position + Offset, Quaternion.identity, transform.parent));
                 iterateLaser++;
                 if (iterateLaser == maxPool)
                 {
@@ -80,7 +81,7 @@ public class PlayerInput : MonoBehaviour
                     {
                         Debug.Log("this code is running");
                         lasers[i].gameObject.SetActive(true);
-                        lasers[i].position = transform.position;
+                        lasers[i].position = transform.position + Offset;
                         break;
                     }
                 }
