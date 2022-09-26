@@ -176,7 +176,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -430,7 +430,7 @@ PrefabInstance:
     - target: {fileID: 1053478908821173427, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 1053478908821173427, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
@@ -475,8 +475,13 @@ PrefabInstance:
     - target: {fileID: 4074515337567151936, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: speed
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 4074515337567151936, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: myCamera
+      value: 
+      objectReference: {fileID: 330585546}
     - target: {fileID: 4074515337567151936, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: WSAD.m_Id
