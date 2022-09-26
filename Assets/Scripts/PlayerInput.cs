@@ -36,18 +36,24 @@ public class PlayerInput : MonoBehaviour
     {
         //Bounds set
         //Fix bound clipping due to frame rate.
-        Vector2 movement = WSAD.ReadValue <Vector2> ();
-        movement *= speed * Time.fixedDeltaTime;
-        if(Mathf.Abs(transform.position.x + movement.x) > xBounds)
-        {
-            movement.x = (xBounds * Mathf.Sign(movement.x)) - transform.position.x;
-        }
-        if(Mathf.Abs(transform.position.y + movement.y) > yBounds)
-        {
-            movement.y = (yBounds * Mathf.Sign(movement.y)) - transform.position.y;
-        }
+        Vector2 movement = WSAD.ReadValue <Vector2>();
+        movement = CalculateMove(movement); // with bounds
 
         movePlayer = movement;
+    }
+
+    private Vector2 CalculateMove(Vector2 _movement)
+    {
+        _movement *= speed * Time.fixedDeltaTime;
+        if (Mathf.Abs(transform.position.x + _movement.x) > xBounds)
+        {
+            _movement.x = (xBounds * Mathf.Sign(_movement.x)) - transform.position.x;
+        }
+        if (Mathf.Abs(transform.position.y + _movement.y) > yBounds)
+        {
+            _movement.y = (yBounds * Mathf.Sign(_movement.y)) - transform.position.y;
+        }
+        return _movement;
     }
 
     private void FixedUpdate()
