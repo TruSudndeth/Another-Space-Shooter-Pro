@@ -21,7 +21,6 @@ public class EnemySpawnManager : MonoBehaviour
     private float canSpawn = 0;
     private float Offset = 0;
     private int iterateEnemy = 0;
-    private bool _canSpawn = false;
 
     // Start is called before the first frame update
     private void Awake()
@@ -40,13 +39,9 @@ public class EnemySpawnManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //if (canSpawn + spawnRate > Time.time) return;
-        //canSpawn = Time.time;
-        if(_canSpawn)
-        {
-            SpawnSystem();
-            _canSpawn = false;
-        }
+        if (canSpawn + spawnRate > Time.time) return;
+        canSpawn = Time.time;
+        SpawnSystem();
     }
 
     private void SpawnSystem()
@@ -77,14 +72,6 @@ public class EnemySpawnManager : MonoBehaviour
                 }
             }
         
-    }
-    IEnumerator SpawnEnemyRate()
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(spawnRate);
-            _canSpawn = true;
-        }
     }
 
     private Vector3 CalcOffset(Transform enemyAsset)
