@@ -21,24 +21,27 @@ public class EnemySpawnManager : MonoBehaviour
     private float canSpawn = 0;
     private float Offset = 0;
     private int iterateEnemy = 0;
+    private bool gameOver = false;
 
     // Start is called before the first frame update
     private void Awake()
     {
         maxPool = EnemyAsset.Count * 10;
         enemies = new(maxPool);
+        PlayerInput.gameOver += PlayerIsDead;
     }
+
     void Start()
     {
         _camera = Camera.main;
         yBounds = _camera.orthographicSize;
         xBounds = yBounds * cameraAspecRatio;
-        StartCoroutine("SpawnEnemyRate");
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (gameOver) return;
         if (canSpawn + spawnRate > Time.time) return;
         canSpawn = Time.time;
         SpawnSystem();
@@ -71,7 +74,6 @@ public class EnemySpawnManager : MonoBehaviour
                     }
                 }
             }
-        
     }
 
     private Vector3 CalcOffset(Transform enemyAsset)
@@ -85,5 +87,14 @@ public class EnemySpawnManager : MonoBehaviour
         randomRandx = Random.Range(-(xBounds - boundsOffset) * 1000, xBounds * 1000);
         randomRandx *= 0.001f;
         return new Vector3(randomRandx, yBounds, 0);
+    }
+    private void PlayerIsDead()
+    {
+        Debug.Log("GameOver :)");
+        gameOver = true;
+    }
+    private void OnDisable()
+    {
+        PlayerInput.gameOver -= PlayerIsDead;
     }
 }

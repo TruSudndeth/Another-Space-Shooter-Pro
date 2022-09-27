@@ -452,7 +452,7 @@ MonoBehaviour:
   EnemyAsset:
   - {fileID: 1995190552251999599, guid: 039ff8250d75e204b97b94a7d1d1e081, type: 3}
   maxPool: 10
-  spawnRate: 5
+  spawnRate: 1
 --- !u!1001 &8795570982207490706
 PrefabInstance:
   m_ObjectHideFlags: 0

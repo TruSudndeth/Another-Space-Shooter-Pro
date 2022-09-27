@@ -7,6 +7,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
+    public delegate void GameOver();
+    public static GameOver gameOver;
+
     private MyBaseInputs playerInputs;
     private Vector2 movePlayer;
     [SerializeField] private float speed = 1;
@@ -62,58 +65,45 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (fired)
-        {
-            fired = false;
-            if (canFire + fireRate > Time.time) return;
-            canFire = Time.time;
-            if (lasers.Count < maxPool && !isPoolMaxed)
-            {
-                lasers.Add(Instantiate(LaserAsset, transform.position + Offset, Quaternion.identity, transform.parent));
-                iterateLaser++;
-                if (iterateLaser == maxPool)
-                {
-                    iterateLaser = 0;
-                    isPoolMaxed = true;
-                }
-            }
-            else if (isPoolMaxed)
-            {
-                //fire rate must not surpass laser pool check if object is disabled before using.
-                //Lock rotations add recochet later
-                for (int i = 0; i < lasers.Count; i++)
-                {
-                    if (!lasers[i].gameObject.activeSelf)
-                    {
-                        Debug.Log("this code is running");
-                        lasers[i].gameObject.SetActive(true);
-                        lasers[i].position = transform.position + Offset;
-                        break;
-                    }
-                }
-            }
-        }
-        if(health <= 0)
-        {
-            gameObject.SetActive(false); // DebugIt look for Disable Bugs
-        }
+        if (fired) LaserPool();
+
+        if(health <= 0) gameObject.SetActive(false); // DebugIt look for Disable Bugs
         // Might not need to set translate if there is no input hmmmm
         transform.Translate(movePlayer, Space.World); //Moves the transfomr in the direction and distance of translation
     }
 
-    private Vector2 CalculateMove(Vector2 _movement)
+    private void LaserPool()
     {
-        _movement *= speed * Time.fixedDeltaTime; //using Fixed Delta time to check if passed bounds in FixedUpdate
-        if (Mathf.Abs(transform.position.x + _movement.x) > xBounds)
+        fired = false;
+        if (canFire + fireRate > Time.time) return;
+        canFire = Time.time;
+        if (lasers.Count < maxPool && !isPoolMaxed)
         {
-            _movement.x = (xBounds * Mathf.Sign(_movement.x)) - transform.position.x;
+            lasers.Add(Instantiate(LaserAsset, transform.position + Offset, Quaternion.identity, transform.parent));
+            iterateLaser++;
+            if (iterateLaser == maxPool)
+            {
+                iterateLaser = 0;
+                isPoolMaxed = true;
+            }
         }
-        if (Mathf.Abs(transform.position.y + _movement.y) > yBounds)
+        else if (isPoolMaxed)
         {
-            _movement.y = (yBounds * Mathf.Sign(_movement.y)) - transform.position.y;
+            //fire rate must not surpass laser pool check if object is disabled before using.
+            //Lock rotations add recochet later
+            for (int i = 0; i < lasers.Count; i++)
+            {
+                if (!lasers[i].gameObject.activeSelf)
+                {
+                    Debug.Log("this code is running");
+                    lasers[i].gameObject.SetActive(true);
+                    lasers[i].position = transform.position + Offset;
+                    break;
+                }
+            }
         }
-        return _movement;
     }
+
     private void EnableInputs()
     {
         WSAD = playerInputs.Player.Move;
@@ -126,8 +116,9 @@ public class PlayerInput : MonoBehaviour
     {
         fire.performed += _ => fired = true;
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
+        gameOver();
         WSAD.Disable();
         fire.Disable();
     }
