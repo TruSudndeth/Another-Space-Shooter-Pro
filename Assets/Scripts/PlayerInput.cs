@@ -118,7 +118,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void OnDisable()
     {
-        gameOver();
+        gameOver(); //Null Reference exception?
         WSAD.Disable();
         fire.Disable();
     }

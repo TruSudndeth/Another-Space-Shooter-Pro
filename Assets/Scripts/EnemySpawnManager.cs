@@ -86,7 +86,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         randomRandx = Random.Range(-(xBounds - boundsOffset) * 1000, xBounds * 1000);
         randomRandx *= 0.001f;
-        return new Vector3(randomRandx, yBounds, 0);
+        return new Vector3(randomRandx, yBounds, transform.position.z);
     }
     private void PlayerIsDead()
     {
