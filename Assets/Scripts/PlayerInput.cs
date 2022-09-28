@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor.Rendering;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +34,11 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private int iterateLaser = 0; //Debugit remove serialized field
     private bool isPoolMaxed = false;
     [SerializeField] private int health = 3;
+    [Space]
+    [SerializeField] private float maxBank = 45.0f;
+    [SerializeField] private float bankSpeed = 10.0f;
+    private float bank = 0;
+
 
     private void Awake()
     {
@@ -54,9 +60,25 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 movement = WSAD.ReadValue<Vector2>();
+        //Bank left and right
+        float _bankSpeed = Time.deltaTime * bankSpeed;
+        if(movement.x < 0)
+        bank = bank >= 1 ? 1 : bank + _bankSpeed; //bank left
+        if(movement.x > 0)
+        bank = bank <= -1 ? -1 : bank - _bankSpeed; //bank right
+        if(movement.x == 0)
+        if(Mathf.Abs(bank) > _bankSpeed * 2)
+        bank = bank > 0 ? bank - _bankSpeed: bank + _bankSpeed; //Zero
+        transform.rotation = Quaternion.Euler(-90, 0, maxBank * bank);
+
+        //Access Z value from transform             check
+        //apply rotation to Z with clamp -          check
+        //zero out bank when no input (smooth) -    check
+        //smooth out banks -                        Lets Incorperate
+
         //Bounds set
         //Fix bound clipping due to frame rate.
-        Vector2 movement = WSAD.ReadValue<Vector2>();
         movement *= Time.fixedDeltaTime * speed;
         movement = OutOfBounds.CalculateMove(transform, movement, xyBounds); // with bounds
 
