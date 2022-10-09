@@ -39,7 +39,6 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float bankSpeed = 10.0f;
     private float bank = 0;
 
-
     private void Awake()
     {
         playerInputs = new(); //Create a new instance of MyBaseInputs
@@ -102,6 +101,11 @@ public class PlayerInput : MonoBehaviour
         if (lasers.Count < maxPool && !isPoolMaxed)
         {
             lasers.Add(Instantiate(LaserAsset, transform.position + Offset, Quaternion.identity, transform.parent));
+            
+            
+            
+            
+            
             iterateLaser++;
             if (iterateLaser == maxPool)
             {
