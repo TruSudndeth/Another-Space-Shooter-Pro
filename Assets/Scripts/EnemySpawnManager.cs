@@ -66,7 +66,6 @@ public class EnemySpawnManager : MonoBehaviour
                 {
                     if (!_enemies[i].gameObject.activeSelf)
                     {
-                        Debug.Log("this code is running");
                         _enemies[i].gameObject.SetActive(true);
                         _enemies[i].position = RandomEnemySpawn() + CalcOffset(_enemies[i]);
                         break;

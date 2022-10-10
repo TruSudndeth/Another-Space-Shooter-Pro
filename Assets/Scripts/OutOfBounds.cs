@@ -5,14 +5,14 @@ using UnityEngine;
 static class OutOfBounds
 {
     // Check if transform is withing bounds on next frame if not disable inputs.
-    // IncrementMovement must send an increment per frame nor normalized inputs.
-    //
-    // Anyone using this script needs access to cameras orthographic size 
-    // Gameobject.Orthographicsize
-    // cameraAspectRatio = 16/9 or just 1.7777778f;
-    // camera X is calculated as (cameraAspectRatio) * OrthographicSize 
-    // y is = orthographic size
-    // Send x and y as Vector2 xyBounds
+    // must send an move increment per frame not normalized inputs.
+    // ---------- Variables needed ------------
+    // Vector2 _xyBounds = Vector2.zero;
+    // float cameraAspectRatio = 16/9 or just 1.7777778f;
+    // ------------Calculations----------------
+    // _xyBounds.y = Camera.main.orthographicSize;
+    // _xyBounds.x = _xyBounds.y* cameraAspecRatio;
+
     public static Vector2 CalculateMove(Transform _transform, Vector2 IncrementMovement, Vector2 xyBounds)
     {
         float xBounds = xyBounds.x;
