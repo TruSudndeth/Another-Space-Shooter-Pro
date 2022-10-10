@@ -34,6 +34,7 @@ public class PlayerInput : MonoBehaviour
     private float yBounds = 0;
     private Vector2 xyBounds = Vector2.zero;
     [Space]
+    [SerializeField] private Transform _laserPool;
     [SerializeField] private Transform _laserAsset;
     [SerializeField] private Transform _primaryLaserSpawn;
     [SerializeField] private Transform _dualLaser_LSpawn;
@@ -121,7 +122,7 @@ public class PlayerInput : MonoBehaviour
             for (int i = 0; i < maxPool; i++)
             {
                 if (tripleShotIndex > 2) break; //Logic Breaks the max pool (Must Fix)
-                lasers.Add(Instantiate(_laserAsset, _tripleShot[tripleShotIndex].position + Offset, Quaternion.identity, transform.parent));
+                lasers.Add(Instantiate(_laserAsset, _tripleShot[tripleShotIndex].position + Offset, Quaternion.identity, _laserPool));
 
                 iterateLaser++;
                 if (iterateLaser == maxPool)

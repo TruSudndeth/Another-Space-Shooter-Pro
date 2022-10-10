@@ -7,13 +7,11 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField] private List<Transform> _enemyAsset;
     private List<Transform> _enemies;
     [Space]
-    private float _randomRandx = 0;
     private float _boundsOffset = 0;
     [Space]
     private Camera _camera;
     private float _cameraAspecRatio = 1.7777778f;
-    private float _xBounds = 0;
-    private float _yBounds = 0;
+    private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private int _maxPool = 10;
     [SerializeField] private float _spawnRate = 0.5f;
@@ -32,9 +30,9 @@ public class EnemySpawnManager : MonoBehaviour
 
     void Start()
     {
-        _camera = Camera.main;
-        _yBounds = _camera.orthographicSize;
-        _xBounds = _yBounds * _cameraAspecRatio;
+        _xyBounds.y = Camera.main.orthographicSize;
+        _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
+
         PlayerInput.gameOver += PlayerIsDead;
     }
 
@@ -50,11 +48,11 @@ public class EnemySpawnManager : MonoBehaviour
     {
             if (_enemies.Count < _maxPool && !_isPoolMaxed)
             {
-            _enemies.Add(Instantiate(_enemyAsset[0], RandomEnemySpawn() + CalcOffset(_enemyAsset[0]), Quaternion.identity, transform));
+                _enemies.Add(Instantiate(_enemyAsset[0], RandomEnemySpawn() + CalcOffset(_enemyAsset[0]), Quaternion.identity, transform));
                 _iterateEnemy++;
                 if (_iterateEnemy == _maxPool)
                 {
-                _iterateEnemy = 0;
+                    _iterateEnemy = 0;
                     _isPoolMaxed = true;
                 }
             }
@@ -82,9 +80,9 @@ public class EnemySpawnManager : MonoBehaviour
 
     private Vector3 RandomEnemySpawn() // DebugIt Move this script to EnemySpawnManager
     {
-        _randomRandx = Random.Range(-(_xBounds - _boundsOffset) * 1000, _xBounds * 1000);
+        float _randomRandx = Random.Range(-(_xyBounds.x - _boundsOffset) * 1000, _xyBounds.x * 1000);
         _randomRandx *= 0.001f;
-        return new Vector3(_randomRandx, _yBounds, transform.position.z);
+        return new Vector3(_randomRandx, _xyBounds.y, transform.position.z);
     }
     private void PlayerIsDead()
     {
