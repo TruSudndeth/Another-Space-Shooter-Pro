@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviour
 {
     public delegate void GameOver();
     public static GameOver gameOver;
+    public int Health { private get { return health; } set { health -= value; } }
 
     private MyBaseInputs playerInputs;
     private Vector2 movePlayer;
@@ -23,6 +24,8 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float _singeFireRate = 0.25f;
     [SerializeField] private float _trippleFireRate = 0.5f;
     [SerializeField] private bool _isTrippleShot = false;
+    [SerializeField] private float _powerUpTimeout = 5.0f;
+    private float _powerUpTime = 0.0f;
     private List<Transform> _tripleShot;
     private float canFire = 0;
     private float cameraOrthoSize = 5;
@@ -98,8 +101,15 @@ public class PlayerInput : MonoBehaviour
         if(health <= 0) gameObject.SetActive(false); // DebugIt look for Disable Bugs
         // Might not need to set translate if there is no input hmmmm
         transform.Translate(movePlayer, Space.World); //Moves the transfomr in the direction and distance of translation
-    }
 
+        if (_powerUpTime + _powerUpTimeout <= Time.time && _isTrippleShot)
+            _isTrippleShot = false;
+    }
+    public void TripleShotActive()
+    {
+        _isTrippleShot = true;
+        _powerUpTime = Time.time;
+    }
     private void LaserPool()
     {
         int tripleShotIndex = 0;
@@ -177,5 +187,5 @@ public class PlayerInput : MonoBehaviour
         fire.Disable();
     }
 
-    public int Health { private get { return health; } set { health -= value; } }
+
 }

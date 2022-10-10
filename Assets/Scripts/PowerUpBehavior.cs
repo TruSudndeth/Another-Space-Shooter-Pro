@@ -27,7 +27,11 @@ public class PowerUpBehavior : MonoBehaviour
     {
         if(other.CompareTag(Type.Tags.Player.ToString()))
         {
-            gameObject.SetActive(false);
+            if(other.TryGetComponent(out PlayerInput playerIO))
+            {
+                playerIO.TripleShotActive();
+                gameObject.SetActive(false);
+            }
         }
     }
 }
