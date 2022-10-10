@@ -5,10 +5,10 @@ using UnityEngine;
 public class LaserBehavior : MonoBehaviour
 {
     private Camera _camera;
-    private float cameraAspecRatio = 1.7777778f;
-    private float xBounds = 0;
-    private float yBounds = 0;
-    private Vector2 xyBounds;
+    private float _cameraAspecRatio = 1.7777778f;
+    private float _xBounds = 0;
+    private float _yBounds = 0;
+    private Vector2 _xyBounds;
     [Space]
     [SerializeField] private float speed = 10;
     private bool move = false;
@@ -16,9 +16,9 @@ public class LaserBehavior : MonoBehaviour
     private void Awake()
     {
         _camera = Camera.main;
-        yBounds = _camera.orthographicSize;
-        xBounds = yBounds * cameraAspecRatio;
-        xyBounds = new Vector2(xBounds, yBounds);
+        _yBounds = _camera.orthographicSize;
+        _xBounds = _yBounds * _cameraAspecRatio;
+        _xyBounds = new Vector2(_xBounds, _yBounds);
     }
     private void OnEnable()
     {
@@ -35,7 +35,7 @@ public class LaserBehavior : MonoBehaviour
         if (move)
         {
             Vector3 moveLaser = speed * Time.fixedDeltaTime * transform.up;
-            moveLaser = OutOfBounds.CalculateMove(transform, moveLaser, xyBounds);
+            moveLaser = OutOfBounds.CalculateMove(transform, moveLaser, _xyBounds);
             if(moveLaser == Vector3.zero)
             {
                 KillLaser();

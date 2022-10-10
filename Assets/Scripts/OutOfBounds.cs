@@ -4,8 +4,8 @@ using UnityEngine;
 
 static class OutOfBounds
 {
-    //Check if transform is withing bounds on next frame if not disable inputs.
-    //IncrementMovement must send an increment per frame nor normalized inputs.
+    // Check if transform is withing bounds on next frame if not disable inputs.
+    // IncrementMovement must send an increment per frame nor normalized inputs.
     //
     // Anyone using this script needs access to cameras orthographic size 
     // Gameobject.Orthographicsize
