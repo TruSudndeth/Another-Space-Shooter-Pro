@@ -20,7 +20,10 @@ public class PlayerInput : MonoBehaviour
     [Space]
     [SerializeField] private Transform myCamera; //set in the inspector.
     [SerializeField] private Vector3 Offset = new Vector3(0, 0.8f, 0);
-    [SerializeField] private float fireRate = 0.25f;
+    [SerializeField] private float _singeFireRate = 0.25f;
+    [SerializeField] private float _trippleFireRate = 0.5f;
+    [SerializeField] private bool _isTrippleShot = false;
+    private List<Transform> _tripleShot;
     private float canFire = 0;
     private float cameraOrthoSize = 5;
     private float cameraAspectRatio = 1.7777778f;
@@ -28,9 +31,12 @@ public class PlayerInput : MonoBehaviour
     private float yBounds = 0;
     private Vector2 xyBounds = Vector2.zero;
     [Space]
-    [SerializeField] private Transform LaserAsset;
+    [SerializeField] private Transform _laserAsset;
+    [SerializeField] private Transform _primaryLaserSpawn;
+    [SerializeField] private Transform _dualLaser_LSpawn;
+    [SerializeField] private Transform _dualLaser_RSpawn;
     [SerializeField] private List<Transform> lasers;
-    [SerializeField] private int maxPool = 10;
+    [SerializeField] private int maxPool = 15;
     [SerializeField] private int iterateLaser = 0; //Debugit remove serialized field
     private bool isPoolMaxed = false;
     [SerializeField] private int health = 3;
@@ -42,10 +48,11 @@ public class PlayerInput : MonoBehaviour
     private void Awake()
     {
         playerInputs = new(); //Create a new instance of MyBaseInputs
-        lasers = new(10); // create a fixed size for performance reasons on Awake
+        lasers = new(maxPool); // create a fixed size for performance reasons on Awake
+        _tripleShot = new(){_primaryLaserSpawn, _dualLaser_LSpawn, _dualLaser_RSpawn};
     }
 
-    // Add Some movement interperlation Plz (Mooth out)
+    // Add Some movement interperlation Plz (Smooth out)
     void Start()
     {
         cameraOrthoSize = myCamera.GetComponent<Camera>().orthographicSize;
@@ -95,22 +102,30 @@ public class PlayerInput : MonoBehaviour
 
     private void LaserPool()
     {
+        int tripleShotIndex = 0;
         fired = false;
-        if (canFire + fireRate > Time.time) return;
+        if (canFire + _singeFireRate > Time.time) return;
         canFire = Time.time;
         if (lasers.Count < maxPool && !isPoolMaxed)
         {
-            lasers.Add(Instantiate(LaserAsset, transform.position + Offset, Quaternion.identity, transform.parent));
-            
-            
-            
-            
-            
-            iterateLaser++;
-            if (iterateLaser == maxPool)
+            for (int i = 0; i < maxPool; i++)
             {
-                iterateLaser = 0;
-                isPoolMaxed = true;
+                if (tripleShotIndex > 2) break; //Logic Breaks the max pool (Must Fix)
+                lasers.Add(Instantiate(_laserAsset, _tripleShot[tripleShotIndex].position + Offset, Quaternion.identity, transform.parent));
+
+                iterateLaser++;
+                if (iterateLaser == maxPool)
+                {
+                    iterateLaser = 0;
+                    isPoolMaxed = true;
+                }
+
+                if(_isTrippleShot)
+                {
+                    tripleShotIndex++;
+                    continue;
+                }
+                break;
             }
         }
         else if (isPoolMaxed)
@@ -121,13 +136,26 @@ public class PlayerInput : MonoBehaviour
             {
                 if (!lasers[i].gameObject.activeSelf)
                 {
-                    Debug.Log("this code is running");
+                    if (tripleShotIndex > 2) break;
                     lasers[i].gameObject.SetActive(true);
-                    lasers[i].position = transform.position + Offset;
+                    lasers[i].position = _tripleShot[tripleShotIndex].position + Offset;
+                    
+                    if (_isTrippleShot)
+                    {
+                        tripleShotIndex++;
+                        continue;
+                    }
                     break;
                 }
             }
         }
+    }
+
+    private void PopulateShots(List<Transform> totalShots)
+    {
+
+        //lasers[i].gameObject.SetActive(true);
+        //lasers[i].position = _primaryLaserSpawn.position + Offset;
     }
 
     private void EnableInputs()

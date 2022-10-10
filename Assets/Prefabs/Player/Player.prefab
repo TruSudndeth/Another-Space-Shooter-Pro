@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8536037456945010754}
   m_Layer: 8
-  m_Name: Shot Spawn
+  m_Name: Primary Shot Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9920,14 +9920,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc68625bc485ae2419d5b30c0cf67a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 7.5
   fired: 0
   myCamera: {fileID: 0}
   Offset: {x: 0, y: 0.8, z: 0}
-  fireRate: 0.25
-  LaserAsset: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
-    type: 3}
+  _singeFireRate: 0.25
+  _trippleFireRate: 0.5
+  _singleLaserAsset: {fileID: 0}
+  trippleLaserAsset: {fileID: 0}
   lasers: []
   maxPool: 10
   iterateLaser: 0
   health: 3
+  maxBank: 30
+  bankSpeed: 7.5

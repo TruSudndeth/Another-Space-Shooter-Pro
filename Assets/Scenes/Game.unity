@@ -471,6 +471,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &687264707 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8536037456945010764, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+    type: 3}
+  m_PrefabInstance: {fileID: 3497074787618936804}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +526,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1098829530 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8536037456945010756, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+    type: 3}
+  m_PrefabInstance: {fileID: 3497074787618936804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1290390939 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8536037456945010754, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+    type: 3}
+  m_PrefabInstance: {fileID: 3497074787618936804}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1361740995
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,21 +592,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8536037456945010754, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8536037456945010754, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8536037456945010754, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: m_RootOrder
@@ -651,13 +654,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
-      propertyPath: speed
-      value: 7.5
+      propertyPath: maxPool
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
-      propertyPath: maxBank
-      value: 30
+      propertyPath: Offset.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
@@ -666,8 +669,30 @@ PrefabInstance:
       objectReference: {fileID: 330585546}
     - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
-      propertyPath: bankSpeed
-      value: 7.5
-      objectReference: {fileID: 0}
+      propertyPath: _laserAsset
+      value: 
+      objectReference: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
+        type: 3}
+    - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: _dualLaser_LSpawn
+      value: 
+      objectReference: {fileID: 1098829530}
+    - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: _dualLaser_RSpawn
+      value: 
+      objectReference: {fileID: 687264707}
+    - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: _singleLaserAsset
+      value: 
+      objectReference: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
+        type: 3}
+    - target: {fileID: 8536037456950503177, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: _primaryLaserSpawn
+      value: 
+      objectReference: {fileID: 1290390939}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4407d9f9cc3d5254fa7f9cd7addcd216, type: 3}
