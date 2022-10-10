@@ -564,10 +564,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3271a4d67c36d4142b73edd5fe456595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyAsset:
-  - {fileID: 1995190552251999599, guid: 039ff8250d75e204b97b94a7d1d1e081, type: 3}
-  maxPool: 10
-  spawnRate: 1
+  _enemyAsset: []
+  _maxPool: 10
+  _spawnRate: 0.5
 --- !u!1001 &3497074787618936804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -575,6 +574,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8536037456945010754, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8536037456945010754, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8536037456945010754, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: m_RootOrder
@@ -583,12 +597,12 @@ PrefabInstance:
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.8491077
+      value: -1.34
       objectReference: {fileID: 0}
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5
+      value: -3.41
       objectReference: {fileID: 0}
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
