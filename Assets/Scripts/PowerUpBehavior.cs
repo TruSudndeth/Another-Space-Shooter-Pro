@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PowerUpBehavior : MonoBehaviour
 {
+    [SerializeField] private Type.PowerUps _powerUpType;
+    [Space]
     [SerializeField] private float _speed = 3.0f;
     private float cameraAspecRatio = 1.7777778f;
     private Vector3 move = Vector3.down;
@@ -29,8 +31,21 @@ public class PowerUpBehavior : MonoBehaviour
         {
             if(other.TryGetComponent(out PlayerInput playerIO))
             {
-                playerIO.TripleShotActive();
-                gameObject.SetActive(false);
+                if(_powerUpType == Type.PowerUps.Tripple)
+                {
+                    playerIO.TripleShotActive();
+                    gameObject.SetActive(false);
+                }
+                else if(_powerUpType == Type.PowerUps.Shield)
+                {
+                    Debug.Log("Shield Stuff");
+                    gameObject.SetActive(false);
+                }
+                else if(_powerUpType == Type.PowerUps.Speed)
+                {
+                    Debug.Log("Speed Stuff");
+                    gameObject.SetActive(false);
+                }
             }
         }
     }

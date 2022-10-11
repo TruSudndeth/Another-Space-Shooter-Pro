@@ -8,4 +8,9 @@ public static class Type
     {
         Player, Enemies, Astroids, ELaser, Laser
     };
+
+    public enum PowerUps
+    {
+        Tripple, Shield, Speed
+    }
 }
