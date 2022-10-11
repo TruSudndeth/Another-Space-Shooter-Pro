@@ -31,20 +31,23 @@ public class PowerUpBehavior : MonoBehaviour
         {
             if(other.TryGetComponent(out PlayerInput playerIO))
             {
-                if(_powerUpType == Type.PowerUps.Tripple)
+                switch(_powerUpType)
                 {
-                    playerIO.TripleShotActive();
-                    gameObject.SetActive(false);
-                }
-                else if(_powerUpType == Type.PowerUps.Shield)
-                {
-                    Debug.Log("Shield Stuff");
-                    gameObject.SetActive(false);
-                }
-                else if(_powerUpType == Type.PowerUps.Speed)
-                {
-                    Debug.Log("Speed Stuff");
-                    gameObject.SetActive(false);
+                    case Type.PowerUps.Tripple:
+                        playerIO.TripleShotActive();
+                        gameObject.SetActive(false);
+                        break;
+                    case Type.PowerUps.Shield:
+                        gameObject.SetActive(false);
+                        Debug.Log("Shield Stuff");
+                        break;
+                    case Type.PowerUps.Speed:
+                        Debug.Log("Speed Stuff");
+                        gameObject.SetActive(false);
+                        break;
+                    default:
+                        Debug.Log(transform + "Power Up type not set");
+                        break;
                 }
             }
         }
