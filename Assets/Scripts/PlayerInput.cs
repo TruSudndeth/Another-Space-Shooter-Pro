@@ -12,10 +12,21 @@ public class PlayerInput : MonoBehaviour
     public static GameOver gameOver;
     public int Health { private get { return health; } set { health -= value; } }
 
-    private MyBaseInputs playerInputs;
-    private Vector2 movePlayer;
+    [SerializeField] private AnimationCurve _interpoMovePalayer;
+    [SerializeField] private AnimationCurve _interpobankPlayer;
+    [SerializeField] private float _interPoMoveSpeed = 2.0f;
+    [SerializeField] private float bankSpeed = 10.0f;
+    [SerializeField] private float maxBank = 45.0f;
     [SerializeField] private float speed = 1;
+    [SerializeField] private float _speedBoostTimeout = 5.0f;
+    private float _speedBoostTime = 0.0f;
+    private bool _isSpeedBoostActive = false;
+    private MyBaseInputs playerInputs;
     private InputAction WSAD;
+    private Vector2 _movePlayerFixed;
+    private Vector2 _movePlayer = Vector2.zero;
+    private float bank = 0;
+    [Space]
     private InputAction fire;
     [SerializeField] private bool fired = false;
     [Space]
@@ -44,10 +55,6 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private int iterateLaser = 0; //Debugit remove serialized field
     private bool isPoolMaxed = false;
     [SerializeField] private int health = 3;
-    [Space]
-    [SerializeField] private float maxBank = 45.0f;
-    [SerializeField] private float bankSpeed = 10.0f;
-    private float bank = 0;
 
     private void Awake()
     {
@@ -71,7 +78,9 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         Vector2 movement = WSAD.ReadValue<Vector2>();
+
         //Bank left and right
+        //smooth out banks -                        Lets Incorperate
         float _bankSpeed = Time.deltaTime * bankSpeed;
         if(movement.x < 0)
         bank = bank >= 1 ? 1 : bank + _bankSpeed; //bank left
@@ -79,21 +88,19 @@ public class PlayerInput : MonoBehaviour
         bank = bank <= -1 ? -1 : bank - _bankSpeed; //bank right
         if(movement.x == 0)
         if(Mathf.Abs(bank) > _bankSpeed * 2)
-        bank = bank > 0 ? bank - _bankSpeed: bank + _bankSpeed; //Zero
+        bank = bank > 0 ? bank - _bankSpeed: bank + _bankSpeed; //Zero out
         transform.rotation = Quaternion.Euler(-90, 0, maxBank * bank);
 
-        //Access Z value from transform             check
-        //apply rotation to Z with clamp -          check
-        //zero out bank when no input (smooth) -    check
-        //smooth out banks -                        Lets Incorperate
-
-        //Bounds set
-        //Fix bound clipping due to frame rate.
-        movement *= Time.fixedDeltaTime * speed;
-        movement = OutOfBounds.CalculateMove(transform, movement, xyBounds); // with bounds
-
-        movePlayer = movement;
+        //Interpolate Movement
+        float direction = _isSpeedBoostActive ? 1 : _interPoMoveSpeed * Time.deltaTime;
+        _movePlayer = Vector2.MoveTowards(_movePlayer, movement, direction);
+        
+        //Bounds
+        _movePlayerFixed = speed * Time.fixedDeltaTime * _movePlayer;
+        _movePlayerFixed = OutOfBounds.CalculateMove(transform, _movePlayerFixed, xyBounds);
     }
+
+
 
     private void FixedUpdate()
     {
@@ -101,10 +108,17 @@ public class PlayerInput : MonoBehaviour
 
         if(health <= 0) gameObject.SetActive(false); // DebugIt look for Disable Bugs
         // Might not need to set translate if there is no input hmmmm
-        transform.Translate(movePlayer, Space.World); //Moves the transfomr in the direction and distance of translation
+        transform.Translate(_movePlayerFixed, Space.World); //Moves the transfomr in the direction and distance of translation
 
         if (_powerUpTime + _powerUpTimeout <= Time.time && _isTrippleShot)
             _isTrippleShot = false;
+        if (_speedBoostTime + _speedBoostTimeout <= Time.time && _isSpeedBoostActive)
+            _isSpeedBoostActive = false;
+    }
+    public void SpeedBoost()
+    {
+        _isSpeedBoostActive = true;
+        _speedBoostTime = Time.time;
     }
     public void TripleShotActive()
     {
@@ -160,13 +174,6 @@ public class PlayerInput : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void PopulateShots(List<Transform> totalShots)
-    {
-
-        //lasers[i].gameObject.SetActive(true);
-        //lasers[i].position = _primaryLaserSpawn.position + Offset;
     }
 
     private void EnableInputs()
