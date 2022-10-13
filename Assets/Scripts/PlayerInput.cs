@@ -9,9 +9,12 @@ public class PlayerInput : MonoBehaviour
 {
     public delegate void GameOver();
     public static GameOver gameOver;
-    public delegate void GameStart();
-    public static GameStart gameStart;
+    public delegate void Points(int points);
+    public static Points Score;
+    
     public int Health { get { return health; } set { Damage(value); } }
+
+    private int _playerScore = 0;
 
     [SerializeField] private AnimationCurve _interpoMovePalayer;
     [SerializeField] private AnimationCurve _interpobankPlayer;
@@ -61,6 +64,8 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float _shieldTimeout = 60.0f;
     private bool _isShieldActive = false;
     private float _shieldTime = 0.0f;
+    
+    [SerializeField] private bool _updateScore = false;
 
     //use shield collider as a collection area for powerups and collisions
     
@@ -85,6 +90,11 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_updateScore)
+        {
+            _updateScore = false;
+            UpdateScore(111);
+        }
         Vector2 movement = WSAD.ReadValue<Vector2>();
         //smooth out banks -                        Lets Incorperate
         float _bankSpeed = Time.deltaTime * bankSpeed;
@@ -207,6 +217,11 @@ public class PlayerInput : MonoBehaviour
         WSAD.Enable();
         fire = playerInputs.Player.Fire;
         fire.Enable();
+    }
+    public void UpdateScore(int points)
+    {
+        _playerScore += points;
+        Score?.Invoke(_playerScore);
     }
 
     private void SubscribeToInputs()
