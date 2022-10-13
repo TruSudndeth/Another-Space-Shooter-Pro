@@ -1,0 +1,23 @@
+.button {
+    background-color: rgba(21, 255, 0, 255);
+    -unity-text-outline-width: 0;
+    text-shadow: 2px 1px 3px rgba(56, 56, 56, 0.67);
+    -unity-font-style: normal;
+    color: rgba(0, 0, 0, 255);
+    font-size: 24px;
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    transform-origin: center;
+    translate: 0 0;
+    rotate: 0;
+    transition-property: rotate;
+    transition-duration: 14s;
+    transition-delay: 14s;
+    margin-left: 0;
+}

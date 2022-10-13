@@ -62,6 +62,8 @@ public class PlayerInput : MonoBehaviour
     private bool _isShieldActive = false;
     private float _shieldTime = 0.0f;
 
+    //use shield collider as a collection area for powerups and collisions
+    
     private void Awake()
     {
         playerInputs = new(); //Create a new instance of MyBaseInputs
