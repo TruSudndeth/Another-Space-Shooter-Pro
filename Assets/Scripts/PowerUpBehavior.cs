@@ -38,7 +38,7 @@ public class PowerUpBehavior : MonoBehaviour
                         gameObject.SetActive(false);
                         break;
                     case Type.PowerUps.Shield:
-                        Debug.Log("Shield Stuff");
+                        playerIO.ShieldActive();
                         gameObject.SetActive(false);
                         break;
                     case Type.PowerUps.Speed:

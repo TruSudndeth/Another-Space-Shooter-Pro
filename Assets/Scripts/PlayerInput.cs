@@ -11,7 +11,7 @@ public class PlayerInput : MonoBehaviour
     public static GameOver gameOver;
     public delegate void GameStart();
     public static GameStart gameStart;
-    public int Health { private get { return health; } set { health -= value; } }
+    public int Health { get { return health; } set { Damage(value); } }
 
     [SerializeField] private AnimationCurve _interpoMovePalayer;
     [SerializeField] private AnimationCurve _interpobankPlayer;
@@ -55,7 +55,12 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private int maxPool = 15;
     [SerializeField] private int iterateLaser = 0; //Debugit remove serialized field
     private bool isPoolMaxed = false;
+    [Space]
+    [SerializeField] private Transform _shield;
     [SerializeField] private int health = 3;
+    [SerializeField] private float _shieldTimeout = 60.0f;
+    private bool _isShieldActive = false;
+    private float _shieldTime = 0.0f;
 
     private void Awake()
     {
@@ -102,15 +107,15 @@ public class PlayerInput : MonoBehaviour
     private void FixedUpdate()
     {
         if (fired) LaserPool();
-
-        if(health <= 0) gameObject.SetActive(false); // DebugIt look for Disable Bugs
-        // Might not need to set translate if there is no input hmmmm
+        
         transform.Translate(_movePlayerFixed, Space.World); //Moves the transfomr in the direction and distance of translation
 
         if (_powerUpTime + _powerUpTimeout <= Time.time && _isTrippleShot)
             _isTrippleShot = false;
         if (_speedBoostTime + _speedBoostTimeout <= Time.time && _isSpeedBoostActive)
             _isSpeedBoostActive = false;
+        if (_shieldTime + _shieldTimeout <= Time.time && _isShieldActive)
+            Damage(0);
     }
     public void SpeedBoost()
     {
@@ -121,6 +126,27 @@ public class PlayerInput : MonoBehaviour
     {
         _isTrippleShot = true;
         _powerUpTime = Time.time;
+    }
+    public void ShieldActive()
+    {
+        _shieldTime = Time.time;
+        _shield.gameObject.SetActive(true);
+        _isShieldActive = true;
+    }
+    private void Damage(int damage)
+    {
+        if (_isShieldActive)
+        {
+            _shield.gameObject.SetActive(false);
+            _isShieldActive = false;
+            return;
+        }
+        health -= damage;
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+        
     }
     private void LaserPool()
     {
