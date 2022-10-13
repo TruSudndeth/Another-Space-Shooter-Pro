@@ -5,11 +5,12 @@ using UnityEditor.Rendering;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 public class PlayerInput : MonoBehaviour
 {
     public delegate void GameOver();
     public static GameOver gameOver;
+    public delegate void GameStart();
+    public static GameStart gameStart;
     public int Health { private get { return health; } set { health -= value; } }
 
     [SerializeField] private AnimationCurve _interpoMovePalayer;
@@ -78,8 +79,6 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         Vector2 movement = WSAD.ReadValue<Vector2>();
-
-        //Bank left and right
         //smooth out banks -                        Lets Incorperate
         float _bankSpeed = Time.deltaTime * bankSpeed;
         if(movement.x < 0)
@@ -99,8 +98,6 @@ public class PlayerInput : MonoBehaviour
         _movePlayerFixed = speed * Time.fixedDeltaTime * _movePlayer;
         _movePlayerFixed = OutOfBounds.CalculateMove(transform, _movePlayerFixed, xyBounds);
     }
-
-
 
     private void FixedUpdate()
     {
@@ -144,7 +141,7 @@ public class PlayerInput : MonoBehaviour
                     iterateLaser = 0;
                     isPoolMaxed = true;
                 }
-
+                
                 if(_isTrippleShot)
                 {
                     tripleShotIndex++;
@@ -190,10 +187,9 @@ public class PlayerInput : MonoBehaviour
     }
     private void OnDisable()
     {
-        gameOver?.Invoke(); //Null Reference exception?
+        gameOver?.Invoke();
         WSAD.Disable();
         fire.Disable();
     }
-
-
+    
 }
