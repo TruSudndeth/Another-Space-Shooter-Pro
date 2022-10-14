@@ -7,11 +7,9 @@
             </ui:VisualElement>
             <ui:VisualElement name="HealthBar" style="width: 139px; height: 64px; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; margin-left: 0; margin-right: 15px; margin-top: 15px;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Bottom_Text">
-            <ui:VisualElement />
+        <ui:VisualElement name="Center_Text" style="margin-bottom: 175px;">
+            <ui:Label text="Game Over" display-tooltip-when-elided="true" name="GameOver" style="font-size: 99px; color: rgba(255, 255, 255, 255); align-items: center; -unity-text-align: upper-center; -unity-font: url(&apos;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=c494ec2cdae63a44199f6c1bc77c7e69&amp;type=3#NotInter-Regular&apos;); -unity-font-style: bold; -unity-text-outline-color: rgba(118, 118, 118, 255); -unity-text-outline-width: 0; text-shadow: 0 0 0 rgba(0, 0, 0, 255); display: flex; visibility: visible; overflow: visible; opacity: 1;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Center_Text">
-            <ui:VisualElement />
-        </ui:VisualElement>
+        <ui:VisualElement name="Bottom_Text" />
     </ui:VisualElement>
 </ui:UXML>
