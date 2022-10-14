@@ -1,10 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Layout/ButtonStyle001.uss?fileID=7433441132597879392&amp;guid=6bce2891584a8da48b9bec194b76af36&amp;type=3#ButtonStyle001" />
     <ui:VisualElement name="FullScreen" style="height: 100%; align-items: stretch; max-width: initial; max-height: initial; min-width: auto; min-height: auto; width: 100%; justify-content: space-between;">
-        <ui:VisualElement name="Top_Text" style="align-items: stretch; justify-content: center;">
+        <ui:VisualElement name="Top_Text" style="align-items: stretch; justify-content: space-between; flex-direction: row; -unity-slice-left: 183;">
             <ui:VisualElement style="align-items: flex-start; justify-content: flex-start; flex-direction: row; min-width: auto; min-height: auto; max-width: initial; max-height: initial; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
                 <ui:Label text="Score: 999" display-tooltip-when-elided="true" name="Score" class="Text" />
             </ui:VisualElement>
+            <ui:VisualElement name="HealthBar" style="width: 139px; height: 64px; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; margin-left: 0; margin-right: 15px; margin-top: 15px;" />
         </ui:VisualElement>
         <ui:VisualElement name="Bottom_Text">
             <ui:VisualElement />

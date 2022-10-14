@@ -11,6 +11,8 @@ public class PlayerInput : MonoBehaviour
     public static GameOver gameOver;
     public delegate void Points(int points);
     public static Points Score;
+    public delegate void PlayerHealth(int health);
+    public static PlayerHealth UpdateHealth;
     
     public int Health { get { return health; } set { Damage(value); } }
 
@@ -155,6 +157,7 @@ public class PlayerInput : MonoBehaviour
             return;
         }
         health -= damage;
+        UpdateHealth?.Invoke(health);
         if (health <= 0)
         {
             gameObject.SetActive(false);
