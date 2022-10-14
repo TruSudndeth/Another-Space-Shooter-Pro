@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    //create a delegate for the event of enemyPoints
+    public delegate void EnemyPoints(int points);
+    public static event EnemyPoints EnemyPointsEvent;
+    
+    [SerializeField] private Type.Points _enemyPointValue;
     [SerializeField] private float speed = 4.0f;
     private Camera _camera;
     private float cameraAspecRatio = 1.7777778f;
@@ -44,12 +49,14 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if(other.CompareTag(Type.Tags.Laser.ToString()))
         {
+            EnemyPointsEvent?.Invoke((int)_enemyPointValue);
             other.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
-        if(other.CompareTag(Type.Tags.Player.ToString()))
+        else if(other.CompareTag(Type.Tags.Player.ToString()))
         {
             if(other.TryGetComponent(out PlayerInput _input))
             {

@@ -85,6 +85,7 @@ public class PlayerInput : MonoBehaviour
         xyBounds = new Vector2(xBounds, yBounds);
         EnableInputs();
         SubscribeToInputs();
+        Enemy.EnemyPointsEvent += UpdateScore;
     }
 
     // Update is called once per frame
@@ -230,6 +231,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void OnDisable()
     {
+        Enemy.EnemyPointsEvent -= UpdateScore;
         gameOver?.Invoke();
         WSAD.Disable();
         fire.Disable();

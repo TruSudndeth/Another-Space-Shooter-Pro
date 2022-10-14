@@ -13,4 +13,14 @@ public static class Type
     {
         Tripple, Shield, Speed
     }
+    
+    public enum Points
+    {
+        Enemy = 20, Astroid = 10, PowerUp = 50, Boss = 100, MiniBoss = 50
+    }
+    
+    public enum LaserTag
+    {
+        Player, Enemy
+    }
 }

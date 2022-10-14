@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b083e049d2f50c747842ea026c0ddc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyPointValue: 20
   speed: 1
 --- !u!54 &1221466559
 Rigidbody:
