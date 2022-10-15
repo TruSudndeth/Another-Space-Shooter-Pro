@@ -13,7 +13,7 @@ public class PlayerInput : MonoBehaviour
     public static Points Score;
     public delegate void PlayerHealth(int health);
     public static PlayerHealth UpdateHealth;
-    
+
     public int Health { get { return health; } set { Damage(value); } }
 
     private int _playerScore = 0;
@@ -235,6 +235,7 @@ public class PlayerInput : MonoBehaviour
     private void OnDisable()
     {
         Enemy.EnemyPointsEvent -= UpdateScore;
+        fire.performed -= _ => fired = false; //??? Look into this unsubscribe
         gameOver?.Invoke();
         WSAD.Disable();
         fire.Disable();

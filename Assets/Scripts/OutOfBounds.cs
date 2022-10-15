@@ -11,7 +11,7 @@ static class OutOfBounds
     // float cameraAspectRatio = 16/9 or just 1.7777778f;
     // ------------Calculations----------------
     // _xyBounds.y = Camera.main.orthographicSize;
-    // _xyBounds.x = _xyBounds.y* cameraAspecRatio;
+    // _xyBounds.x = _xyBounds.y * cameraAspecRatio;
 
     public static Vector2 CalculateMove(Transform _transform, Vector2 IncrementMovement, Vector2 xyBounds)
     {
