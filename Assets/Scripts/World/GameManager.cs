@@ -9,11 +9,17 @@ public class GameManager : MonoBehaviour
     private int sceneIndex = 0;
     void OnEnable()
     {
-        UI.ResetLevel += RestartCurrentLevel;
+        UI._loadScene += LoadScene;
+        UI._resetLevel += RestartCurrentLevel;
     }
     void OnDisable()
     {
-        UI.ResetLevel -= RestartCurrentLevel;
+        UI._loadScene -= LoadScene;
+        UI._resetLevel -= RestartCurrentLevel;
+    }
+    void LoadScene(Type.GameState gameState)
+    {
+        SceneManager.LoadScene((int) gameState);
     }
     void RestartCurrentLevel()
     {

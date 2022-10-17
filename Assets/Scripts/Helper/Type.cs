@@ -23,4 +23,9 @@ public static class Type
     {
         Player, Enemy
     }
+    
+    public enum GameState
+    {
+        MainNenu = 0, Level0 = 1, Level1 = 2
+    }
 }
