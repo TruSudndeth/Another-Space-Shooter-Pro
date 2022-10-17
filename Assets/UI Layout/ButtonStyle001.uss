@@ -1,15 +1,110 @@
-.Text {
-    margin-left: 20px;
-    margin-top: 20px;
-    font-size: 35px;
-    color: rgb(255, 255, 255);
-}
-
 .button {
-    width: 100px;
-    height: 50px;
+    width: 30%;
+    height: auto;
+    cursor: initial;
+    border-top-left-radius: -159px;
+    border-bottom-left-radius: 28px;
+    border-top-right-radius: 28px;
+    border-bottom-right-radius: -186px;
+    border-left-width: 8px;
+    border-right-width: 8px;
+    border-top-width: 8px;
+    border-bottom-width: 8px;
+    transition-duration: 0.5s;
 }
 
-.restart {
-    font-size: 21px;
+.button:hover {
+    background-color: rgba(0, 139, 255, 255);
+    width: 31.64%;
+    transition-duration: 0.32s;
+    transition-timing-function: ease-in-out;
+}
+
+.button:active {
+    border-left-color: rgba(255, 252, 0, 255);
+    border-right-color: rgba(255, 252, 0, 255);
+    border-top-color: rgba(255, 252, 0, 255);
+    border-bottom-color: rgba(255, 252, 0, 255);
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+}
+
+.gameTitle {
+    -unity-text-align: upper-center;
+    color: rgba(255, 255, 255, 255);
+    font-size: 99px;
+    -unity-font-style: bold-and-italic;
+    white-space: nowrap;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    -unity-text-outline-width: 0.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 255);
+    transition-duration: 2s;
+}
+
+.slider {
+    width: 30%;
+    background-color: rgba(255, 255, 255, 255);
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    -unity-background-scale-mode: stretch-to-fill;
+    align-items: stretch;
+    justify-content: space-around;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgba(255, 255, 255, 255);
+    border-right-color: rgba(255, 255, 255, 255);
+    border-top-color: rgba(255, 255, 255, 255);
+    border-bottom-color: rgba(255, 255, 255, 255);
+    -unity-font-style: bold;
+    font-size: 12px;
+    -unity-font: url('project://database/Library/unity%20default%20resources?fileID=10102&guid=0000000000000000e000000000000000&type=0#Arial');
+    color: rgba(0, 0, 0, 255);
+    -unity-text-align: upper-center;
+    transition-duration: 0.5s;
+}
+
+.slider:hover {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgba(0, 255, 253, 255);
+    border-right-color: rgba(0, 255, 253, 255);
+    border-top-color: rgba(0, 255, 253, 255);
+    border-bottom-color: rgba(0, 255, 253, 255);
+    transition-duration: 0.5s;
+    background-color: rgba(255, 6, 26, 255);
+}
+
+.slider:focus {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgb(2, 255, 0);
+    border-right-color: rgb(2, 255, 0);
+    border-top-color: rgb(2, 255, 0);
+    border-bottom-color: rgb(2, 255, 0);
+    transition-duration: 0.5s;
+    background-color: rgba(255, 250, 0, 255);
+}
+
+.gameTitle:hover {
+    -unity-text-align: upper-center;
+    color: rgb(0, 243, 255);
+    font-size: 99px;
+    -unity-font-style: bold-and-italic;
+    white-space: nowrap;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    -unity-text-outline-width: 0.5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    transition-duration: 2s;
 }

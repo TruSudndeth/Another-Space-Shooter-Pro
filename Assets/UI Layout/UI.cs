@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,11 @@ public class UI : MonoBehaviour
 {
     public delegate void Reset();
     public static Reset ResetLevel;
+    [Space]
+    [SerializeField] private UIDocument _UIDoc;
+
+    [SerializeField] private VisualTreeAsset _mainMenu;
+    [SerializeField] private VisualTreeAsset _gamePlay_UI;
 
     private VisualElement _healthBar;
     private int _score = 0;
@@ -29,6 +35,7 @@ public class UI : MonoBehaviour
 
     private void Awake()
     {
+        _UIDoc.visualTreeAsset = _gamePlay_UI;
         _UIbaseInputs = new();
         _restartInput = _UIbaseInputs.UI.Restart;
         _healthStatusStyle = new(4);
