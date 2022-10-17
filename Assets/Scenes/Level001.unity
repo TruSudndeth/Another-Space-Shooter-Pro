@@ -470,7 +470,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c834bc351e75a438f3637697dc2dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _UIDoc: {fileID: 647288232}
   _mainMenu_UI: {fileID: 9197481963319205126, guid: c2e97fa7fed3a984dbb81a1d6d8eb939,
     type: 3}
   _gamePlay_UI: {fileID: 9197481963319205126, guid: 9aad2d003b8f78c4ab575af5a0261f31,
@@ -607,6 +606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyAsset:
+  - {fileID: 7553858412400719953, guid: df840bcaee32e1942a5603dd2585d721, type: 3}
   - {fileID: 1995190552251999599, guid: 039ff8250d75e204b97b94a7d1d1e081, type: 3}
   _maxPool: 10
   _spawnRate: 0.5
@@ -760,7 +760,7 @@ PrefabInstance:
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.9999743
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}

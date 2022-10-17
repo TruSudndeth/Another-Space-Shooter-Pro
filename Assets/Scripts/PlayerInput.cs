@@ -87,7 +87,7 @@ public class PlayerInput : MonoBehaviour
         xyBounds = new Vector2(xBounds, yBounds);
         EnableInputs();
         SubscribeToInputs();
-        Enemy.EnemyPointsEvent += UpdateScore;
+        EnemyCollisons.EnemyPointsEvent += UpdateScore;
     }
 
     // Update is called once per frame
@@ -234,7 +234,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void OnDisable()
     {
-        Enemy.EnemyPointsEvent -= UpdateScore;
+        EnemyCollisons.EnemyPointsEvent -= UpdateScore;
         fire.performed -= _ => fired = false; //??? Look into this unsubscribe
         gameOver?.Invoke();
         WSAD.Disable();

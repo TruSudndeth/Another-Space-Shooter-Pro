@@ -6,6 +6,7 @@ public class EnemySpawnManager : MonoBehaviour
 {
     [SerializeField] private List<Transform> _enemyAsset;
     private List<Transform> _enemies;
+    private int _enemyCount = 0;
     [Space]
     private float _boundsOffset = 0;
     [Space]
@@ -26,6 +27,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         _maxPool = _enemyAsset.Count * 10;
         _enemies = new(_maxPool);
+        _enemyCount = _enemyAsset.Count;
     }
 
     void Start()
@@ -48,7 +50,8 @@ public class EnemySpawnManager : MonoBehaviour
     {
             if (_enemies.Count < _maxPool && !_isPoolMaxed)
             {
-                _enemies.Add(Instantiate(_enemyAsset[0], RandomEnemySpawn() + CalcOffset(_enemyAsset[0]), Quaternion.identity, transform));
+                int enemyIndex = Random.Range(0, _enemyCount);
+                _enemies.Add(Instantiate(_enemyAsset[enemyIndex], RandomEnemySpawn() + CalcOffset(_enemyAsset[enemyIndex]), Quaternion.identity, transform));
                 _iterateEnemy++;
                 if (_iterateEnemy == _maxPool)
                 {
