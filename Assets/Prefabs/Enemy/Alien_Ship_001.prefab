@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2451868820761041200}
   - component: {fileID: 2087037298085624800}
   - component: {fileID: 7386902935266328409}
+  - component: {fileID: 841812636567573475}
   m_Layer: 7
   m_Name: Model
   m_TagString: Enemies
@@ -112,6 +113,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPointValue: 20
+--- !u!114 &841812636567573475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195700908128169452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3281205dd8c5ff4eb5d6b7f73ad4896, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxType: 0
 --- !u!1 &5151207552128361198
 GameObject:
   m_ObjectHideFlags: 0

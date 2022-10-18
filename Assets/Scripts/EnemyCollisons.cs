@@ -38,6 +38,10 @@ public class EnemyCollisons : MonoBehaviour
 
     private void DisableParent()
     {
+        if (TryGetComponent(out ParticlesVFX _vfx))
+        {
+            _vfx.PlayVFX();
+        }
         if (!_hasChildren)
             gameObject.SetActive(false);
         else if (_hasChildren)

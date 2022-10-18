@@ -160,6 +160,10 @@ public class PlayerInput : MonoBehaviour
         UpdateHealth?.Invoke(health);
         if (health <= 0)
         {
+            if(TryGetComponent(out ParticlesVFX _explode))
+            {
+                _explode.PlayVFX();
+            }
             gameObject.SetActive(false);
         }
         

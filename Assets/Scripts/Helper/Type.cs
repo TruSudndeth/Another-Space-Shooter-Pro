@@ -28,4 +28,10 @@ public static class Type
     {
         MainNenu = 0, Level0 = 1, Level1 = 2
     }
+
+    public enum VFX
+    {
+        PlayerDeath = 0, EnemyDeath = 1, AstroidDeath = 2, MiniBossDeath = 3, 
+        BossDeath = 4, Laser = 5, Tripple = 6, Shield = 7, Speed = 8
+    }
 }
