@@ -14,6 +14,18 @@ public class CollectibleSpawnManager : MonoBehaviour
     private float _currentSpawnTime = 0;
     [Space]
     [SerializeField] private bool _spawnPowerUps = false;
+
+    private bool _gameStarted = false;
+
+    private void Start()
+    {
+        StartGameAsteroids._startGame += GameStarted;
+    }
+    
+    void GameStarted()
+    {
+        _gameStarted = true;
+    }
     void Awake()
     {
         _xyBounds.y = Camera.main.orthographicSize;
@@ -26,7 +38,7 @@ public class CollectibleSpawnManager : MonoBehaviour
     void FixedUpdate()
     {
         //Add if statment to spawn every 7 seconds Time.time
-        if (_powerUpAssets.Count == 0) return;
+        if (_powerUpAssets.Count == 0 || !_gameStarted) return;
         if(_currentSpawnTime + _spawnRate <= Time.time)
         {
             _currentSpawnTime = Time.time;
@@ -45,5 +57,9 @@ public class CollectibleSpawnManager : MonoBehaviour
     private int RandomInt(int myInt)
     {
         return Random.Range(0, myInt);
+    }
+    private void OnDestroy()
+    {
+        StartGameAsteroids._startGame -= GameStarted;
     }
 }

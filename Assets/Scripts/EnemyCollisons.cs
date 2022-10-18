@@ -20,13 +20,13 @@ public class EnemyCollisons : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         
-        if(other.CompareTag(Type.Tags.Laser.ToString()))
+        if(other.CompareTag(Type.CollisionTags.Laser.ToString()))
         {
             EnemyPointsEvent?.Invoke((int)_enemyPointValue);
             other.gameObject.SetActive(false);
             DisableParent();
         }
-        else if(other.CompareTag(Type.Tags.Player.ToString()))
+        else if(other.CompareTag(Type.CollisionTags.Player.ToString()))
         {
             if(other.TryGetComponent(out PlayerInput _input))
             {

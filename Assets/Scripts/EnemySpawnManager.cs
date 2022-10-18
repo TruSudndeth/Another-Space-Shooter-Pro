@@ -21,26 +21,33 @@ public class EnemySpawnManager : MonoBehaviour
     private float _offset = 0;
     private int _iterateEnemy = 0;
     private bool _gameOver = false;
+    private bool _gameStarted = false;
 
 
     private void Awake()
     {
-        _maxPool = _enemyAsset.Count * 10;
+        //_maxPool = _enemyAsset.Count * 10;
         _enemies = new(_maxPool);
         _enemyCount = _enemyAsset.Count;
     }
 
     void Start()
     {
+        StartGameAsteroids._startGame += GameStarted;
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
         PlayerInput.gameOver += PlayerIsDead;
     }
+    
+    private void GameStarted()
+    {
+        _gameStarted = true;
+    }
 
     void FixedUpdate()
     {
-        if (_gameOver) return;
+        if (_gameOver || !_gameStarted) return;
         if (_canSpawn + _spawnRate > Time.time) return;
         _canSpawn = Time.time;
         SpawnSystem();
@@ -95,5 +102,6 @@ public class EnemySpawnManager : MonoBehaviour
     private void OnDisable()
     {
         PlayerInput.gameOver -= PlayerIsDead;
+        StartGameAsteroids._startGame -= GameStarted;
     }
 }

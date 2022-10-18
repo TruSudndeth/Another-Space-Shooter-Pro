@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Type
 {
-    public enum Tags
+    public enum CollisionTags
     {
         Player, Enemies, Astroids, ELaser, Laser
     };

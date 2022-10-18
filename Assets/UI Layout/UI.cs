@@ -37,15 +37,19 @@ public class UI : MonoBehaviour
     private VisualElement _healthBar;
     private int _score = 0;
     private Label _scoreLabel;
+    
     [Space]
     [SerializeField] private float _gameOverFlashTime = 1.0f;
     private Label _gameOver;
     private float _gameOverTime = 0.0f;
     private bool _isGameOver = false;
+    private bool _gameStarted = false;
     private Label _restartText;
+    
     [Space]
     [SerializeField] private List<Sprite> _healthStatus;
     private List<StyleBackground> _healthStatusStyle;
+    
     [Space]
     private MyBaseInputs _UIbaseInputs;
     private InputAction _restartInput;
@@ -60,6 +64,7 @@ public class UI : MonoBehaviour
             PlayerInput.Score += UpdateScore;
             PlayerInput.UpdateHealth += UpdateHealth;
             PlayerInput.gameOver += GameOver;
+            StartGameAsteroids._startGame += GameStarted;
 
             UpdateScore(0);
         }else if (_isMainMenu)
@@ -80,6 +85,11 @@ public class UI : MonoBehaviour
             Debug.Log("Fix UI Settings");
         }
     }
+    private void GameStarted()
+    {
+        _gameStarted = true;
+        _scoreLabel.visible = true;
+    }
     private void LoadLevelOne()
     {
         _gameState = Type.GameState.Level1;
@@ -90,22 +100,6 @@ public class UI : MonoBehaviour
         DisplayStyle isVisible = _musicSlider.style.display.value == DisplayStyle.Flex ? DisplayStyle.None : DisplayStyle.Flex;
         _musicSlider.style.display = isVisible;
         _soundSlider.style.display = isVisible;
-    }
-    private void OnDisable()
-    {
-        if(!_isMainMenu)
-        {
-            _restartInput.started -= _ => _hasRestarted = false;
-            _restartInput.Disable();
-            PlayerInput.Score -= UpdateScore;
-            PlayerInput.UpdateHealth -= UpdateHealth;
-            PlayerInput.gameOver -= GameOver;
-        }else if(_isMainMenu)
-        {
-            _optionsBTN.clicked -= AudioEnableDisable;
-            _startBTN.clicked -= LoadLevelOne;
-            _quitBTN.clicked -= Application.Quit;
-        }
     }
     private void Update()
     {
@@ -189,6 +183,24 @@ public class UI : MonoBehaviour
             _healthBar.style.backgroundImage = _healthStatusStyle[_healthStatus.Count - 1];
             _gameOver.visible = false;
             _restartText.visible = false;
+            _scoreLabel.visible = false;
+        }
+    }
+    private void OnDisable()
+    {
+        if (!_isMainMenu)
+        {
+            _restartInput.started -= _ => _hasRestarted = false;
+            _restartInput.Disable();
+            PlayerInput.Score -= UpdateScore;
+            PlayerInput.UpdateHealth -= UpdateHealth;
+            PlayerInput.gameOver -= GameOver;
+        }else if(_isMainMenu)
+        {
+            StartGameAsteroids._startGame += GameStarted;
+            _optionsBTN.clicked -= AudioEnableDisable;
+            _startBTN.clicked -= LoadLevelOne;
+            _quitBTN.clicked -= Application.Quit;
         }
     }
 }

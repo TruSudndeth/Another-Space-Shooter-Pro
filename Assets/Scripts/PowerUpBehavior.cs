@@ -27,7 +27,7 @@ public class PowerUpBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(Type.Tags.Player.ToString()))
+        if(other.CompareTag(Type.CollisionTags.Player.ToString()))
         {
             if(other.TryGetComponent(out PlayerInput playerIO))
             {
