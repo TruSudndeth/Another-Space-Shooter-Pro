@@ -61,6 +61,8 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private int iterateLaser = 0; //Debugit remove serialized field
     private bool isPoolMaxed = false;
     [Space]
+    [SerializeField] private GameObject _damageLeftENG;
+    [SerializeField] private GameObject _damageRighENG;
     [SerializeField] private Transform _shield;
     [SerializeField] private int health = 3;
     [SerializeField] private float _shieldTimeout = 60.0f;
@@ -158,6 +160,16 @@ public class PlayerInput : MonoBehaviour
         }
         health -= damage;
         UpdateHealth?.Invoke(health);
+        
+        if (health == 2 && !_damageLeftENG.activeSelf)
+        {
+            _damageLeftENG.SetActive(true);
+        }
+        else if (health == 1 && !_damageRighENG.activeSelf)
+        {
+            _damageRighENG.SetActive(true);
+        }
+        
         if (health <= 0)
         {
             if(TryGetComponent(out ParticlesVFX _explode))

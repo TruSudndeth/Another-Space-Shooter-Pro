@@ -8,6 +8,10 @@ public class StartingAsteroids : MonoBehaviour
     {
         if (other.CompareTag(Type.CollisionTags.Player.ToString()))
         {
+            if(other.TryGetComponent(out PlayerInput playerInput))
+            {
+                playerInput.Health = 1;
+            }
             Destroy(gameObject);
         }
         else if (other.CompareTag(Type.CollisionTags.Laser.ToString()))

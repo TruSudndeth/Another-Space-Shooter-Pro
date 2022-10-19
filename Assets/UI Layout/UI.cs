@@ -197,7 +197,7 @@ public class UI : MonoBehaviour
             PlayerInput.gameOver -= GameOver;
         }else if(_isMainMenu)
         {
-            StartGameAsteroids._startGame += GameStarted;
+            StartGameAsteroids._startGame -= GameStarted;
             _optionsBTN.clicked -= AudioEnableDisable;
             _startBTN.clicked -= LoadLevelOne;
             _quitBTN.clicked -= Application.Quit;
