@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 762670263450460444}
   - component: {fileID: 1096564176188155638}
   - component: {fileID: 9031663986503382928}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: prop_asteroid_03
-  m_TagString: Untagged
+  m_TagString: Astroids
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1267042979212181705}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.78, y: 2.06, z: -5}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98,7 +98,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4226911422852822927, guid: 5d847e3b2ee0e1743b8a7db5fe8ca5be, type: 3}
+  m_Mesh: {fileID: 3570775972089468439, guid: 11413a2cef5075c48ae85582ac5d00f4, type: 3}
 --- !u!54 &9031663986503382928
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -10014,7 +10014,8 @@ MonoBehaviour:
   speed: 7.5
   _speedBoostTimeout: 5
   fired: 0
-  myCamera: {fileID: 0}
+  myCamera: {fileID: 2701277048429228085, guid: 7ba93b6a400260e4b8efc37b0c1b593f,
+    type: 3}
   Offset: {x: 0, y: 0, z: 0}
   _singeFireRate: 0.25
   _trippleFireRate: 0.5
@@ -10029,6 +10030,8 @@ MonoBehaviour:
   lasers: []
   maxPool: 15
   iterateLaser: 0
+  _damageLeftENG: {fileID: 8561259504665264764}
+  _damageRighENG: {fileID: 3180163401601869307}
   _shield: {fileID: 5669655066000267629}
   health: 3
   _shieldTimeout: 120
@@ -10053,6 +10056,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8536037456945010766}
     m_Modifications:
+    - target: {fileID: 486774792496289418, guid: 46d679e61eeb2884a84c012e4798dec4,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486774792496289418, guid: 46d679e61eeb2884a84c012e4798dec4,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.4977541
+      objectReference: {fileID: 0}
     - target: {fileID: 2065515323535716354, guid: 46d679e61eeb2884a84c012e4798dec4,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -10093,6 +10106,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerDamage002
       objectReference: {fileID: 0}
+    - target: {fileID: 2065515323605150204, guid: 46d679e61eeb2884a84c012e4798dec4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2065515323605150207, guid: 46d679e61eeb2884a84c012e4798dec4,
         type: 3}
       propertyPath: m_RootOrder
@@ -10106,7 +10124,7 @@ PrefabInstance:
     - target: {fileID: 2065515323605150207, guid: 46d679e61eeb2884a84c012e4798dec4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0274
+      value: -0.0035
       objectReference: {fileID: 0}
     - target: {fileID: 2065515323605150207, guid: 46d679e61eeb2884a84c012e4798dec4,
         type: 3}
@@ -10153,6 +10171,12 @@ PrefabInstance:
 --- !u!4 &3180163401601869304 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2065515323605150207, guid: 46d679e61eeb2884a84c012e4798dec4,
+    type: 3}
+  m_PrefabInstance: {fileID: 3497074788838476807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3180163401601869307 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2065515323605150204, guid: 46d679e61eeb2884a84c012e4798dec4,
     type: 3}
   m_PrefabInstance: {fileID: 3497074788838476807}
   m_PrefabAsset: {fileID: 0}
@@ -10263,6 +10287,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8536037456945010766}
     m_Modifications:
+    - target: {fileID: 486774792496289418, guid: 46d679e61eeb2884a84c012e4798dec4,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 486774792496289418, guid: 46d679e61eeb2884a84c012e4798dec4,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.4977541
+      objectReference: {fileID: 0}
+    - target: {fileID: 486774792496289418, guid: 46d679e61eeb2884a84c012e4798dec4,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2065515322576397974, guid: 46d679e61eeb2884a84c012e4798dec4,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -10329,6 +10368,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerDamage001
       objectReference: {fileID: 0}
+    - target: {fileID: 2065515323605150204, guid: 46d679e61eeb2884a84c012e4798dec4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2065515323605150207, guid: 46d679e61eeb2884a84c012e4798dec4,
         type: 3}
       propertyPath: m_RootOrder
@@ -10386,6 +10430,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46d679e61eeb2884a84c012e4798dec4, type: 3}
+--- !u!1 &8561259504665264764 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2065515323605150204, guid: 46d679e61eeb2884a84c012e4798dec4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7666704462414539648}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8561259504665264767 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2065515323605150207, guid: 46d679e61eeb2884a84c012e4798dec4,
