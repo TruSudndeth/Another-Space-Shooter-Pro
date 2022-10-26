@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StartingAsteroids : MonoBehaviour
 {
+    [SerializeField] private Type.SFX _sfxType;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(Type.CollisionTags.Player.ToString()))
@@ -26,6 +27,7 @@ public class StartingAsteroids : MonoBehaviour
         if (TryGetComponent(out ParticlesVFX _vfx))
         {
             _vfx.PlayVFX();
+            AudioManager.Instance.PlayAudioOneShot(_sfxType);
         }
     }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EnemyCollisons : MonoBehaviour
 {
+    [SerializeField] private Type.SFX _sfxType;
+    [SerializeField] private Type.Points _enemyPointValue;
     private bool _hasChildren = false;
     //create a delegate for the event of enemyPoints
     public delegate void EnemyPoints(int points);
     public static event EnemyPoints EnemyPointsEvent;
-    [SerializeField] private Type.Points _enemyPointValue;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class EnemyCollisons : MonoBehaviour
         if (TryGetComponent(out ParticlesVFX _vfx))
         {
             _vfx.PlayVFX();
+            AudioManager.Instance.PlayAudioOneShot(_sfxType);
         }
         if (!_hasChildren)
             gameObject.SetActive(false);

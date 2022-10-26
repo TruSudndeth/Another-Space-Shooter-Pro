@@ -34,4 +34,10 @@ public static class Type
         PlayerDeath = 0, EnemyDeath = 1, AstroidDeath = 2, MiniBossDeath = 3, 
         BossDeath = 4, Laser = 5, Tripple = 6, Shield = 7, Speed = 8
     }
+    
+    public enum SFX
+    {
+        Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4,
+        BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11
+    }
 }
