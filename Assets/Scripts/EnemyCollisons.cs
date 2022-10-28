@@ -39,10 +39,10 @@ public class EnemyCollisons : MonoBehaviour
 
     private void DisableParent()
     {
+        AudioManager.Instance.PlayAudioOneShot(_sfxType);
         if (TryGetComponent(out ParticlesVFX _vfx))
         {
             _vfx.PlayVFX();
-            AudioManager.Instance.PlayAudioOneShot(_sfxType);
         }
         if (!_hasChildren)
             gameObject.SetActive(false);

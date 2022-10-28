@@ -137,6 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6839550174193508193}
+  - component: {fileID: 1565107436}
   m_Layer: 0
   m_Name: Auido_Manager
   m_TagString: Untagged
@@ -151,7 +152,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6839550174193508192}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.62413394, y: 0.1235435, z: 2.1499176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -160,3 +161,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1565107436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6839550174193508192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16cefc8f21315e245b2892115294c72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioSourcePrefab: {fileID: 5196819743858185711, guid: c7a5f0afa6b361246bd4d57e6c8ea922,
+    type: 3}
+  _clipAssets:
+  - {fileID: 8300000, guid: 4cf47ad5b31ea6640addd4045fa77c8b, type: 3}
+  - {fileID: 8300000, guid: 2a1eee086f18735419ca8d683c6d6fc9, type: 3}
+  - {fileID: 8300000, guid: cc4532e48a99dcf47b1d8c91c24fcc94, type: 3}
+  - {fileID: 8300000, guid: 34ff1f36e1d240245908c90abc97e4eb, type: 3}
+  - {fileID: 8300000, guid: 4a9a06c9694a13543bb6addd4101fcb1, type: 3}
+  - {fileID: 8300000, guid: cb321e0e67455dd4b8293e3233354bf3, type: 3}
+  - {fileID: 8300000, guid: eee43d4d17d37ba45b2f64dfe5e80768, type: 3}
+  - {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  - {fileID: 8300000, guid: 95c315eb396f33944a5fd98164d969a1, type: 3}
+  - {fileID: 8300000, guid: 708d7e97e747f014f9627252f83fd53d, type: 3}
+  - {fileID: 8300000, guid: 730ed1450fec4f84ebf9f40f5b135fcd, type: 3}
+  - {fileID: 8300000, guid: d76c71e98617e1c41a5cdc490eb1bee1, type: 3}
