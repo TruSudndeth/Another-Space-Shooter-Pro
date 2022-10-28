@@ -1,0 +1,5 @@
+Please follow the link below to download the Aubio Library and extract it in this folder
+
+https://drive.google.com/file/d/1YoYwLTIFznzR3LbL2FOMkfGfGadRpQbQ/view?usp=sharing
+
+This folder should contain this text file and another folder called "aubio" with the libraries inside

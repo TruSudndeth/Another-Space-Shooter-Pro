@@ -1,0 +1,2215 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b0ebbe1ac9da454685f5897663d5db1, type: 3}
+  m_Name: Hittin Trees With a Zarabatana
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: acc25183a11bbb7479f50ac40af858b3, type: 3}
+  BPM: 125
+  BPMdelay: 0.08
+  BPMenabled: 1
+  layers:
+  - layerName: h1
+    markups:
+    - timer: 0
+      length: 0
+      additionalParameters: []
+    - timer: 0.081269994
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 0.330884
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 0.452789
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 0.67918396
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 0.934603
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 1.166803
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 1.282902
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 1.5383221
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 1.770521
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.0201359
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.252336
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.368435
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.6180499
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.8560538
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 3.088254
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 3.2217689
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 3.4539678
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 3.686168
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 3.935782
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.162177
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.284082
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.5336957
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.7717
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 5.021315
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 5.137415
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 5.36381
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 5.613424
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 5.851429
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 6.0894327
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 6.217143
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 6.455147
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 6.687347
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 6.931156
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 7.053061
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 7.279456
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 7.534875
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 7.77288
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.022494
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.138594
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.364988
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.620408
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.846803
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.968707
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 9.212517
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 9.450521
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 9.688526
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 9.938141
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 10.05424
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 10.280635
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 10.536055
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 10.768254
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 10.884354
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.133968
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.371973
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.621587
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.847981
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.969887
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 12.2136965
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 12.4517
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 12.6839
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 12.82322
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 13.055419
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 13.287619
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 13.537233
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 13.769433
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 13.885532
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 14.135147
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 14.373152
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 14.6227665
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 14.738866
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 14.9652605
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 15.22068
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 15.45288
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 15.68508
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 15.818594
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 16.056599
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 16.2888
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 16.538414
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 16.654512
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 16.880907
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 17.136328
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 17.374332
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 17.618141
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 17.734241
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 17.972246
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 18.22186
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 18.45406
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 18.57016
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 18.813969
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 19.051973
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 19.289978
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 19.539593
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 19.655693
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 19.882088
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 20.131702
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 20.363901
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 20.485806
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 20.73542
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 20.973425
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 21.22304
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 21.455238
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 21.571339
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 21.815147
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 22.058958
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 22.285353
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 22.424671
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 22.656872
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 22.88907
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.138685
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.370886
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.486984
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.736599
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.9688
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.224218
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.334513
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.572517
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.822132
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.054333
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.280727
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.420046
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.652246
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.890251
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.139864
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.255964
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.482359
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.731974
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.969978
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.219593
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.335693
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.573696
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.82331
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.049706
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.17161
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.41542
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.653425
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.89143
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.141045
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.257143
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.483538
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.733152
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.965353
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.087257
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.331066
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.56907
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.824492
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.05669
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.17279
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.422405
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.654604
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.886803
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.020317
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.252518
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.49052
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.740135
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.96653
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.088436
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.332245
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.570248
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.819862
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.935963
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 34.173965
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 34.42358
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 34.65578
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 34.88798
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.021496
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.253696
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.4917
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.741314
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.857414
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.08381
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.33923
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.571426
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.815235
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.93714
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.175148
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.42476
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.651154
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.77306
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 38.01687
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 38.24907
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    visible: 1
+    color: {r: 0.42834812, g: 0.34096688, b: 0.896791, a: 1}
+  - layerName: h7
+    markups:
+    - timer: 0
+      length: 0
+      additionalParameters: []
+    - timer: 23.382496
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.637915
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 72
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.754015
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 23.986214
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.235828
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.468027
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 66
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.833742
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 24.955647
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.303946
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 59
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.55356
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 25.66966
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.035376
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.267574
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.389479
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 66
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 26.749388
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.237007
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.469208
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.701406
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 57
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 27.83492
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 59
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.18322
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.432835
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.67084
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 28.78694
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 66
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.152655
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.384853
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.506758
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 29.866667
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.104671
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 76
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.238186
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.470387
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 30.586487
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.0683
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.300499
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 72
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.43982
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.672018
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 31.904219
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.15383
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 66
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.50213
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.635647
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 32.98975
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 59
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.23356
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.355465
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.703762
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 33.953377
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 34.069477
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 66
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 34.435192
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 34.905396
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.15501
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.38721
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 57
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.50331
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 59
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 35.869022
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 62
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.101223
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.350838
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.472744
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 66
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 36.838455
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 64
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.070656
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.186756
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 67
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.55247
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.78467
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 76
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 37.906574
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 74
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 38.15619
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 69
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 38.27229
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 71
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    visible: 1
+    color: {r: 0.9150943, g: 0.31510323, b: 0.31510323, a: 1}
+  needlePosition: 25.589
+  timelineScroll: 403.3906
+  timelineZoom: 2.593742
+  snapToBPM: 0
