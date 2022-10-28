@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         UI._loadScene -= LoadScene;
         UI._resetLevel -= RestartCurrentLevel;
     }
-    void LoadScene(Type.GameState gameState)
+    void LoadScene(Types.GameState gameState)
     {
         SceneManager.LoadScene((int) gameState);
     }

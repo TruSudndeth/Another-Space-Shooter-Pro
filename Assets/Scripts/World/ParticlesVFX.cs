@@ -5,10 +5,10 @@ using UnityEngine;
 public class ParticlesVFX : MonoBehaviour
 {
     //create an explosion delegate 
-    public delegate void Explosion(Transform _transform, Type.VFX _vfx);
+    public delegate void Explosion(Transform _transform, Types.VFX _vfx);
     public static Explosion OneShotExplosion;
     
-    [SerializeField] private Type.VFX vfxType;
+    [SerializeField] private Types.VFX vfxType;
     public void PlayVFX()
     {
         OneShotExplosion?.Invoke(transform, vfxType);

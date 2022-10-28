@@ -15,7 +15,7 @@ public class PlayerInput : MonoBehaviour
     public static PlayerHealth UpdateHealth;
     public int Health { get { return _health; } set { Damage(value); } }
     [Space]
-    [SerializeField] private Type.SFX _playerDeath;
+    [SerializeField] private Types.SFX _playerDeath;
     private int _playerScore = 0;
     [SerializeField] private float _interPoMoveSpeed = 2.0f;
     [SerializeField] private float _bankSpeed = 10.0f;
@@ -144,7 +144,7 @@ public class PlayerInput : MonoBehaviour
     }
     public void ShieldActive()
     {
-        AudioManager.Instance.PlayAudioOneShot(Type.SFX.ShieldOn);
+        AudioManager.Instance.PlayAudioOneShot(Types.SFX.ShieldOn);
         _shieldTime = Time.time;
         _shield.gameObject.SetActive(true);
         _isShieldActive = true;
@@ -153,7 +153,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (_isShieldActive)
         {
-            AudioManager.Instance.PlayAudioOneShot(Type.SFX.ShieldOff);
+            AudioManager.Instance.PlayAudioOneShot(Types.SFX.ShieldOff);
             _shield.gameObject.SetActive(false);
             _isShieldActive = false;
             return;
@@ -174,7 +174,7 @@ public class PlayerInput : MonoBehaviour
         {
             if(TryGetComponent(out ParticlesVFX _explode))
             {
-                AudioManager.Instance.PlayAudioOneShot(Type.SFX.PlayerDeath);
+                AudioManager.Instance.PlayAudioOneShot(Types.SFX.PlayerDeath);
                 _explode.PlayVFX();
             }
             gameObject.SetActive(false);
@@ -193,7 +193,7 @@ public class PlayerInput : MonoBehaviour
             {
                 if (tripleShotIndex > 2) break; //Logic Breaks the max pool (Must Fix)
                 _lasers.Add(Instantiate(_laserAsset, _tripleShot[tripleShotIndex].position + _offset, Quaternion.identity, _laserPool));
-                AudioManager.Instance.PlayAudioOneShot(Type.SFX.Laser);
+                AudioManager.Instance.PlayAudioOneShot(Types.SFX.Laser);
 
                 _iterateLaser++;
                 if (_iterateLaser == _maxPool)
@@ -221,7 +221,7 @@ public class PlayerInput : MonoBehaviour
                     if (tripleShotIndex > 2) break;
                     _lasers[i].gameObject.SetActive(true);
                     _lasers[i].position = _tripleShot[tripleShotIndex].position + _offset;
-                    AudioManager.Instance.PlayAudioOneShot(Type.SFX.Laser);
+                    AudioManager.Instance.PlayAudioOneShot(Types.SFX.Laser);
                     if (_isTrippleShot)
                     {
                         tripleShotIndex++;

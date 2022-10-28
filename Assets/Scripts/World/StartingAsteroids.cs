@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class StartingAsteroids : MonoBehaviour
 {
-    [SerializeField] private Type.SFX _sfxType;
+    [SerializeField] private Types.SFX _sfxType;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Type.CollisionTags.Player.ToString()))
+        if (other.CompareTag(Types.CollisionTags.Player.ToString()))
         {
             if(other.TryGetComponent(out PlayerInput playerInput))
             {
@@ -15,7 +15,7 @@ public class StartingAsteroids : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        else if (other.CompareTag(Type.CollisionTags.Laser.ToString()))
+        else if (other.CompareTag(Types.CollisionTags.Laser.ToString()))
         {
             other.gameObject.SetActive(false);
             Destroy(gameObject);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PowerUpBehavior : MonoBehaviour
 {
-    [SerializeField] private Type.PowerUps _powerUpType;
+    [SerializeField] private Types.PowerUps _powerUpType;
     [Space]
     [SerializeField] private float _speed = 3.0f;
     private float _cameraAspecRatio = 1.7777778f;
@@ -27,21 +27,21 @@ public class PowerUpBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(Type.CollisionTags.Player.ToString()))
+        if(other.CompareTag(Types.CollisionTags.Player.ToString()))
         {
             if(other.TryGetComponent(out PlayerInput playerIO))
             {
                 switch(_powerUpType)
                 {
-                    case Type.PowerUps.Tripple:
+                    case Types.PowerUps.Tripple:
                         playerIO.TripleShotActive();
                         gameObject.SetActive(false);
                         break;
-                    case Type.PowerUps.Shield:
+                    case Types.PowerUps.Shield:
                         playerIO.ShieldActive();
                         gameObject.SetActive(false);
                         break;
-                    case Type.PowerUps.Speed:
+                    case Types.PowerUps.Speed:
                         playerIO.SpeedBoost();
                         gameObject.SetActive(false);
                         break;
@@ -49,7 +49,7 @@ public class PowerUpBehavior : MonoBehaviour
                         Debug.Log(transform + "Power Up type not set");
                         break;
                 }
-                AudioManager.Instance.PlayAudioOneShot(Type.SFX.PickUp);
+                AudioManager.Instance.PlayAudioOneShot(Types.SFX.PickUp);
             }
         }
     }

@@ -15,7 +15,7 @@ public class ParticlesVFXManager : MonoBehaviour
         ParticlesVFX.OneShotExplosion += PlayOneShotExplosion;
     }
 
-    private void PlayOneShotExplosion(Transform unitsTransform, Type.VFX unitVFXType)
+    private void PlayOneShotExplosion(Transform unitsTransform, Types.VFX unitVFXType)
     {
         if (_particleExplode.Count > 0) //Initial
         {
@@ -42,21 +42,21 @@ public class ParticlesVFXManager : MonoBehaviour
         }
     }
 
-    private GameObject CheckExplosionList(Type.VFX _vfx)
+    private GameObject CheckExplosionList(Types.VFX _vfx)
     {
         int explosionType;
         switch (_vfx)
         {
-            case Type.VFX.PlayerDeath:
+            case Types.VFX.PlayerDeath:
                 explosionType = 0;
                 break;
-            case Type.VFX.EnemyDeath:
+            case Types.VFX.EnemyDeath:
                 explosionType = 1;
                 break;
-            case Type.VFX.MiniBossDeath:
+            case Types.VFX.MiniBossDeath:
                 explosionType = 2;
                 break;
-            case Type.VFX.BossDeath:
+            case Types.VFX.BossDeath:
                 explosionType = 3;
                 break;
             default:

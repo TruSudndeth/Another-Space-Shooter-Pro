@@ -14,7 +14,7 @@ public class AudioManager : MonoBehaviour
     private List<DisableOnComplete> _clipPool;
     private int _poolMax = 10;
     [Space]
-    private Type.SFX _sfx;
+    private Types.SFX _sfx;
     private void Awake()
     {
         PopulateClipPool();
@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayAudioOneShot(Type.SFX sfx)
+    public void PlayAudioOneShot(Types.SFX sfx)
     {
         _sfx = sfx;
         if (_clipAssets.Count > 0)
@@ -54,47 +54,47 @@ public class AudioManager : MonoBehaviour
             _clipPool.LastOrDefault().PlayAudioOneShot(AssignAudioClip(sfx));
         }
     }
-    private AudioClip AssignAudioClip(Type.SFX sfx)
+    private AudioClip AssignAudioClip(Types.SFX sfx)
     {
         //Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4,
         //BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11
         int clip = 0;
         switch (sfx)
         {
-            case Type.SFX.Default:
+            case Types.SFX.Default:
                 clip = 0;
                 break;
-            case Type.SFX.PlayerDeath:
+            case Types.SFX.PlayerDeath:
                 clip = 1;
                 break;
-            case Type.SFX.EnemyDeath:
+            case Types.SFX.EnemyDeath:
                 clip = 2;
                 break;
-            case Type.SFX.AstroidDeath:
+            case Types.SFX.AstroidDeath:
                 clip = 3;
                 break;
-            case Type.SFX.MiniBossDeath:
+            case Types.SFX.MiniBossDeath:
                 clip = 4;
                 break;
-            case Type.SFX.BossDeath:
+            case Types.SFX.BossDeath:
                 clip = 5;
                 break;
-            case Type.SFX.Laser:
+            case Types.SFX.Laser:
                 clip = 6;
                 break;
-            case Type.SFX.Tripple:
+            case Types.SFX.Tripple:
                 clip = 7;
                 break;
-            case Type.SFX.ShieldOn:
+            case Types.SFX.ShieldOn:
                 clip = 8;
                 break;
-            case Type.SFX.ShieldOff:
+            case Types.SFX.ShieldOff:
                 clip = 9;
                 break;
-            case Type.SFX.SpeedBoost:
+            case Types.SFX.SpeedBoost:
                 clip = 10;
                 break;
-            case Type.SFX.PickUp:
+            case Types.SFX.PickUp:
                 clip = 11;
                 break;
         }

@@ -13,14 +13,14 @@ public class UI : MonoBehaviour
 {
     public delegate void Reset();
     public static Reset _resetLevel;
-    public delegate void LoadScene(Type.GameState index);
+    public delegate void LoadScene(Types.GameState index);
     public static LoadScene _loadScene;
         
     [Space]
     private UIDocument _UIDoc;
     [SerializeField] private VisualTreeAsset _mainMenu_UI;
     [SerializeField] private VisualTreeAsset _gamePlay_UI;
-    private Type.GameState _gameState; 
+    private Types.GameState _gameState; 
     private bool _isMainMenu = false;
 
     [Space]
@@ -92,7 +92,7 @@ public class UI : MonoBehaviour
     }
     private void LoadLevelOne()
     {
-        _gameState = Type.GameState.Level1;
+        _gameState = Types.GameState.Level1;
         _loadScene?.Invoke(_gameState);
     }
     private void AudioEnableDisable()

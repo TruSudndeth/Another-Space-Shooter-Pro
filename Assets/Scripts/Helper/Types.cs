@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Type
+public static class Types
 {
     public enum CollisionTags
     {
