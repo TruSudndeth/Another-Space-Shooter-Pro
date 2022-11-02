@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using JD.EditorAudioUtils;
 using Newtonsoft.Json;
+using Unity.EditorCoroutines.Editor;
+using Unity.SharpZipLib.Zip;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -18,9 +20,11 @@ namespace AssetInventory
 
     public static class AssetInventory
     {
-        public const string ToolVersion = "1.5.0";
-        public const string AssetStoreLink = "https://u3d.as/2Sy1";
-        public const int AssetStoreId = 226927;
+        public const string TOOL_VERSION = "1.6.0";
+        public const string ASSET_STORE_LINK = "https://u3d.as/2Sy1";
+        public const int ASSET_STORE_ID = 226927;
+        public static readonly bool DEBUG_MODE = false;
+
         public static readonly string[] ScanDependencies = {"prefab", "mat", "controller", "anim", "asset", "physicmaterial", "physicsmaterial", "sbs", "sbsar", "cubemap", "shadergraph", "shadersubgraph"};
 
         public static string CurrentMain { get; set; }
@@ -31,11 +35,12 @@ namespace AssetInventory
         public static event TagsChangedData OnTagsChanged;
         public static event ActionDone OnIndexingDone;
 
-        private const int AssetDetailsRefreshThreshold = 24 * 7;
-        private const int BreakInterval = 5;
-        private const int MaxDropdownItems = 25;
-        private const string ConfigName = "AssetInventoryConfig.json";
-        private const string AssetStoreFolderName = "Asset Store-5.x";
+        private const string TEMP_FOLDER = "_AssetInventoryTemp";
+        private const int ASSET_DETAILS_REFRESH_THRESHOLD = 24 * 7;
+        private const int BREAK_INTERVAL = 5;
+        private const int MAX_DROPDOWN_ITEMS = 25;
+        private const string CONFIG_NAME = "AssetInventoryConfig.json";
+        private const string ASSET_STORE_FOLDER_NAME = "Asset Store-5.x";
         private static readonly Regex FileGuid = new Regex("guid: (?:([a-z0-9]*))");
 
         private static IEnumerable<TagInfo> Tags
@@ -95,10 +100,10 @@ namespace AssetInventory
         private static string GetConfigLocation()
         {
             // search for local project-specific override first
-            string guid = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(ConfigName)).FirstOrDefault();
+            string guid = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(CONFIG_NAME)).FirstOrDefault();
             if (guid != null) return AssetDatabase.GUIDToAssetPath(guid);
 
-            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), ConfigName);
+            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), CONFIG_NAME);
         }
 
         public static string GetPreviewFolder(string customFolder = null)
@@ -128,6 +133,11 @@ namespace AssetInventory
         public static async Task<string> ExtractAsset(Asset asset)
         {
             if (string.IsNullOrEmpty(asset.Location)) return null;
+            if (!File.Exists(asset.Location))
+            {
+                Debug.LogError($"Asset has vanished since last refresh and cannot be indexed: {asset.Location}");
+                return null;
+            }
 
             string tempPath = GetMaterializedAssetPath(asset);
             int retries = 0;
@@ -144,9 +154,17 @@ namespace AssetInventory
                     await Task.Delay(500);
                 }
             }
-            if (Directory.Exists(tempPath)) Debug.LogWarning("Could not remove temporary directory: " + tempPath);
+            if (Directory.Exists(tempPath)) Debug.LogWarning($"Could not remove temporary directory: {tempPath}");
 
-            await Task.Run(() => TarUtil.ExtractGz(asset.Location, tempPath));
+            if (asset.AssetSource == Asset.Source.Archive)
+            {
+                FastZip fastZip = new FastZip();
+                await Task.Run(() => fastZip.ExtractZip(asset.Location, tempPath, null));
+            }
+            else
+            {
+                await Task.Run(() => TarUtil.ExtractGz(asset.Location, tempPath));
+            }
 
             return Directory.Exists(tempPath) ? tempPath : null;
         }
@@ -205,10 +223,19 @@ namespace AssetInventory
             string targetPath = await EnsureMaterializedAsset(assetInfo.ToAsset(), assetInfo);
             if (targetPath == null) return;
 
-            assetInfo.Dependencies = await Task.Run(() => DoCalculateDependencies(assetInfo, targetPath));
+            assetInfo.Dependencies = await DoCalculateDependencies(assetInfo, targetPath);
             assetInfo.DependencySize = assetInfo.Dependencies.Sum(af => af.Size);
             assetInfo.MediaDependencies = assetInfo.Dependencies.Where(af => af.Type != "cs").ToList();
             assetInfo.ScriptDependencies = assetInfo.Dependencies.Where(af => af.Type == "cs").ToList();
+
+            // clean-up again on-demand
+            string tempDir = Path.Combine(Application.dataPath, TEMP_FOLDER);
+            if (Directory.Exists(tempDir))
+            {
+                await IOUtils.DeleteFileOrDirectory(tempDir);
+                await IOUtils.DeleteFileOrDirectory(tempDir + ".meta");
+                AssetDatabase.Refresh();
+            }
         }
 
         private static async Task<List<AssetFile>> DoCalculateDependencies(AssetInfo assetInfo, string path)
@@ -219,11 +246,23 @@ namespace AssetInventory
             if (!ScanDependencies.Contains(Path.GetExtension(path).Replace(".", string.Empty))) return result;
 
             string content = File.ReadAllText(path);
-            // TODO: handle binary serialized files, e.g. prefabs
             if (!content.StartsWith("%YAML"))
             {
-                assetInfo.DependencyState = AssetInfo.DependencyStateOptions.NotPossible;
-                return result;
+                // reserialize prefabs on-the-fly by copying them over which will cause Unity to change the encoding upon refresh
+                // this will not work but throw missing script errors instead if there are any attached
+                string targetDir = Path.Combine(Application.dataPath, TEMP_FOLDER);
+                if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
+
+                string targetFile = Path.Combine("Assets", TEMP_FOLDER, Path.GetFileName(path));
+                File.Copy(path, targetFile);
+                AssetDatabase.Refresh();
+                content = File.ReadAllText(targetFile);
+
+                if (!content.StartsWith("%YAML"))
+                {
+                    assetInfo.DependencyState = AssetInfo.DependencyStateOptions.NotPossible;
+                    return result;
+                }
             }
             MatchCollection matches = FileGuid.Matches(content);
 
@@ -249,7 +288,7 @@ namespace AssetInventory
                     continue;
                 }
 
-                result.AddRange(await Task.Run(() => DoCalculateDependencies(assetInfo, targetPath)));
+                result.AddRange(await DoCalculateDependencies(assetInfo, targetPath));
             }
 
             return result;
@@ -278,7 +317,7 @@ namespace AssetInventory
 
         public static string[] ExtractAssetNames(IEnumerable<AssetInfo> assets)
         {
-            bool intoSubmenu = Config.groupLists && assets.Count(a => a.FileCount > 0) > MaxDropdownItems;
+            bool intoSubmenu = Config.groupLists && assets.Count(a => a.FileCount > 0) > MAX_DROPDOWN_ITEMS;
             List<string> result = new List<string> {"-all-", string.Empty};
             result.AddRange(assets
                 .Where(a => !a.Exclude)
@@ -289,7 +328,7 @@ namespace AssetInventory
             if (result.Count == 2) result.RemoveAt(1);
 
             // move -none- to top
-            int noneIdx = result.FindIndex(a => a == Asset.None);
+            int noneIdx = result.FindIndex(a => a == Asset.NONE);
             if (noneIdx >= 0)
             {
                 string tmp = result[noneIdx];
@@ -304,7 +343,7 @@ namespace AssetInventory
 
         public static string[] ExtractTagNames(List<Tag> tags)
         {
-            bool intoSubmenu = Config.groupLists && tags.Count > MaxDropdownItems;
+            bool intoSubmenu = Config.groupLists && tags.Count > MAX_DROPDOWN_ITEMS;
             List<string> result = new List<string> {"-all-", string.Empty};
             result.AddRange(tags
                 .Select(a => intoSubmenu && !a.Name.StartsWith("-") ? a.Name.Substring(0, 1).ToUpperInvariant() + "/" + a.Name : a.Name)
@@ -317,7 +356,7 @@ namespace AssetInventory
 
         public static string[] ExtractPublisherNames(IEnumerable<AssetInfo> assets)
         {
-            bool intoSubmenu = Config.groupLists && assets.Count(a => a.FileCount > 0) > MaxDropdownItems; // approximation, publishers != assets but roughly the same
+            bool intoSubmenu = Config.groupLists && assets.Count(a => a.FileCount > 0) > MAX_DROPDOWN_ITEMS; // approximation, publishers != assets but roughly the same
             List<string> result = new List<string> {"-all-", string.Empty};
             result.AddRange(assets
                 .Where(a => !a.Exclude)
@@ -456,7 +495,7 @@ namespace AssetInventory
                     case 0:
                         if (assetId == 0)
                         {
-                            bool hasAssetStoreLayout = Path.GetFileName(spec.location) == AssetStoreFolderName;
+                            bool hasAssetStoreLayout = Path.GetFileName(spec.location) == ASSET_STORE_FOLDER_NAME;
                             await new UnityPackageImporter().IndexRough(spec.location, hasAssetStoreLayout, force);
                         }
                         await new UnityPackageImporter().IndexDetails(assetId);
@@ -466,13 +505,25 @@ namespace AssetInventory
                         if (assetId == 0) await new MediaImporter().Index(spec);
                         break;
 
+                    case 2:
+                        if (assetId == 0) await new ZipImporter().Index(spec);
+                        break;
+
                     default:
                         Debug.LogError($"Unsupported folder scan type: {spec.folderType}");
                         break;
                 }
             }
 
-            // pass 3: backup
+            // pass 3: index colors
+            if (Config.extractColors && assetId == 0)
+            {
+                AssertProgress.Running = true;
+                EditorCoroutineUtility.StartCoroutineOwnerless(new ColorImporter().Index());
+                while (AssertProgress.Running) await Task.Delay(50);
+            }
+
+            // pass 4: backup
             if (Config.createBackups && assetId == 0)
             {
                 AssetBackup backup = new AssetBackup();
@@ -486,13 +537,13 @@ namespace AssetInventory
         public static string GetAssetDownloadPath()
         {
 #if UNITY_EDITOR_WIN
-            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Unity", AssetStoreFolderName);
+            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Unity", ASSET_STORE_FOLDER_NAME);
 #endif
 #if UNITY_EDITOR_OSX
-            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Library", "Unity", AssetStoreFolderName);
+            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Library", "Unity", ASSET_STORE_FOLDER_NAME);
 #endif
 #if UNITY_EDITOR_LINUX
-            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".local/share/unity3d", AssetStoreFolderName);
+            return IOUtils.PathCombine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".local/share/unity3d", ASSET_STORE_FOLDER_NAME);
 #endif
         }
 
@@ -538,15 +589,15 @@ namespace AssetInventory
                 }
                 DBAdapter.DB.UpdateAll(assetFiles);
             }
-            else if (dbVersion.Value == "2")
+            else if (dbVersion.Value == "2" || dbVersion.Value == "3")
             {
                 // force re-fetching of asset details to get state
-                DBAdapter.DB.Execute("update Asset set ETag=null");
+                DBAdapter.DB.Execute("update Asset set ETag=null, LastOnlineRefresh=0");
             }
 
-            if (dbVersion?.Value != "3")
+            if (dbVersion?.Value != "4")
             {
-                AppProperty newVersion = new AppProperty("Version", "3");
+                AppProperty newVersion = new AppProperty("Version", "4");
                 DBAdapter.DB.InsertOrReplace(newVersion);
             }
         }
@@ -610,44 +661,50 @@ namespace AssetInventory
             {
                 MainProgress = i + 1;
                 MetaProgress.Report(progressId, i + 1, MainCount, string.Empty);
-                if (i % BreakInterval == 0) await Task.Yield(); // let editor breath
+                if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath
                 if (AssetStore.CancellationRequested) break;
 
                 AssetPurchase purchase = assets.results[i];
 
-                Asset asset = DBAdapter.DB.Find<Asset>(a => a.ForeignId == purchase.packageId);
-                if (asset == null)
+                // update all known assets with that foreignId to support updating duplicate assets as well 
+                List<Asset> existingAssets = DBAdapter.DB.Table<Asset>().Where(a => a.ForeignId == purchase.packageId).ToList();
+                if (existingAssets.Count == 0)
                 {
-                    // some assets actually differ in tiny capitalization aspects, e.g. Early Prototyping Material kit
-                    asset = DBAdapter.DB.Find<Asset>(a => a.SafeName.ToLower() == purchase.CalculatedSafeName.ToLower());
+                    // create new asset on-demand
+                    Asset asset = purchase.ToAsset();
+                    asset.SafeName = purchase.CalculatedSafeName;
+                    if (Config.excludeByDefault) asset.Exclude = true;
+                    DBAdapter.DB.Insert(asset);
+                    existingAssets.Add(asset);
                 }
 
-                // check if indeed same package or copy/new version of another, e.g. Buttons Switches and Toggles
-                if (asset != null && asset.ForeignId != purchase.packageId && asset.ForeignId > 0) asset = null;
-
-                // temporarily store guessed safe name to ensure locally indexed files are mapped correctly
-                // will be overridden in detail run
-                if (asset != null)
+                for (int i2 = 0; i2 < existingAssets.Count; i2++)
                 {
+                    Asset asset = existingAssets[i2];
+
+                    // temporarily store guessed safe name to ensure locally indexed files are mapped correctly
+                    // will be overridden in detail run
                     asset.AssetSource = Asset.Source.AssetStorePackage;
                     asset.DisplayName = purchase.displayName.Trim();
                     asset.ForeignId = purchase.packageId;
                     if (string.IsNullOrEmpty(asset.SafeName)) asset.SafeName = purchase.CalculatedSafeName;
-                    DBAdapter.DB.Update(asset);
-                }
-                else
-                {
-                    asset = purchase.ToAsset();
-                    asset.SafeName = purchase.CalculatedSafeName;
-                    DBAdapter.DB.Insert(asset);
-                }
 
-                // handle tags
-                if (purchase.tagging != null)
-                {
-                    foreach (string tag in purchase.tagging)
+                    // override data with local truth in case header information exists
+                    if (File.Exists(asset.Location))
                     {
-                        if (AddTagAssignment(asset.Id, tag, TagAssignment.Target.Package, true)) tagsChanged = true;
+                        AssetHeader header = UnityPackageImporter.ReadHeader(asset.Location);
+                        UnityPackageImporter.ApplyHeader(header, asset);
+                    }
+
+                    DBAdapter.DB.Update(asset);
+
+                    // handle tags
+                    if (purchase.tagging != null)
+                    {
+                        foreach (string tag in purchase.tagging)
+                        {
+                            if (AddTagAssignment(asset.Id, tag, TagAssignment.Target.Package, true)) tagsChanged = true;
+                        }
                     }
                 }
             }
@@ -666,9 +723,10 @@ namespace AssetInventory
 
         public static async Task FetchAssetsDetails()
         {
-            List<AssetInfo> assets = LoadAssets()
+            List<Asset> assets = DBAdapter.DB.Table<Asset>()
                 .Where(a => a.ForeignId > 0)
-                .Where(a => (DateTime.Now - a.LastOnlineRefresh).TotalHours > AssetDetailsRefreshThreshold)
+                .ToList()
+                .Where(a => (DateTime.Now - a.LastOnlineRefresh).TotalHours > ASSET_DETAILS_REFRESH_THRESHOLD)
                 .ToList();
 
             CurrentMain = "Phase 3/3: Updating package details";
@@ -678,22 +736,15 @@ namespace AssetInventory
 
             for (int i = 0; i < MainCount; i++)
             {
-                int id = assets[i].ForeignId;
-                if (id <= 0) continue;
+                Asset asset = assets[i];
+                int id = asset.ForeignId;
 
                 MainProgress = i + 1;
                 MetaProgress.Report(progressId, i + 1, MainCount, string.Empty);
-                if (i % BreakInterval == 0) await Task.Yield(); // let editor breath
+                if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath
                 if (AssetStore.CancellationRequested) break;
 
-                Asset asset = DBAdapter.DB.Find<Asset>(a => a.ForeignId == id);
-                if (asset == null)
-                {
-                    Debug.LogWarning($"Formerly saved package '{assets[i].DisplayName}' disappeared.");
-                    continue;
-                }
-
-                AssetDetails details = await AssetStore.RetrieveAssetDetails(id, assets[i].ETag);
+                AssetDetails details = await AssetStore.RetrieveAssetDetails(id, asset.ETag);
                 if (details == null) // happens if unchanged through etag
                 {
                     asset.LastOnlineRefresh = DateTime.Now;
@@ -703,12 +754,12 @@ namespace AssetInventory
 
                 // check if disabled, then download links are not available anymore, deprecated would still work
                 DownloadInfo downloadDetails = null;
-                if (assets[i].AssetSource == Asset.Source.AssetStorePackage && details.state != "disabled")
+                if (asset.AssetSource == Asset.Source.AssetStorePackage && details.state != "disabled")
                 {
                     downloadDetails = await AssetStore.RetrieveAssetDownloadInfo(id);
                     if (downloadDetails == null || string.IsNullOrEmpty(downloadDetails.filename_safe_package_name))
                     {
-                        Debug.Log($"Could not fetch download detail information for '{assets[i].SafeName}'");
+                        Debug.Log($"Could not fetch download detail information for '{asset.SafeName}'");
                         continue;
                     }
                 }
@@ -716,36 +767,12 @@ namespace AssetInventory
                 // reload asset to ensure working on latest copy, otherwise might loose package size information
                 if (downloadDetails != null)
                 {
-                    // check if any of the items were changed or renamed, then the entry in the local cache would be outdated
-                    bool storageLocationChanged = false;
-                    if (!string.IsNullOrEmpty(asset.SafeName) && asset.SafeName != downloadDetails.filename_safe_package_name) storageLocationChanged = true;
-                    if (!string.IsNullOrEmpty(asset.SafeCategory) && asset.SafeCategory != downloadDetails.filename_safe_category_name) storageLocationChanged = true;
-                    if (!string.IsNullOrEmpty(asset.SafePublisher) && asset.SafePublisher != downloadDetails.filename_safe_publisher_name) storageLocationChanged = true;
-
-                    if (storageLocationChanged)
-                    {
-                        Debug.Log($"{asset} in Asset Store Cache folder seems outdated since asset metadata got renamed. Splitting it into two entries (old and new)." +
-                                  $"\n\nName: {asset.SafeName} -> {downloadDetails.filename_safe_package_name}" +
-                                  $"\nCategory: {asset.SafeCategory} -> {downloadDetails.filename_safe_category_name}" +
-                                  $"\nPublisher: {asset.SafePublisher} -> {downloadDetails.filename_safe_publisher_name}");
-
-                        // remove asset store link from old item
-                        asset.ForeignId = 0;
-                        DBAdapter.DB.Update(asset);
-
-                        // split this item off and save new
-                        asset.ForeignId = id;
-                        asset.Id = 0;
-                        asset.PackageSize = 0;
-                        asset.Location = null;
-                        DBAdapter.DB.Insert(asset);
-                    }
-
                     asset.SafeName = downloadDetails.filename_safe_package_name;
                     asset.SafeCategory = downloadDetails.filename_safe_category_name;
                     asset.SafePublisher = downloadDetails.filename_safe_publisher_name;
                     asset.OriginalLocation = downloadDetails.url;
                     asset.OriginalLocationKey = downloadDetails.key;
+                    if (!string.IsNullOrEmpty(asset.Location) && asset.GetCalculatedLocation() != asset.Location) asset.CurrentSubState = Asset.SubState.Outdated;
                 }
                 asset.LastOnlineRefresh = DateTime.Now;
                 asset.OfficialState = details.state;
@@ -784,8 +811,15 @@ namespace AssetInventory
                     }
                 }
 
+                // override data with local truth in case header information exists
+                if (File.Exists(asset.Location))
+                {
+                    AssetHeader header = UnityPackageImporter.ReadHeader(asset.Location);
+                    UnityPackageImporter.ApplyHeader(header, asset);
+                }
+
                 DBAdapter.DB.Update(asset);
-                await Task.Delay(Random.Range(500, 1500)); // don't flood server
+                await Task.Delay(Random.Range(50, 1000)); // don't flood server
             }
 
             CurrentMain = null;
@@ -925,7 +959,7 @@ namespace AssetInventory
             Init();
         }
 
-        public static Asset ForgetAsset(AssetInfo info)
+        public static Asset ForgetAsset(AssetInfo info, bool removeExclusion = false)
         {
             DBAdapter.DB.Execute("delete from AssetFile where AssetId=?", info.AssetId);
 
@@ -938,6 +972,11 @@ namespace AssetInventory
             info.LastOnlineRefresh = DateTime.MinValue;
             existing.ETag = null;
             info.ETag = null;
+            if (removeExclusion)
+            {
+                existing.Exclude = false;
+                info.Exclude = false;
+            }
 
             DBAdapter.DB.Update(existing);
 
@@ -950,7 +989,7 @@ namespace AssetInventory
             {
                 if (File.Exists(info.Location)) File.Delete(info.Location);
                 if (Directory.Exists(info.Location)) Directory.Delete(info.Location, true);
-                // TODO: delete preview images as well
+                // TODO : delete preview images as well
             }
             Asset existing = ForgetAsset(info);
             if (existing == null) return;
@@ -1044,7 +1083,7 @@ namespace AssetInventory
             asset.PreferredVersion = version;
             info.PreferredVersion = version;
 
-            // TODO: update minimal Unity version
+            // TODO : update minimal Unity version
 
             DBAdapter.DB.Update(asset);
         }
@@ -1194,10 +1233,10 @@ namespace AssetInventory
 
                 PreviewGenerator.RegisterPreviewRequest(af.Id, sourcePath, previewFile, req =>
                 {
-                    AssetFile paf = DBAdapter.DB.Find<AssetFile>(req.ID);
+                    AssetFile paf = DBAdapter.DB.Find<AssetFile>(req.Id);
                     if (paf == null) return;
 
-                    // TODO: deduplicate
+                    // TODO : deduplicate
                     if (req.Obj is Texture2D tex)
                     {
                         paf.Width = tex.width;
@@ -1209,6 +1248,9 @@ namespace AssetInventory
                     }
                     if (File.Exists(req.DestinationFile)) paf.PreviewFile = Path.GetFileName(previewFile);
                     paf.PreviewState = AssetFile.PreviewOptions.Custom;
+                    paf.DominantColor = null;
+                    paf.DominantColorGroup = null;
+
                     DBAdapter.DB.Update(paf);
                 });
                 if (PreviewGenerator.ActiveRequestCount() > 100) await PreviewGenerator.ExportPreviews(10);
@@ -1258,6 +1300,33 @@ namespace AssetInventory
             }
 
             DBAdapter.DB.Update(existing);
+        }
+
+        public static string CreateDebugReport()
+        {
+            string result = "Debug Support Report\n";
+            result += $"\nDate: {DateTime.Now}";
+            result += $"\nVersion: {TOOL_VERSION}";
+            result += $"\nUnity: {Application.unityVersion}";
+            result += $"\nPlatform: {Application.platform}";
+            result += $"\nOS: {Environment.OSVersion}";
+            result += $"\nLanguage: {Application.systemLanguage}";
+
+            List<AssetInfo> assets = LoadAssets();
+            result += $"\n\n{assets.Count} Packages";
+            foreach (AssetInfo asset in assets)
+            {
+                result += $"\n{asset} ({asset.SafeName}) - {asset.AssetSource} - {asset.Version}";
+            }
+
+            List<Tag> tags = LoadTags();
+            result += $"\n\n{tags.Count} Tags";
+            foreach (Tag tag in tags)
+            {
+                result += $"\n{tag}";
+            }
+
+            return result;
         }
     }
 }

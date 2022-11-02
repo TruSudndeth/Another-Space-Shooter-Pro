@@ -9,10 +9,12 @@
         public static int SubCount { get; protected set; }
         public static int SubProgress { get; protected set; }
         public static bool CancellationRequested { get; set; }
+        public static bool Running { get; set; }
         public static Cooldown Cooldown;
 
-        protected void ResetState()
+        protected void ResetState(bool done)
         {
+            Running = !done;
             CurrentMain = null;
             CurrentSub = null;
             MainCount = 0;

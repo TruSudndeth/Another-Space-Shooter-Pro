@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
@@ -15,24 +17,31 @@ public class EnemySpawnManager : MonoBehaviour
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private int _maxPool = 10;
-    [SerializeField] private float _spawnRate = 0.5f;
+    private int _maxPoolTemp = 0;
+    [SerializeField] private float _spawnRate = 0.5f; //Temp: Timmer might delete variable timmer
     private bool _isPoolMaxed = false;
-    private float _canSpawn = 0;
+    private float _canSpawn = 0; //Temp: Timmer might delete variable Timmer
     private float _offset = 0;
     private int _iterateEnemy = 0;
     private bool _gameOver = false;
     private bool _gameStarted = false;
+    [Space]
+    private bool _beatEnemySpawner = false;
+    private int _difficulty = 1;
 
 
     private void Awake()
     {
-        //_maxPool = _enemyAsset.Count * 10;
+        _maxPool = _enemyAsset.Count * 10; //Note: EnemySpawnManager Enemy count hard coded to 10*Count
+        _maxPoolTemp = _maxPool;
         _enemies = new(_maxPool);
         _enemyCount = _enemyAsset.Count;
     }
 
     void Start()
     {
+        StartGameAsteroids._difficulty += () => GameDificulty();
+        BackGroundMusic_Events._BGM_events += () => { _beatEnemySpawner = true; };
         StartGameAsteroids._startGame += GameStarted;
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
@@ -40,17 +49,32 @@ public class EnemySpawnManager : MonoBehaviour
         PlayerInput.gameOver += PlayerIsDead;
     }
     
+    private void GameDificulty()
+    {
+        _difficulty++;
+        _maxPoolTemp = _maxPool * _difficulty;
+    }
+    
     private void GameStarted()
     {
+        _maxPool = _maxPoolTemp;
         _gameStarted = true;
     }
 
     void FixedUpdate()
     {
         if (_gameOver || !_gameStarted) return;
-        if (_canSpawn + _spawnRate > Time.time) return;
-        _canSpawn = Time.time;
-        SpawnSystem();
+        //Temp: Timmer might not have to spawn enemies with time 
+        //Temp: Timmer if (_canSpawn + _spawnRate > Time.time) return;
+        //Note: Spawn manager was stopped during game play for a brif moment
+        if(_beatEnemySpawner)
+        {
+            SpawnSystem();
+            if (_difficulty > 1 && Random.Range(0, 100) < 50) SpawnSystem(); //Note: Hard coded Randoms 001
+            if (_difficulty > 2 && Random.Range(0, 100) < 80) SpawnSystem(); //Note: Hard coded Randoms 002
+            _beatEnemySpawner = false;
+        }
+        // Temp: Timmer delete line _canSpawn = Time.time;
     }
 
     private void SpawnSystem()
@@ -69,7 +93,7 @@ public class EnemySpawnManager : MonoBehaviour
             else if (_isPoolMaxed)
             {
                 //fire rate must not surpass laser pool check if object is disabled before using.
-                //Lock rotations add recochet later
+                //Todo: Lock rotations add recochet later
                 for (int i = 0; i < _enemies.Count; i++)
                 {
                     if (!_enemies[i].gameObject.activeSelf)
@@ -90,6 +114,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     private Vector3 RandomEnemySpawn() // DebugIt Move this script to EnemySpawnManager
     {
+        //Todo: if eneymy already occupies space dont spawn there
         float _randomRandx = Random.Range(-(_xyBounds.x - _boundsOffset) * 1000, _xyBounds.x * 1000);
         _randomRandx *= 0.001f;
         return new Vector3(_randomRandx, _xyBounds.y, transform.position.z);
@@ -103,5 +128,6 @@ public class EnemySpawnManager : MonoBehaviour
     {
         PlayerInput.gameOver -= PlayerIsDead;
         StartGameAsteroids._startGame -= GameStarted;
+        BackGroundMusic_Events._BGM_events -= () => { _beatEnemySpawner = true; };
     }
 }

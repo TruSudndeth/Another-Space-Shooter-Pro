@@ -61,13 +61,13 @@ namespace AssetInventory
                         tag.Color = "#" + ColorUtility.ToHtmlStringRGB(EditorGUILayout.ColorField(GUIContent.none, tag.GetColor(), false, false, false, GUILayout.Width(20)));
                         if (EditorGUI.EndChangeCheck()) AssetInventory.SaveTag(tag);
                         EditorGUILayout.LabelField(new GUIContent(tag.Name, tag.FromAssetStore ? "From Asset Store" : "Local Tag"));
-                        if (GUILayout.Button(EditorGUIUtility.IconContent("editicon.sml", "Rename tag"), GUILayout.Width(30)))
+                        if (GUILayout.Button(EditorGUIUtility.IconContent("editicon.sml", "|Rename tag"), GUILayout.Width(30)))
                         {
                             NameUI nameUI = new NameUI();
                             nameUI.Init(tag.Name, newName => RenameTag(tag, newName));
                             PopupWindow.Show(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 0, 0), nameUI);
                         }
-                        if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Trash", "Remove tag completely"), GUILayout.Width(30)))
+                        if (GUILayout.Button(EditorGUIUtility.IconContent("TreeEditor.Trash", "|Remove tag completely"), GUILayout.Width(30)))
                         {
                             AssetInventory.DeleteTag(tag);
                         }
@@ -79,7 +79,7 @@ namespace AssetInventory
                     }
                     EditorGUILayout.Space();
                     EditorGUILayout.HelpBox("Temporary limitation: Actual tag colors will appear darker than selected here.", MessageType.Info);
-                    EditorGUILayout.Space();
+                    GUILayout.FlexibleSpace();
                     if (GUILayout.Button("Delete All")) _tags.ForEach(AssetInventory.DeleteTag);
                     GUILayout.EndScrollView();
                 }

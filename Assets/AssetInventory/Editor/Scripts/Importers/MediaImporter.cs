@@ -9,11 +9,11 @@ namespace AssetInventory
 {
     public sealed class MediaImporter : AssertImporter
     {
-        private const int BreakInterval = 30;
+        private const int BREAK_INTERVAL = 30;
 
         public async Task Index(FolderSpec spec, Asset attachedAsset = null, bool storeRelativePath = false, bool actAsSubImporter = false)
         {
-            if (!actAsSubImporter) ResetState();
+            if (!actAsSubImporter) ResetState(false);
 
             if (string.IsNullOrEmpty(spec.location)) return;
 
@@ -52,7 +52,7 @@ namespace AssetInventory
 
             if (attachedAsset == null)
             {
-                attachedAsset = DBAdapter.DB.Find<Asset>(a => a.SafeName == Asset.None);
+                attachedAsset = DBAdapter.DB.Find<Asset>(a => a.SafeName == Asset.NONE);
                 if (attachedAsset == null)
                 {
                     attachedAsset = Asset.GetNoAsset();
@@ -64,7 +64,7 @@ namespace AssetInventory
             for (int i = 0; i < files.Length; i++)
             {
                 if (CancellationRequested) break;
-                if (i % BreakInterval == 0) await Task.Yield(); // let editor breath in case many files are already indexed
+                if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath in case many files are already indexed
                 await Cooldown.Do();
 
                 string file = files[i];
@@ -105,7 +105,7 @@ namespace AssetInventory
                     PreviewGenerator.RegisterPreviewRequest(af.Id, af.SourcePath, previewFile, req =>
                     {
                         if (!File.Exists(req.DestinationFile)) return;
-                        AssetFile paf = DBAdapter.DB.Find<AssetFile>(req.ID);
+                        AssetFile paf = DBAdapter.DB.Find<AssetFile>(req.Id);
                         if (paf == null) return;
 
                         if (req.Obj != null)
@@ -122,10 +122,14 @@ namespace AssetInventory
                         }
 
                         paf.PreviewFile = Path.GetFileName(previewFile);
+                        paf.DominantColor = null;
+                        paf.DominantColorGroup = null;
+
                         Persist(paf);
                     });
 
                     // from time to time store the previews in case something goes wrong
+                    PreviewGenerator.EnsureProgress();
                     if (PreviewGenerator.ActiveRequestCount() > 100)
                     {
                         CurrentSub = "Generating preview images...";
@@ -140,7 +144,7 @@ namespace AssetInventory
                 PreviewGenerator.Clear();
             }
             MetaProgress.Remove(progressId);
-            if (!actAsSubImporter) ResetState();
+            if (!actAsSubImporter) ResetState(true);
         }
     }
 }

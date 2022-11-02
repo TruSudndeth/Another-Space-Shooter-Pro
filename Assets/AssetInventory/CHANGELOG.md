@@ -1,3 +1,45 @@
+## 1.6.0 (2022-11-02)
+- Support indexing zip archives!
+- Support determining dependencies of binary serialized files (but without scripts)!
+- Index colors & Search/Sort by color (default inactive as it takes a while to index)
+- Expert search with input validation and field picker
+- Support updating individual packages to newest version
+- Support bulk-updating individual packages to newest version (experimental)
+- Easy mode: Update everything in one go with only one button
+- New deduplication workflow
+- Treat storage location of packages as main differentiator
+- Support having the same package multiple times in multiple locations
+- Update metadata of all duplicate packages
+- Handle "outdated" calculation much better
+- Remove old asset splitting logic
+- More efficient and faster update of Asset Store metadata
+- Ability to open package in Package Manager
+- New maintenance view: "Duplicate" showing packages pointing to same Asset Store asset
+- New maintenance view: "Updates Available", with newest updates shown first
+- New maintenance view: Not Downloaded
+- Improve display of ratings (no empty stars)
+- New bulk action: Open Package Locations
+- Retry failed web requests one time (solves Curl error shown every now and then, error will still occur though)
+- Ensure local package header data is preferred to new online data to represent the actual indexed truth
+- Page through search results with arrow keys
+- Jump to first and last search result with page up/down
+- Show if a package is disabled/abandoned
+- Show update available info only if newer update is not yet downloaded in a duplicate asset
+- New setting to exclude newly added packages per default
+- Reinclude packages automatically when triggering manual reindexing of package
+- Optimize database maintenance command
+- Allow hiding search results without preview image
+- Rename long source url files to consistent short form
+- Allow creating a debug report for easier support
+- Hide Reindex button if it is not applicable
+- Fix incorrect version stored in duplicate bundles
+- Fix indexing failing if cached assets are deleted inbetween
+- Fix preview images sometimes not getting generated
+- Fix SemVer parsing errors in edge cases
+- Fix icons not displaying tooltips
+- Fix "goblin" bug: duplication of packages due to identical package filename
+- Fix end of package download not correctly updating package location data
+
 ## 1.5.0 (2022-10-17)
 - Allow adding tags to individual files!
 - Download assets into cache right without using the package manager!

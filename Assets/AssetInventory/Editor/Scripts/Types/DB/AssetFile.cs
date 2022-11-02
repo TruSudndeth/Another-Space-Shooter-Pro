@@ -23,6 +23,8 @@ namespace AssetInventory
         [Indexed] public string Type { get; set; }
         public string PreviewFile { get; set; }
         public PreviewOptions PreviewState { get; set; }
+        public string DominantColor { get; set; }
+        public string DominantColorGroup { get; set; }
         public long Size { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }

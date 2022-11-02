@@ -5,7 +5,7 @@ namespace AssetInventory
 {
     public static class DBAdapter
     {
-        public const string DBName = "AssetInventory.db";
+        public const string DB_NAME = "AssetInventory.db";
 
         public static SQLiteConnection DB
         {
@@ -33,9 +33,18 @@ namespace AssetInventory
             return new FileInfo(GetDBPath()).Length;
         }
 
+        public static long Compact()
+        {
+            long original = new FileInfo(GetDBPath()).Length;
+
+            DB.Execute("vacuum;");
+
+            return original - new FileInfo(GetDBPath()).Length;
+        }
+
         public static string GetDBPath()
         {
-            return IOUtils.PathCombine(AssetInventory.GetStorageFolder(), DBName);
+            return IOUtils.PathCombine(AssetInventory.GetStorageFolder(), DB_NAME);
         }
 
         public static bool IsDBOpen()

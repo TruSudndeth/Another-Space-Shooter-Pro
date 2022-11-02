@@ -10,8 +10,8 @@ namespace AssetInventory
 {
     internal sealed class AssetTreeViewControl : TreeViewWithTreeModel<AssetInfo>
     {
-        private const float RowHeight = 20f;
-        private const float ToggleWidth = 20f;
+        private const float ROW_HEIGHT = 20f;
+        private const float TOGGLE_WIDTH = 20f;
 
         private enum Columns
         {
@@ -23,12 +23,12 @@ namespace AssetInventory
 
         public AssetTreeViewControl(TreeViewState state, MultiColumnHeader multiColumnHeader, TreeModel<AssetInfo> model) : base(state, multiColumnHeader, model)
         {
-            rowHeight = RowHeight;
+            rowHeight = ROW_HEIGHT;
             columnIndexForTreeFoldouts = 0;
             showAlternatingRowBackgrounds = true;
             showBorder = true;
-            customFoldoutYOffset = (RowHeight - EditorGUIUtility.singleLineHeight) * 0.5f; // center foldout in the row since we also center content. See RowGUI
-            extraSpaceBeforeIconAndLabel = ToggleWidth;
+            customFoldoutYOffset = (ROW_HEIGHT - EditorGUIUtility.singleLineHeight) * 0.5f; // center foldout in the row since we also center content. See RowGUI
+            extraSpaceBeforeIconAndLabel = TOGGLE_WIDTH;
 
             Reload();
         }
@@ -75,10 +75,10 @@ namespace AssetInventory
                     GUIContent version = new GUIContent(item.Data.Version);
                     EditorGUI.LabelField(versionRect, version);
 
-                    if (item.Data.IsOutdated())
+                    if (item.Data.IsUpdateAvailable((List<AssetInfo>) TreeModel.GetData()))
                     {
                         Vector2 size = EditorStyles.label.CalcSize(version);
-                        Texture statusIcon = EditorGUIUtility.IconContent("Update-Available", "Update Available").image;
+                        Texture statusIcon = EditorGUIUtility.IconContent("Update-Available", "|Update Available").image;
                         Rect statusRect = cellRect;
                         statusRect.x += Mathf.Min(size.x, cellRect.width - 16);
                         statusRect.y += 1;
@@ -91,7 +91,7 @@ namespace AssetInventory
                 case Columns.Indexed:
                     if (item.Data.IsIndexed)
                     {
-                        Texture indexedIcon = EditorGUIUtility.IconContent("Installed", "Indexed").image;
+                        Texture indexedIcon = EditorGUIUtility.IconContent("Installed", "|Indexed").image;
                         Rect indexedRect = cellRect;
                         indexedRect.x += indexedRect.width / 2 - 8;
                         indexedRect.width = 16;
@@ -103,7 +103,7 @@ namespace AssetInventory
                 case Columns.Name:
                     Rect toggleRect = cellRect;
                     toggleRect.x += GetContentIndent(item);
-                    toggleRect.width = ToggleWidth - 3;
+                    toggleRect.width = TOGGLE_WIDTH - 3;
                     if (item.Data.Id > 0)
                     {
                         if (item.Data.PreviewTexture != null)
@@ -113,7 +113,7 @@ namespace AssetInventory
                     }
                     else
                     {
-                        Texture folderIcon = EditorGUIUtility.IconContent("Folder Icon", "Category").image;
+                        Texture folderIcon = EditorGUIUtility.IconContent("Folder Icon").image;
                         GUI.DrawTexture(toggleRect, folderIcon);
                     }
 

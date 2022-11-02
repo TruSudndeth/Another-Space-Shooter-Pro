@@ -10,7 +10,7 @@ namespace AssetInventory
 {
     public static class IOUtils
     {
-        public static async Task DeleteFile(string path, int retries = 3)
+        public static async Task DeleteFileOrDirectory(string path, int retries = 3)
         {
             while (retries >= 0)
             {

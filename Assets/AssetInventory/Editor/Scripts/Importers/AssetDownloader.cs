@@ -8,7 +8,7 @@ namespace AssetInventory
 {
     public sealed class AssetDownloader
     {
-        private const int StateCachePeriod = 1;
+        private const int STATE_CACHE_PERIOD = 1;
 
         public enum State
         {
@@ -45,7 +45,7 @@ namespace AssetInventory
 
         public AssetDownloadState GetState()
         {
-            if (_lastState != null && (DateTime.Now - _lastStateTime).Seconds < StateCachePeriod) return _lastState;
+            if (_lastState != null && (DateTime.Now - _lastStateTime).Seconds < STATE_CACHE_PERIOD) return _lastState;
 
             CheckState();
 
@@ -69,7 +69,7 @@ namespace AssetInventory
 
         private void CheckState()
         {
-            string targetFile = _asset.GetCalculatedLocation();
+            string targetFile = _asset.ToAsset().GetCalculatedLocation();
             if (targetFile == null)
             {
                 _state = State.Unknown;
@@ -98,7 +98,22 @@ namespace AssetInventory
                 return;
             }
 
-            _state = File.Exists(targetFile) ? (_asset.IsOutdated() ? State.UpdateAvailable : State.Downloaded) : State.Unavailable;
+            bool exists = File.Exists(targetFile);
+
+            // update database location once file is downloaded
+            if (exists && string.IsNullOrEmpty(_asset.Location))
+            {
+                _asset.Location = targetFile;
+                _asset.Refresh();
+
+                // work directly on db to make sure it's latest state
+                DBAdapter.DB.Execute("update Asset set Location=? where Id=?", targetFile, _asset.AssetId);
+                _state = State.Downloaded;
+                return;
+            }
+
+            exists = exists || (!string.IsNullOrEmpty(_asset.Location) && File.Exists(_asset.Location));
+            _state = exists ? (_asset.IsUpdateAvailable() ? State.UpdateAvailable : State.Downloaded) : State.Unavailable;
         }
 
         public void Download()

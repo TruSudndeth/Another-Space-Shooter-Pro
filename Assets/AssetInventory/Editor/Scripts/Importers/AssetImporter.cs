@@ -14,11 +14,39 @@ namespace AssetInventory
             {
                 return DBAdapter.DB.Find<Asset>(a => a.SafeName == asset.SafeName);
             }
+            if (asset.AssetSource == Asset.Source.Archive)
+            {
+                return DBAdapter.DB.Find<Asset>(a => a.Location == asset.Location);
+            }
 
             // return non-deprecated version first (deprecated < published in sorting)
-            return DBAdapter.DB.Table<Asset>()
-                .Where(a => a.SafeName == asset.SafeName && a.SafeCategory == asset.SafeCategory && a.SafePublisher == asset.SafePublisher)
-                .OrderBy(a => a.OfficialState).LastOrDefault();
+            // use location as main key
+            Asset result = null;
+            if (!string.IsNullOrEmpty(asset.Location))
+            {
+                result = DBAdapter.DB.Table<Asset>()
+                    .Where(a => a.Location == asset.Location)
+                    .OrderBy(a => a.OfficialState)
+                    .LastOrDefault();
+            }
+
+            if (result == null && asset.ForeignId > 0)
+            {
+                // use more specific data if available to differentiate between multi-version assets
+                result = DBAdapter.DB.Table<Asset>()
+                    .Where(a => a.ForeignId == asset.ForeignId && a.Location == asset.Location)
+                    .OrderBy(a => a.OfficialState)
+                    .LastOrDefault();
+            }
+
+            if (result == null)
+            {
+                result = DBAdapter.DB.Table<Asset>()
+                    .Where(a => a.SafeName == asset.SafeName && a.SafeCategory == asset.SafeCategory && a.SafePublisher == asset.SafePublisher)
+                    .OrderBy(a => a.OfficialState)
+                    .LastOrDefault();
+            }
+            return result;
         }
 
         protected bool Exists(AssetFile file)
@@ -47,18 +75,12 @@ namespace AssetInventory
                 return;
             }
 
-            Asset existing;
-            if (asset.AssetSource == Asset.Source.Package)
-            {
-                existing = DBAdapter.DB.Find<Asset>(a => a.SafeName == asset.SafeName);
-            }
-            else
-            {
-                existing = DBAdapter.DB.Find<Asset>(a => a.SafeName == asset.SafeName && a.SafeCategory == asset.SafeCategory && a.SafePublisher == asset.SafePublisher);
-            }
+            Asset existing = Fetch(asset);
             if (existing != null)
             {
                 asset.Id = existing.Id;
+                if (asset.ForeignId > 0) existing.ForeignId = asset.ForeignId;
+                existing.Version = asset.Version;
                 existing.SafeCategory = asset.SafeCategory;
                 existing.SafePublisher = asset.SafePublisher;
                 existing.CurrentState = asset.CurrentState;
@@ -142,6 +164,17 @@ namespace AssetInventory
                     Debug.LogWarning($"Audio file '{Path.GetFileName(file)}' from {af} seems to have incorrect format.");
                 }
             }
+        }
+
+        protected FolderSpec GetDefaultImportSpec()
+        {
+            return new FolderSpec
+            {
+                pattern = "*.*",
+                createPreviews = true,
+                folderType = 1,
+                scanFor = 6
+            };
         }
     }
 }

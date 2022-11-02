@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StartingAsteroids : MonoBehaviour
-{
+{    
     [SerializeField] private Types.SFX _sfxType;
     private void OnTriggerEnter(Collider other)
     {
@@ -11,6 +11,10 @@ public class StartingAsteroids : MonoBehaviour
         {
             if(other.TryGetComponent(out PlayerInput playerInput))
             {
+                if (transform.parent.TryGetComponent(out StartGameAsteroids startingGameAsteroids))
+                {
+                    startingGameAsteroids.SetDificulty();
+                }
                 playerInput.Health = 1;
             }
             Destroy(gameObject);

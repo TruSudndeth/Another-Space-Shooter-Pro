@@ -10,15 +10,15 @@ namespace AssetInventory
 {
     public static class PreviewGenerator
     {
-        private const string PreviewFolder = "_AssetInventoryPreviewsTemp";
-        private const int MinPreviewCacheSize = 200;
-        private const float PreviewTimeout = 20f;
-        private const int BreakInterval = 30;
+        private const string PREVIEW_FOLDER = "_AssetInventoryPreviewsTemp";
+        private const int MIN_PREVIEW_CACHE_SIZE = 200;
+        private const float PREVIEW_TIMEOUT = 20f;
+        private const int BREAK_INTERVAL = 30;
         private static readonly List<PreviewRequest> _requests = new List<PreviewRequest>();
 
         public static void Init(int expectedFileCount)
         {
-            AssetPreview.SetPreviewTextureCacheSize(Mathf.Max(MinPreviewCacheSize, expectedFileCount + 100));
+            AssetPreview.SetPreviewTextureCacheSize(Mathf.Max(MIN_PREVIEW_CACHE_SIZE, expectedFileCount + 100));
         }
 
         public static int ActiveRequestCount() => _requests.Count;
@@ -27,10 +27,10 @@ namespace AssetInventory
         {
             PreviewRequest request = new PreviewRequest
             {
-                ID = id, SourceFile = sourceFile, DestinationFile = previewDestination, OnSuccess = onSuccess
+                Id = id, SourceFile = sourceFile, DestinationFile = previewDestination, OnSuccess = onSuccess
             };
 
-            string targetDir = Path.Combine(Application.dataPath, PreviewFolder);
+            string targetDir = Path.Combine(Application.dataPath, PREVIEW_FOLDER);
             if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
 
             request.TempFile = Path.Combine(targetDir, id + Path.GetExtension(sourceFile));
@@ -60,6 +60,22 @@ namespace AssetInventory
             _requests.Add(request);
         }
 
+        public static void EnsureProgress()
+        {
+            // Unity is so buggy when creating previews, you need to hammer the GetAssetPreview call
+            for (int i = _requests.Count - 1; i >= 0; i--)
+            {
+                PreviewRequest req = _requests[i];
+                if (req.Icon != null) continue;
+
+                req.Icon = AssetPreview.GetAssetPreview(req.Obj);
+                if (req.Icon == null && AssetPreview.IsLoadingAssetPreview(req.Obj.GetInstanceID()))
+                {
+                    AssetPreview.GetAssetPreview(req.Obj);
+                }
+            }
+        }
+
         public static async Task ExportPreviews(int limit = 0)
         {
             while (_requests.Count > limit)
@@ -68,18 +84,21 @@ namespace AssetInventory
                 for (int i = _requests.Count - 1; i >= 0; i--)
                 {
                     PreviewRequest req = _requests[i];
-                    Texture2D icon = AssetPreview.GetAssetPreview(req.Obj);
-                    if (icon == null && AssetPreview.IsLoadingAssetPreview(req.Obj.GetInstanceID()))
+                    if (req.Icon == null)
                     {
-                        AssetPreview.GetAssetPreview(req.Obj);
-                        if (Time.realtimeSinceStartup - req.TimeStarted < PreviewTimeout) continue;
+                        req.Icon = AssetPreview.GetAssetPreview(req.Obj);
+                        if (req.Icon == null && AssetPreview.IsLoadingAssetPreview(req.Obj.GetInstanceID()))
+                        {
+                            AssetPreview.GetAssetPreview(req.Obj);
+                            if (Time.realtimeSinceStartup - req.TimeStarted < PREVIEW_TIMEOUT) continue;
+                        }
+                        if (req.Icon == null) req.Icon = AssetPreview.GetAssetPreview(req.Obj);
                     }
-                    icon = AssetPreview.GetAssetPreview(req.Obj);
 
                     // still will not return something for all assets
-                    if (icon != null && icon.isReadable)
+                    if (req.Icon != null && req.Icon.isReadable)
                     {
-                        byte[] bytes = icon.EncodeToPNG();
+                        byte[] bytes = req.Icon.EncodeToPNG();
                         if (bytes != null) File.WriteAllBytes(req.DestinationFile, bytes);
                     }
                     req.OnSuccess?.Invoke(req);
@@ -87,11 +106,11 @@ namespace AssetInventory
                     // delete asset again, this will also null the Obj field
                     if (!AssetDatabase.DeleteAsset(req.TempFileRel))
                     {
-                        await IOUtils.DeleteFile(req.TempFile);
-                        await IOUtils.DeleteFile(req.TempFile + ".meta");
+                        await IOUtils.DeleteFileOrDirectory(req.TempFile);
+                        await IOUtils.DeleteFileOrDirectory(req.TempFile + ".meta");
                     }
                     _requests.RemoveAt(i);
-                    if (i % BreakInterval == 0) await Task.Yield(); // let editor breath in case many files are already indexed
+                    if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath in case many files are already indexed
                 }
             }
         }
@@ -100,7 +119,7 @@ namespace AssetInventory
         {
             _requests.Clear();
 
-            string targetDir = Path.Combine(Application.dataPath, PreviewFolder);
+            string targetDir = Path.Combine(Application.dataPath, PREVIEW_FOLDER);
             if (!Directory.Exists(targetDir)) return;
 
             try
@@ -119,7 +138,7 @@ namespace AssetInventory
 
     public sealed class PreviewRequest
     {
-        public int ID;
+        public int Id;
         public string SourceFile;
         public string TempFile;
         public string TempFileRel;
@@ -127,6 +146,8 @@ namespace AssetInventory
         public Object Obj;
         public Action<PreviewRequest> OnSuccess;
 
+        // runtime properties
         public float TimeStarted;
+        public Texture2D Icon;
     }
 }

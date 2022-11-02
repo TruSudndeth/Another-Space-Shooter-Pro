@@ -36,11 +36,17 @@ namespace AssetInventory
                         Match match = _numbersOnly.Match(components[1]);
                         if (match.Success)
                         {
-                            Minor = int.Parse(match.Value);
-                            if (match.Length < components[1].Length)
+                            if (int.TryParse(match.Value, out Minor))
                             {
-                                MinorQualifier = components[1].Substring(match.Length);
-                                if (MinorQualifier.StartsWith("-")) MinorQualifier = MinorQualifier.Substring(1);
+                                if (match.Length < components[1].Length)
+                                {
+                                    MinorQualifier = components[1].Substring(match.Length);
+                                    if (MinorQualifier.StartsWith("-")) MinorQualifier = MinorQualifier.Substring(1);
+                                }
+                            }
+                            else
+                            {
+                                MinorQualifier = components[1];
                             }
                         }
 
@@ -49,11 +55,17 @@ namespace AssetInventory
                             match = _numbersOnly.Match(components[2]);
                             if (match.Success)
                             {
-                                Micro = int.Parse(match.Value);
-                                if (match.Length < components[2].Length)
+                                if (int.TryParse(match.Value, out Micro))
                                 {
-                                    MicroQualifier = components[2].Substring(match.Length);
-                                    if (MicroQualifier.StartsWith("-")) MicroQualifier = MicroQualifier.Substring(1);
+                                    if (match.Length < components[2].Length)
+                                    {
+                                        MicroQualifier = components[2].Substring(match.Length);
+                                        if (MicroQualifier.StartsWith("-")) MicroQualifier = MicroQualifier.Substring(1);
+                                    }
+                                }
+                                else
+                                {
+                                    MicroQualifier = components[2];
                                 }
                             }
                             if (components.Length >= 4) int.TryParse(components[3], out Patch);

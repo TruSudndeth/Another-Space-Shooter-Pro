@@ -6,6 +6,8 @@ public class StartGameAsteroids : MonoBehaviour
 {
     public delegate void StartGame();
     public static StartGame _startGame;
+    public delegate void Dificulty();
+    public static Dificulty _difficulty;
 
     [SerializeField] private float _rotationSpeedMax = 1.5f;
     private Rigidbody _rb;
@@ -41,5 +43,9 @@ public class StartGameAsteroids : MonoBehaviour
     {
         _rotationSpeedMax = Random.Range(0.5f, _rotationSpeedMax);
         return Random.Range(1.0f, 100.0f * _rotationSpeedMax);
+    }
+    public void SetDificulty()
+    {
+        _difficulty?.Invoke();
     }
 }

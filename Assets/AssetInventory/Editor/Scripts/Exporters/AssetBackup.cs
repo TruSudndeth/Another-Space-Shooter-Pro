@@ -10,7 +10,7 @@ namespace AssetInventory
 {
     public sealed class AssetBackup : AssertProgress
     {
-        private const string Separator = "-~-";
+        private const string SEPARATOR = "-~-";
 
         private Dictionary<int, List<BackupInfo>> _assetVersions;
 
@@ -24,7 +24,7 @@ namespace AssetInventory
             _assetVersions = new Dictionary<int, List<BackupInfo>>();
 
             string[] packages = Directory.GetFiles(AssetInventory.GetBackupFolder(), "*.unitypackage", SearchOption.AllDirectories);
-            string[] sep = {Separator};
+            string[] sep = {SEPARATOR};
             for (int i = 0; i < packages.Length; i++)
             {
                 // expected filename format is "foreignId-version
@@ -44,12 +44,12 @@ namespace AssetInventory
 
         public async Task Sync()
         {
-            ResetState();
+            ResetState(false);
 
             await Backup();
             ClearOut();
 
-            ResetState();
+            ResetState(true);
         }
 
         private async Task Backup()
@@ -72,7 +72,7 @@ namespace AssetInventory
 
                 if (!File.Exists(asset.Location)) continue;
 
-                string targetFile = Path.Combine(backupFolder, $"{asset.ForeignId}{Separator}{asset.GetSafeVersion()}{Separator}{asset.SafeName}.unitypackage");
+                string targetFile = Path.Combine(backupFolder, $"{asset.ForeignId}{SEPARATOR}{asset.GetSafeVersion()}{SEPARATOR}{asset.SafeName}.unitypackage");
                 if (!File.Exists(targetFile))
                 {
                     CurrentMain = $"Backing up {asset.SafeName} ({EditorUtility.FormatBytes(asset.PackageSize)})";

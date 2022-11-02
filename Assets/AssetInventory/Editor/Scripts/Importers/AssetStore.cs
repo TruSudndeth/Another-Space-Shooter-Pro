@@ -1,21 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
+using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace AssetInventory
 {
     public static class AssetStore
     {
-        private const string URLPurchases = "https://packages-v2.unity.com/-/api/purchases";
-        private const string URLTokenInfo = "https://api.unity.com/v1/oauth2/tokeninfo?access_token=";
-        private const string URLUserInfo = "https://api.unity.com/v1/users";
-        private const string URLAssetDetails = "https://packages-v2.unity.com/-/api/product";
-        private const string URLAssetDownload = "https://packages-v2.unity.com/-/api/legacy-package-download-info";
-        private const int PageSize = 100; // more is not supported by Asset Store
+        private const string URL_PURCHASES = "https://packages-v2.unity.com/-/api/purchases";
+        private const string URL_TOKEN_INFO = "https://api.unity.com/v1/oauth2/tokeninfo?access_token=";
+        private const string URL_USER_INFO = "https://api.unity.com/v1/users";
+        private const string URL_ASSET_DETAILS = "https://packages-v2.unity.com/-/api/product";
+        private const string URL_ASSET_DOWNLOAD = "https://packages-v2.unity.com/-/api/legacy-package-download-info";
+        private const int PAGE_SIZE = 100; // more is not supported by Asset Store
 
         private static ListRequest _listRequest;
         private static SearchRequest _searchRequest;
@@ -35,13 +38,13 @@ namespace AssetInventory
             int progressId = MetaProgress.Start("Fetching purchases");
 
             string token = CloudProjectSettings.accessToken;
-            AssetPurchases result = await AssetUtils.FetchAPIData<AssetPurchases>($"{URLPurchases}?offset=0&limit={PageSize}", token);
+            AssetPurchases result = await AssetUtils.FetchAPIData<AssetPurchases>($"{URL_PURCHASES}?offset=0&limit={PAGE_SIZE}", token);
 
             // if more results than page size retrieve rest as well and merge
             // doing all requests in parallel is not possible with Unity's web client since they can only run on the main thread
-            if (result != null && result.total > PageSize)
+            if (result != null && result.total > PAGE_SIZE)
             {
-                int pageCount = AssetUtils.GetPageCount(result.total, PageSize) - 1;
+                int pageCount = AssetUtils.GetPageCount(result.total, PAGE_SIZE) - 1;
                 AssetInventory.MainCount = pageCount + 1;
                 for (int i = 1; i <= pageCount; i++)
                 {
@@ -49,8 +52,15 @@ namespace AssetInventory
                     MetaProgress.Report(progressId, i + 1, pageCount + 1, string.Empty);
                     if (CancellationRequested) break;
 
-                    AssetPurchases pageResult = await AssetUtils.FetchAPIData<AssetPurchases>($"{URLPurchases}?offset={i * PageSize}&limit={PageSize}", token);
-                    result.results.AddRange(pageResult.results);
+                    AssetPurchases pageResult = await AssetUtils.FetchAPIData<AssetPurchases>($"{URL_PURCHASES}?offset={i * PAGE_SIZE}&limit={PAGE_SIZE}", token);
+                    if (pageResult != null)
+                    {
+                        result.results.AddRange(pageResult.results);
+                    }
+                    else
+                    {
+                        Debug.LogError("Could only retrieve a partial list of asset purchases. Try again later.");
+                    }
                 }
             }
 
@@ -64,7 +74,7 @@ namespace AssetInventory
         {
             string token = CloudProjectSettings.accessToken;
             string newEtag = eTag;
-            AssetDetails result = await AssetUtils.FetchAPIData<AssetDetails>($"{URLAssetDetails}/{id}", token, eTag, newCacheTag => newEtag = newCacheTag);
+            AssetDetails result = await AssetUtils.FetchAPIData<AssetDetails>($"{URL_ASSET_DETAILS}/{id}", token, eTag, newCacheTag => newEtag = newCacheTag);
             if (result != null) result.ETag = newEtag;
 
             return result;
@@ -73,7 +83,7 @@ namespace AssetInventory
         public static async Task<DownloadInfo> RetrieveAssetDownloadInfo(int id)
         {
             string token = CloudProjectSettings.accessToken;
-            DownloadInfoResult result = await AssetUtils.FetchAPIData<DownloadInfoResult>($"{URLAssetDownload}/{id}", token);
+            DownloadInfoResult result = await AssetUtils.FetchAPIData<DownloadInfoResult>($"{URL_ASSET_DOWNLOAD}/{id}", token);
 
             // special handling of "." also in AssetStoreDownloadInfo 
             if (result?.result?.download != null)
@@ -197,6 +207,37 @@ namespace AssetInventory
         {
             PackageInfo result = _projectPackages?.FirstOrDefault(p => p.name == name);
             return result != null && result.version == version;
+        }
+
+        public static void OpenInPackageManager(AssetInfo info)
+        {
+            if (info.ForeignId > 0)
+            {
+                OpenAssetInPackageManager(info.GetItemLink());
+            }
+            else if (info.AssetSource == Asset.Source.Package)
+            {
+                OpenPackageInPackageManager(info.SafeName);
+            }
+        }
+
+        public static void OpenAssetInPackageManager(string url)
+        {
+#if UNITY_2020_1_OR_NEWER
+            Assembly assembly = Assembly.Load("UnityEditor.PackageManagerUIModule");
+            Type asc = assembly.GetType("UnityEditor.PackageManager.UI.PackageManagerWindow");
+            MethodInfo openURL = asc.GetMethod("OpenURL", BindingFlags.NonPublic | BindingFlags.Static);
+
+            openURL?.Invoke(null, new object[] {url});
+#else
+            // loading assembly will fail below 2020
+            OpenPackageInPackageManager(url);
+#endif
+        }
+
+        public static void OpenPackageInPackageManager(string id)
+        {
+            UnityEditor.PackageManager.UI.Window.Open(id);
         }
     }
 }

@@ -1,0 +1,364 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b0ebbe1ac9da454685f5897663d5db1, type: 3}
+  m_Name: BackgroundMusic
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 5b17a0088dcdf924fa92da5af1e1be07, type: 3}
+  BPM: 145
+  BPMdelay: 0
+  BPMenabled: 0
+  layers:
+  - layerName: Default
+    markups:
+    - timer: 0.00091588806
+      length: 1.3638865
+      additionalParameters:
+      - type: 3
+        integer: 0
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 1.6528885
+      length: 3.0391984
+      additionalParameters:
+      - type: 3
+        integer: 0
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.9624343
+      length: 3.02921
+      additionalParameters:
+      - type: 3
+        integer: 0
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.27372
+      length: 3.035966
+      additionalParameters:
+      - type: 3
+        integer: 0
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.5812025
+      length: 1.6601572
+      additionalParameters:
+      - type: 3
+        integer: 0
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    visible: 1
+    color: {r: 0, g: 0, b: 1, a: 1}
+  - layerName: Channel 0_0
+    markups:
+    - timer: 0
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 0.413793
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 0.827586
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 1.241379
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 1.655172
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.068965
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.482758
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 2.896551
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 3.310344
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 3.724137
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.13793
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.551723
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 4.965516
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 5.379309
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 5.793102
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 6.206895
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 6.620688
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 7.034481
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 7.448274
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 7.862067
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.27586
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 8.689653
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 9.103446
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 9.517239
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 9.931032
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 10.344825
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 10.758618
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.172411
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.586204
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 11.999997
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 12.41379
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    - timer: 12.827583
+      length: 0
+      additionalParameters:
+      - type: 0
+        integer: 60
+        floateger: 0
+        text: 
+        boolean: 0
+        gameObject: {fileID: 0}
+    visible: 1
+    color: {r: 0.06021464, g: 1, b: 0, a: 1}
+  needlePosition: 0
+  timelineScroll: 0
+  timelineZoom: 1
+  snapToBPM: 1

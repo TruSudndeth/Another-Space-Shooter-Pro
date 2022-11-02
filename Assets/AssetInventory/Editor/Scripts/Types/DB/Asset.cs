@@ -9,7 +9,7 @@ namespace AssetInventory
     [Serializable]
     public sealed class Asset
     {
-        public const string None = "-no attached package-";
+        public const string NONE = "-no attached package-";
 
         public enum State
         {
@@ -19,12 +19,19 @@ namespace AssetInventory
             Unknown = 3
         }
 
+        public enum SubState
+        {
+            None = 0,
+            Outdated = 1
+        }
+
         public enum Source
         {
             AssetStorePackage = 0,
             CustomPackage = 1,
             Directory = 2,
-            Package = 3
+            Package = 3,
+            Archive = 4
         }
 
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
@@ -72,6 +79,7 @@ namespace AssetInventory
         public string ETag { get; set; }
         public DateTime LastOnlineRefresh { get; set; }
         public State CurrentState { get; set; }
+        public SubState CurrentSubState { get; set; }
 
         public Asset()
         {
@@ -85,6 +93,13 @@ namespace AssetInventory
         public Asset(PackageInfo package)
         {
             CopyFrom(package);
+        }
+
+        public string GetCalculatedLocation()
+        {
+            if (string.IsNullOrEmpty(SafePublisher) || string.IsNullOrEmpty(SafeCategory) || string.IsNullOrEmpty(SafeName)) return null;
+
+            return System.IO.Path.Combine(AssetInventory.GetAssetDownloadPath(), SafePublisher, SafeCategory, SafeName + ".unitypackage");
         }
 
         public Asset CopyFrom(PackageInfo package)
@@ -194,8 +209,8 @@ namespace AssetInventory
         public static Asset GetNoAsset()
         {
             Asset noAsset = new Asset();
-            noAsset.SafeName = None;
-            noAsset.DisplayName = None;
+            noAsset.SafeName = NONE;
+            noAsset.DisplayName = NONE;
             noAsset.AssetSource = Source.Directory;
 
             return noAsset;

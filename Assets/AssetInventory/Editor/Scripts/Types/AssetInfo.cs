@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
@@ -45,6 +46,7 @@ namespace AssetInventory
         public string DisplayCategory { get; set; }
         public string PreviewImage { get; set; }
         public Asset.State CurrentState { get; set; }
+        public Asset.SubState CurrentSubState { get; set; }
         public string Slug { get; set; }
         public int Revision { get; set; }
         public string Description { get; set; }
@@ -80,6 +82,7 @@ namespace AssetInventory
         public bool InProject => !string.IsNullOrWhiteSpace(ProjectPath);
         public bool IsIndexed => AssetSource == Asset.Source.Directory || (FileCount > 0 && CurrentState == Asset.State.Done);
         public bool IsDeprecated => OfficialState == "deprecated";
+        public bool IsAbandoned => OfficialState == "disabled";
         public bool IsMaterialized { get; set; }
         public ImportStateOptions ImportState { get; set; }
         public DependencyStateOptions DependencyState { get; set; } = DependencyStateOptions.Unknown;
@@ -93,6 +96,8 @@ namespace AssetInventory
         private List<TagInfo> _packageTags;
         private List<TagInfo> _assetTags;
         private int _tagHash;
+        private string _versionsCached;
+        private bool _versionComparisonResult;
 
         public List<TagInfo> PackageTags
         {
@@ -119,8 +124,9 @@ namespace AssetInventory
             get
             {
                 if (AssetSource == Asset.Source.Package) return true;
-                if (SafeName == Asset.None) return true;
-                if (_downloaded == null) _downloaded = !string.IsNullOrEmpty(Location) && File.Exists(Location);
+                if (SafeName == Asset.NONE) return true;
+                if (string.IsNullOrEmpty(Location)) return false;
+                if (_downloaded == null) _downloaded = File.Exists(Location);
                 return _downloaded.Value;
             }
         }
@@ -160,13 +166,6 @@ namespace AssetInventory
             return ReleaseNotes;
         }
 
-        public string GetCalculatedLocation()
-        {
-            if (string.IsNullOrEmpty(SafePublisher) || string.IsNullOrEmpty(SafeCategory) || string.IsNullOrEmpty(SafeName)) return null;
-
-            return System.IO.Path.Combine(AssetInventory.GetAssetDownloadPath(), SafePublisher, SafeCategory, SafeName + ".unitypackage");
-        }
-
         public string GetChangeLogURL(string versionOverride = null)
         {
             string changeLog = GetChangeLog(versionOverride);
@@ -174,11 +173,36 @@ namespace AssetInventory
             return AssetUtils.IsUrl(changeLog) ? changeLog : null;
         }
 
-        public bool IsOutdated()
+        public bool IsUpdateAvailable()
         {
-            if (WasOutdated || string.IsNullOrWhiteSpace(Version) || string.IsNullOrWhiteSpace(LatestVersion)) return false;
+            if (WasOutdated) return false;
+            if (IsAbandoned || IsDeprecated) return false;
+            if (string.IsNullOrWhiteSpace(Version) || string.IsNullOrWhiteSpace(LatestVersion)) return false;
 
-            return new SemVer(Version) < new SemVer(LatestVersion);
+            // this can be called thousands of times per frame, needs caching
+            string cache = Version + LatestVersion;
+            if (_versionsCached == cache) return _versionComparisonResult;
+
+            _versionsCached = cache;
+            _versionComparisonResult = new SemVer(Version) < new SemVer(LatestVersion);
+
+            return _versionComparisonResult;
+        }
+
+        public bool IsUpdateAvailable(List<AssetInfo> assets)
+        {
+            bool isOlderVersion = IsUpdateAvailable();
+            if (isOlderVersion && assets != null)
+            {
+                // if asset in that version is already loaded don't flag as update available
+                if (assets.Any(a => a.ForeignId == ForeignId && a.Version == LatestVersion && !string.IsNullOrEmpty(a.Location))) return false;
+            }
+            return isOlderVersion;
+        }
+
+        public bool IsDownloading()
+        {
+            return PackageDownloader != null && PackageDownloader.GetState().state == AssetDownloader.State.Downloading;
         }
 
         public AssetInfo WithTreeData(string name, int id = 0, int depth = 0)
@@ -212,6 +236,7 @@ namespace AssetInventory
                 DisplayCategory = DisplayCategory,
                 SafeCategory = SafeCategory,
                 CurrentState = CurrentState,
+                CurrentSubState = CurrentSubState,
                 Id = AssetId,
                 Slug = Slug,
                 Revision = Revision,
@@ -254,6 +279,7 @@ namespace AssetInventory
         public void Refresh()
         {
             _downloaded = null;
+            WasOutdated = false;
         }
 
         public override string ToString()

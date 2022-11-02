@@ -14,21 +14,21 @@ namespace AssetInventory
             ColorSelect = 3
         }
 
-        public const int BorderWidth = 30;
-        public const int InspectorWidth = 300;
-        public const int TagSizeSpacing = 20;
-        public const int TagOuterMargin = 20;
+        public const int BORDER_WIDTH = 30;
+        public const int INSPECTOR_WIDTH = 300;
+        public const int TAG_SIZE_SPACING = 20;
+        public const int TAG_OUTER_MARGIN = 20;
 
-        public static string[] FolderTypes = {"Unity Packages", "Media Files"};
-        public static string[] MediaTypes = {"-All-", string.Empty, "Audio", "Images", "Models", string.Empty, "-Custom File Pattern-"};
+        public static readonly string[] FolderTypes = {"Unity Packages", "Media Files", "Zip Archives"};
+        public static readonly string[] MediaTypes = {"-All-", string.Empty, "Audio", "Images", "Models", string.Empty, "-Custom File Pattern-"};
 
         private static readonly GUIContent GUIText = new GUIContent();
         private static readonly GUIContent GUIImage = new GUIContent();
         private static readonly GUIContent GUITextImage = new GUIContent();
 
-        private const int EntryFontSize = 11;
-        private const int EntryFixedHeight = EntryFontSize + 7;
-        private const int ToggleFixedWidth = 10;
+        private const int ENTRY_FONT_SIZE = 11;
+        private const int ENTRY_FIXED_HEIGHT = ENTRY_FONT_SIZE + 7;
+        private const int TOGGLE_FIXED_WIDTH = 10;
 
         public static readonly GUIStyle tile = new GUIStyle(GUI.skin.button)
         {
@@ -46,8 +46,8 @@ namespace AssetInventory
             margin = new RectOffset(2, 2, 2, 2)
         };
 
-        public static readonly GUIStyle entryStyle = new GUIStyle(EditorStyles.miniLabel) {fontSize = EntryFontSize, fixedHeight = EntryFixedHeight};
-        public static readonly GUIStyle toggleStyle = new GUIStyle(EditorStyles.toggle) {fixedWidth = ToggleFixedWidth, fixedHeight = EntryFixedHeight};
+        public static readonly GUIStyle entryStyle = new GUIStyle(EditorStyles.miniLabel) {fontSize = ENTRY_FONT_SIZE, fixedHeight = ENTRY_FIXED_HEIGHT};
+        public static readonly GUIStyle toggleStyle = new GUIStyle(EditorStyles.toggle) {fixedWidth = TOGGLE_FIXED_WIDTH, fixedHeight = ENTRY_FIXED_HEIGHT};
         public static readonly GUIStyle whiteCenter = new GUIStyle {alignment = TextAnchor.MiddleCenter, normal = new GUIStyleState {textColor = Color.white}};
         public static readonly GUIStyle centerLabel = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleCenter};
         public static readonly GUIStyle rightLabel = new GUIStyle(GUI.skin.label) {alignment = TextAnchor.MiddleRight};
@@ -84,7 +84,7 @@ namespace AssetInventory
 
                     case TagStyle.Remove:
                         GUILayout.Label(name, readableText);
-                        if (GUILayout.Button(EditorGUIUtility.IconContent("d_winbtn_win_close", "Remove Tag").image,
+                        if (GUILayout.Button(EditorGUIUtility.IconContent("d_winbtn_win_close", "|Remove Tag").image,
                                 EditorStyles.label, GUILayout.Width(EditorGUIUtility.singleLineHeight),
                                 GUILayout.Height(EditorGUIUtility.singleLineHeight)))
                         {
@@ -98,7 +98,7 @@ namespace AssetInventory
 
                     case TagStyle.ColorSelect:
                         GUILayout.Label(name, readableText);
-                        if (GUILayout.Button(EditorGUIUtility.IconContent("d_winbtn_win_close", "Remove Tag").image,
+                        if (GUILayout.Button(EditorGUIUtility.IconContent("d_winbtn_win_close", "|Remove Tag").image,
                                 EditorStyles.label, GUILayout.Width(EditorGUIUtility.singleLineHeight),
                                 GUILayout.Height(EditorGUIUtility.singleLineHeight)))
                         {
@@ -142,7 +142,7 @@ namespace AssetInventory
 
         public static GUILayoutOption GetLabelMaxWidth()
         {
-            return GUILayout.MaxWidth(InspectorWidth - 110);
+            return GUILayout.MaxWidth(INSPECTOR_WIDTH - 110);
         }
 
         private static Color GetHSPColor(Color color)
@@ -151,10 +151,17 @@ namespace AssetInventory
             return 0.299 * color.r + 0.587 * color.g + 0.114 * color.b < 0.5f ? Color.white : new Color(0.1f, 0.1f, 0.1f);
         }
 
-        private static GUIStyle ReadableText(Color color)
+        public static GUIStyle ReadableText(Color color)
         {
             GUIStyle style = new GUIStyle(EditorStyles.label);
             style.normal.textColor = GetHSPColor(color);
+            return style;
+        }
+
+        public static GUIStyle ColoredText(Color color)
+        {
+            GUIStyle style = new GUIStyle(EditorStyles.label);
+            style.normal.textColor = color;
             return style;
         }
 

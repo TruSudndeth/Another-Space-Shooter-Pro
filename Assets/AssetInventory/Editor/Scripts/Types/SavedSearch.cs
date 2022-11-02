@@ -23,5 +23,7 @@ namespace AssetInventory
         public bool checkMaxHeight;
         public bool checkMaxLength;
         public bool checkMaxSize;
+        public int colorOption;
+        public string searchColor;
     }
 }

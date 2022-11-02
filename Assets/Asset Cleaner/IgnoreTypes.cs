@@ -19,7 +19,7 @@ namespace Asset_Cleaner {
             if (type.IsAssignableFromInverse(typeof(ComputeShader))) return true;
             if (type.IsAssignableFromInverse(typeof(ShaderVariantCollection))) return true;
 #if UNITY_2019_3_OR_NEWER
-			if (type.IsAssignableFromInverse(typeof(UnityEngine.Experimental.Rendering.RayTracingShader))) return true; // todo: track of Experimental namespace
+			if (type.IsAssignableFromInverse(typeof(UnityEngine.Experimental.Rendering.RayTracingShader))) return true; // todo : track of Experimental namespace
 #endif
 
             if (type.IsAssignableFromInverse(typeof(TextAsset))) return true;

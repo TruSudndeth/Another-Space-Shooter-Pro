@@ -34,6 +34,8 @@ namespace AssetInventory
             return m_Data.FirstOrDefault(element => element.TreeId == id);
         }
 
+        public IList<T> GetData() => m_Data;
+
         public void SetData(IList<T> data, bool sortFoldersFirst = false)
         {
             Init(data);

@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
         {
             for (int i = 0; i < _clipPool.Count; i++)
             {
-                if (!_clipPool[i].AudioSource.clip)
+                if (!_clipPool[i].AudioSource.clip) // fix: MissingRefrence on destroy - check for null X3
                 {
                     _clipPool[i].PlayAudioOneShot(AssignAudioClip(sfx));
                     return;

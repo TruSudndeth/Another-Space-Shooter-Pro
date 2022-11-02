@@ -11,12 +11,12 @@ namespace AssetInventory
 {
     public sealed class PackageImporter : AssertImporter
     {
-        private const float MaxMetaDataWaitTime = 30f;
-        private const int BreakInterval = 50;
+        private const float MAX_META_DATA_WAIT_TIME = 30f;
+        private const int BREAK_INTERVAL = 50;
 
         public async Task IndexRough(string path, bool fromAssetStore)
         {
-            ResetState();
+            ResetState(false);
 
             // pass 1: find latest cached packages
             int progressId = MetaProgress.Start("Discovering packages");
@@ -29,7 +29,7 @@ namespace AssetInventory
 
                 string package = packages[i];
                 MetaProgress.Report(progressId, i + 1, packages.Length, Path.GetFileName(Path.GetDirectoryName(package)));
-                if (i % BreakInterval == 0) await Task.Yield(); // let editor breath
+                if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath
 
                 Package info;
                 try
@@ -64,6 +64,10 @@ namespace AssetInventory
                     if (new SemVer(existing.Version) >= new SemVer(asset.Version)) continue;
                     asset = existing.CopyFrom(info);
                 }
+                else
+                {
+                    if (AssetInventory.Config.excludeByDefault) asset.Exclude = true;
+                }
 
                 asset.Location = Path.GetDirectoryName(package);
                 asset.PackageSize = await IOUtils.GetFolderSize(asset.Location);
@@ -82,7 +86,7 @@ namespace AssetInventory
                 }
 
                 // registry
-                float maxWaitTime = Time.realtimeSinceStartup + MaxMetaDataWaitTime;
+                float maxWaitTime = Time.realtimeSinceStartup + MAX_META_DATA_WAIT_TIME;
                 while (!AssetStore.IsMetadataAvailable() && Time.realtimeSinceStartup < maxWaitTime) await Task.Delay(25);
                 if (AssetStore.IsMetadataAvailable())
                 {
@@ -109,7 +113,7 @@ namespace AssetInventory
                     if (package.source == PackageSource.BuiltIn) continue;
 
                     MetaProgress.Report(progressId, i + 1, packages.Length, package.name);
-                    if (i % BreakInterval == 0) await Task.Yield(); // let editor breath
+                    if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath
 
                     // create asset
                     Asset asset = new Asset(package);
@@ -120,6 +124,10 @@ namespace AssetInventory
                     {
                         if (new SemVer(existing.Version) >= new SemVer(asset.Version)) continue;
                         asset = existing.CopyFrom(package);
+                    }
+                    else
+                    {
+                        if (AssetInventory.Config.excludeByDefault) asset.Exclude = true;
                     }
 
                     // update progress only if really doing work to save refresh time in UI
@@ -141,20 +149,14 @@ namespace AssetInventory
             }
 
             MetaProgress.Remove(progressId);
-            ResetState();
+            ResetState(true);
         }
 
         public async Task IndexDetails(int assetId = 0)
         {
-            ResetState();
+            ResetState(false);
 
-            FolderSpec importSpec = new FolderSpec
-            {
-                pattern = "*.*",
-                createPreviews = true,
-                folderType = 1,
-                scanFor = 6
-            };
+            FolderSpec importSpec = GetDefaultImportSpec();
 
             int progressId = MetaProgress.Start("Indexing packages");
             List<Asset> assets;
@@ -188,7 +190,7 @@ namespace AssetInventory
                 Persist(asset);
             }
             MetaProgress.Remove(progressId);
-            ResetState();
+            ResetState(true);
         }
     }
 }

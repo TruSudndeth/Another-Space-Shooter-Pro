@@ -9863,63 +9863,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc68625bc485ae2419d5b30c0cf67a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpoMovePalayer:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 3.3285081
-      outSlope: 3.3285081
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.012550592
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _interpobankPlayer:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _playerDeath: 0
   _interPoMoveSpeed: 3.5
-  bankSpeed: 7.5
-  maxBank: 30
-  speed: 7.5
+  _bankSpeed: 10
+  _maxBank: 45
+  _speed: 5
   _speedBoostTimeout: 5
-  fired: 0
-  myCamera: {fileID: 2701277048429228085, guid: 7ba93b6a400260e4b8efc37b0c1b593f,
-    type: 3}
-  Offset: {x: 0, y: 0, z: 0}
+  _fired: 0
+  _offset: {x: 0, y: 0.8, z: 0}
   _singeFireRate: 0.25
   _trippleFireRate: 0.5
   _isTrippleShot: 0
@@ -9930,13 +9881,13 @@ MonoBehaviour:
   _primaryLaserSpawn: {fileID: 8536037456945010754}
   _dualLaser_LSpawn: {fileID: 8536037456945010756}
   _dualLaser_RSpawn: {fileID: 8536037456945010764}
-  lasers: []
-  maxPool: 15
-  iterateLaser: 0
+  _lasers: []
+  _maxPool: 15
+  _iterateLaser: 0
   _damageLeftENG: {fileID: 8561259504665264764}
   _damageRighENG: {fileID: 3180163401601869307}
   _shield: {fileID: 5669655066000267629}
-  health: 3
+  _health: 3
   _shieldTimeout: 120
   _updateScore: 0
 --- !u!114 &223729743

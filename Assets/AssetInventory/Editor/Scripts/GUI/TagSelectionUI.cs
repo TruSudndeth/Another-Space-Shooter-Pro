@@ -38,7 +38,7 @@ namespace AssetInventory
             }
             GUILayout.BeginHorizontal();
             _newTag = SearchField.OnGUI(_newTag, GUILayout.ExpandWidth(true));
-            if (GUILayout.Button(EditorGUIUtility.IconContent("Settings", "Manage Tags").image, EditorStyles.label))
+            if (GUILayout.Button(EditorGUIUtility.IconContent("Settings", "|Manage Tags").image, EditorStyles.label))
             {
                 TagsUI tagsUI = TagsUI.ShowWindow();
                 tagsUI.Init();

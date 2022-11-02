@@ -14,7 +14,7 @@ namespace AssetInventory
 {
     public static class AssetUtils
     {
-        private const int Timeout = 30;
+        private const int TIMEOUT = 30;
         private static readonly Regex NoSpecialChars = new Regex("[^a-zA-Z0-9 -]"); // private static Regex AssetStoreContext.s_InvalidPathCharsRegExp = new Regex("[^a-zA-Z0-9() _-]");
         private static readonly Dictionary<string, Texture2D> _previewCache = new Dictionary<string, Texture2D>();
 
@@ -113,13 +113,14 @@ namespace AssetInventory
             callback?.Invoke(result);
         }
 
-        public static async Task<T> FetchAPIData<T>(string uri, string token = null, string etag = null, Action<string> eTagCallback = null)
+        public static async Task<T> FetchAPIData<T>(string uri, string token = null, string etag = null, Action<string> eTagCallback = null, int retries = 1)
         {
+            Restart:
             using (UnityWebRequest uwr = UnityWebRequest.Get(uri))
             {
                 if (!string.IsNullOrEmpty(token)) uwr.SetRequestHeader("Authorization", "Bearer " + token);
                 if (!string.IsNullOrEmpty(etag)) uwr.SetRequestHeader("If-None-Match", etag);
-                uwr.timeout = Timeout;
+                uwr.timeout = TIMEOUT;
                 UnityWebRequestAsyncOperation request = uwr.SendWebRequest();
                 while (!request.isDone) await Task.Yield();
 
@@ -129,7 +130,11 @@ namespace AssetInventory
                 if (uwr.isNetworkError)
 #endif
                 {
-                    // TODO: retry
+                    if (retries > 0)
+                    {
+                        retries--;
+                        goto Restart;
+                    }
                     Debug.LogError($"Could not fetch API data from {uri} due to network issues: {uwr.error}");
                 }
 #if UNITY_2020_1_OR_NEWER

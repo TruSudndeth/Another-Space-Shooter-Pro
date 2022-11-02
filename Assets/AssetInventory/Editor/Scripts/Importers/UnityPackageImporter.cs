@@ -12,11 +12,11 @@ namespace AssetInventory
 {
     public sealed class UnityPackageImporter : AssertImporter
     {
-        private const int BreakInterval = 10;
+        private const int BREAK_INTERVAL = 10;
 
         public async Task IndexRough(string path, bool fromAssetStore, bool force = false)
         {
-            ResetState();
+            ResetState(false);
 
             int progressId = MetaProgress.Start("Updating asset inventory index");
             string[] packages = Directory.GetFiles(path, "*.unitypackage", SearchOption.AllDirectories);
@@ -31,6 +31,7 @@ namespace AssetInventory
 
                 // create asset and add additional information from file system
                 Asset asset = new Asset();
+                asset.Location = package;
                 asset.SafeName = Path.GetFileNameWithoutExtension(package);
                 if (fromAssetStore)
                 {
@@ -46,6 +47,16 @@ namespace AssetInventory
                 else
                 {
                     asset.AssetSource = Asset.Source.CustomPackage;
+                }
+
+                // try to read contained upload details
+                AssetHeader header = ReadHeader(package);
+                if (header != null)
+                {
+                    if (int.TryParse(header.id, out int id))
+                    {
+                        asset.ForeignId = id;
+                    }
                 }
 
                 // skip unchanged 
@@ -68,27 +79,14 @@ namespace AssetInventory
                 else
                 {
                     size = new FileInfo(package).Length;
+                    if (AssetInventory.Config.excludeByDefault) asset.Exclude = true;
                 }
 
                 // update progress only if really doing work to save refresh time in UI
                 CurrentMain = package;
                 MainProgress = i + 1;
 
-                // try to read contained upload details
-                AssetHeader header = ReadHeader(package);
-                if (header != null)
-                {
-                    asset.Version = header.version;
-                    if (!string.IsNullOrWhiteSpace(header.description)) asset.Description = header.description;
-                    if (!string.IsNullOrWhiteSpace(header.title)) asset.DisplayName = header.title;
-                    if (header.publisher != null) asset.DisplayPublisher = header.publisher.label;
-                    if (header.category != null) asset.DisplayCategory = header.category.label;
-
-                    if (int.TryParse(header.id, out int id))
-                    {
-                        asset.ForeignId = id;
-                    }
-                }
+                ApplyHeader(header, asset);
 
                 Asset.State previousState = asset.CurrentState;
                 if (!force) asset.CurrentState = Asset.State.InProcess;
@@ -98,12 +96,28 @@ namespace AssetInventory
                 Persist(asset);
             }
             MetaProgress.Remove(progressId);
-            ResetState();
+            ResetState(true);
+        }
+
+        public static void ApplyHeader(AssetHeader header, Asset asset)
+        {
+            if (header == null) return;
+
+            if (!string.IsNullOrWhiteSpace(header.version)) asset.Version = header.version;
+            if (!string.IsNullOrWhiteSpace(header.title)) asset.DisplayName = header.title;
+            if (!string.IsNullOrWhiteSpace(header.description)) asset.Description = header.description;
+            if (header.publisher != null) asset.DisplayPublisher = header.publisher.label;
+            if (header.category != null) asset.DisplayCategory = header.category.label;
+
+            if (int.TryParse(header.id, out int id))
+            {
+                asset.ForeignId = id;
+            }
         }
 
         public async Task IndexDetails(int assetId = 0)
         {
-            ResetState();
+            ResetState(false);
             int progressId = MetaProgress.Start("Indexing package contents");
             List<Asset> assets;
             if (assetId == 0)
@@ -126,15 +140,20 @@ namespace AssetInventory
                 await IndexPackage(assets[i], progressId);
                 await Task.Yield(); // let editor breath
 
+                AssetHeader header = ReadHeader(assets[i].Location);
+                ApplyHeader(header, assets[i]);
+
                 assets[i].CurrentState = Asset.State.Done;
                 Persist(assets[i]);
             }
             MetaProgress.Remove(progressId);
-            ResetState();
+            ResetState(true);
         }
 
         private async Task IndexPackage(Asset asset, int progressId)
         {
+            if (string.IsNullOrEmpty(asset.Location)) return;
+
             int subProgressId = MetaProgress.Start("Indexing package", null, progressId);
             string previewPath = AssetInventory.GetPreviewFolder();
             string tempPath = await AssetInventory.ExtractAsset(asset);
@@ -169,7 +188,7 @@ namespace AssetInventory
                 // skip folders
                 if (!File.Exists(assetFile)) continue;
 
-                if (i % BreakInterval == 0) await Task.Yield(); // let editor breath
+                if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath
 
                 string guid = null;
                 if (File.Exists(metaFile))
@@ -202,6 +221,8 @@ namespace AssetInventory
                     string targetFile = Path.Combine(previewPath, "af-" + af.Id + Path.GetExtension(previewFile));
                     File.Copy(previewFile, targetFile, true);
                     af.PreviewFile = Path.GetFileName(targetFile);
+                    af.DominantColor = null;
+                    af.DominantColorGroup = null;
                     Persist(af);
                 }
                 if (CancellationRequested) break;
@@ -217,7 +238,7 @@ namespace AssetInventory
             MetaProgress.Remove(subProgressId);
         }
 
-        private AssetHeader ReadHeader(string path)
+        public static AssetHeader ReadHeader(string path)
         {
             AssetHeader result = null;
             using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
