@@ -160,7 +160,7 @@ MonoBehaviour:
   _sfx: 17
   _laserSpawnPoints:
   - {fileID: 8067366382138916632}
-  _shouldFire: 0.25
+  _shouldFire: 0.75
 --- !u!1 &1199274491628529855
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
     private int _poolMax = 10;
     [Space]
     private Types.SFX _sfx;
+    private float _clipDuplicates = 0.1f;
     private void Awake()
     {
         PopulateClipPool();
@@ -40,6 +41,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayAudioOneShot(Types.SFX sfx)
     { //Todo: Volume Controll when instance is called
+        if (_clipPool.Any(x => x.gameObject.activeSelf && x.AudioSource.clip == _clipAssets[(int)sfx] && x.AudioSource.time <= _clipDuplicates)) return;
         _sfx = sfx;
         if (_clipAssets.Count > 0)
         {

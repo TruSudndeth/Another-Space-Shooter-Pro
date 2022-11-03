@@ -13,7 +13,12 @@ public class BackGroundMusic_Events : RhythmListener
 
     public override void RhythmEvent(RhythmEventData data)
     {
-        if(data.layer.layerName == "BaseBeat")
+        //Note: layerName keeps resetting to default Channel 0_0
+        if (data.layer.layerName == "Channel 0_0")
+        {
+            data.layer.layerName = "BaseBeat";
+        }
+        if (data.layer.layerName == "BaseBeat")
         {
             _BGM_events?.Invoke();
         }

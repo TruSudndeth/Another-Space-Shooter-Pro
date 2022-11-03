@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
-{
+{ //Debug: Fix Access to this script to be more secure
     public static InputManager Instance;
     private MyBaseInputs _playerInputs;
     

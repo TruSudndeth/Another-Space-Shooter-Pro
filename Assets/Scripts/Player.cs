@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     [Space]
     [SerializeField] private bool _fired = false;
     [Space]
-    private Transform _myCamera; //set in the inspector.
+    private Transform _myCamera;
     [SerializeField] private Vector3 _offset = new Vector3(0, 0.8f, 0);
     [SerializeField] private float _singeFireRate = 0.25f;
     [SerializeField] private float _trippleFireRate = 0.5f;
@@ -54,16 +54,13 @@ public class Player : MonoBehaviour
     private float _shieldTime = 0.0f;
     
     [SerializeField] private bool _updateScore = false;
-
-    //use shield collider as a collection area for powerups and collisions
     
     private void Awake()
     {
         _myCamera = Camera.main.transform;
         _tripleShot = new(){_primaryLaserSpawn, _dualLaser_LSpawn, _dualLaser_RSpawn};
     }
-
-    // Add Some movement interperlation Plz (Smooth out)
+    
     void Start()
     {
         _cameraOrthoSize = _myCamera.GetComponent<Camera>().orthographicSize;
@@ -73,8 +70,7 @@ public class Player : MonoBehaviour
         SubscribeToInputs();
         EnemyCollisons.EnemyPointsEvent += UpdateScore;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (_updateScore)
@@ -107,7 +103,7 @@ public class Player : MonoBehaviour
     {
         if (_fired) UseLaserPool();
         
-        transform.Translate(_movePlayerFixed, Space.World); //Moves the transfomr in the direction and distance of translation
+        transform.Translate(_movePlayerFixed, Space.World);
 
         if (_powerUpTime + _powerUpTimeout <= Time.time && _isTrippleShot)
             _isTrippleShot = false;
@@ -174,7 +170,14 @@ public class Player : MonoBehaviour
         for (int i = 0; i < _tripleShot.Count; i++)
         {
             LaserManager.Instance.LaserPool(_tripleShot[tripleShotIndex]);
-            AudioManager.Instance.PlayAudioOneShot(Types.SFX.Laser);
+            if (_isTrippleShot && tripleShotIndex == 0)
+            {
+                AudioManager.Instance.PlayAudioOneShot(Types.SFX.Tripple);
+            }
+            else if (!_isTrippleShot)
+            {
+                AudioManager.Instance.PlayAudioOneShot(Types.SFX.Laser);
+            }
             
             if(_isTrippleShot)
             {

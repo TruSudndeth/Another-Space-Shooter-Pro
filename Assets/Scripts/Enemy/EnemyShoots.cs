@@ -9,16 +9,19 @@ public class EnemyShoots : MonoBehaviour
     [Space]
     [Tooltip("If random 01 float is greater than this value")]
     [SerializeField] private float _shouldFire = 0.25f;
+    private bool _fired = false;
     private void OnEnable()
     {
         //_laserSpawnPoints = new(3);
+        _fired = false;
         BackGroundMusic_Events._BGM_events += Shoot;
     }
 
     private void Shoot()
     {
-        if (_shouldFire < ShouldFire())
+        if (_shouldFire < ShouldFire() && !_fired)
         {
+            _fired = true;
             LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()]);
             AudioManager.Instance.PlayAudioOneShot(_sfx);
         }
