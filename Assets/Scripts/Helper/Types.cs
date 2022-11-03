@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Types
 {
-    public enum CollisionTags
+    public enum Tag
     {
         Player, Enemies, Astroids, ELaser, Laser
     };
@@ -21,7 +21,7 @@ public static class Types
     
     public enum LaserTag
     {
-        Player, Enemy
+        PlayerLaser, EnemyLaser
     }
     
     public enum GameState
@@ -38,6 +38,7 @@ public static class Types
     public enum SFX
     {
         Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4,
-        BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11
+        BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11,
+        LaserDamage01 = 12, LaserDamage02 = 13, LaserDamage03 = 14, LaserDamage04 = 15
     }
 }

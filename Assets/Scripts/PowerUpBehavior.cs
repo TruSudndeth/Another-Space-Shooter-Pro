@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PowerUpBehavior : MonoBehaviour
 {
+    //Todo: PowerUp Shield energy depleating Timmer warning. Sound (OutOfTimeShield)
     [SerializeField] private Types.PowerUps _powerUpType;
     [Space]
     [SerializeField] private float _speed = 3.0f;
@@ -27,7 +28,7 @@ public class PowerUpBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(Types.CollisionTags.Player.ToString()))
+        if(other.CompareTag(Types.Tag.Player.ToString()))
         {
             if(other.TryGetComponent(out PlayerInput playerIO))
             {

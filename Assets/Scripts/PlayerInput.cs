@@ -48,15 +48,9 @@ public class PlayerInput : MonoBehaviour
     private float _yBounds = 0;
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
-    [SerializeField] private Transform _laserPool;
-    [SerializeField] private Transform _laserAsset;
     [SerializeField] private Transform _primaryLaserSpawn;
     [SerializeField] private Transform _dualLaser_LSpawn;
     [SerializeField] private Transform _dualLaser_RSpawn;
-    [SerializeField] private List<Transform> _lasers;
-    [SerializeField] private int _maxPool = 15;
-    [SerializeField] private int _iterateLaser = 0; //Debugit remove serialized field
-    private bool _isPoolMaxed = false;
     [Space]
     [SerializeField] private GameObject _damageLeftENG;
     [SerializeField] private GameObject _damageRighENG;
@@ -74,7 +68,6 @@ public class PlayerInput : MonoBehaviour
     {
         _myCamera = Camera.main.transform;
         _playerInputs = new(); //Create a new instance of MyBaseInputs
-        _lasers = new(_maxPool); // create a fixed size for performance reasons on Awake
         _tripleShot = new(){_primaryLaserSpawn, _dualLaser_LSpawn, _dualLaser_RSpawn};
     }
 
@@ -121,7 +114,7 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_fired) LaserPool();
+        if (_fired) UseLaserPool();
         
         transform.Translate(_movePlayerFixed, Space.World); //Moves the transfomr in the direction and distance of translation
 
@@ -181,55 +174,23 @@ public class PlayerInput : MonoBehaviour
         }
         
     }
-    private void LaserPool()
+    private void UseLaserPool()
     {
         int tripleShotIndex = 0;
         _fired = false;
         if (_canFire + _singeFireRate > Time.time) return;
         _canFire = Time.time;
-        if (_lasers.Count < _maxPool && !_isPoolMaxed)
+        for (int i = 0; i < _tripleShot.Count; i++)
         {
-            for (int i = 0; i < _maxPool; i++)
+            LaserManager.Instance.LaserPool(_tripleShot[tripleShotIndex]);
+            AudioManager.Instance.PlayAudioOneShot(Types.SFX.Laser);
+            
+            if(_isTrippleShot)
             {
-                if (tripleShotIndex > 2) break; //Logic Breaks the max pool (Must Fix)
-                _lasers.Add(Instantiate(_laserAsset, _tripleShot[tripleShotIndex].position + _offset, Quaternion.identity, _laserPool));
-                AudioManager.Instance.PlayAudioOneShot(Types.SFX.Laser);
-
-                _iterateLaser++;
-                if (_iterateLaser == _maxPool)
-                {
-                    _iterateLaser = 0;
-                    _isPoolMaxed = true;
-                }
-                
-                if(_isTrippleShot)
-                {
-                    tripleShotIndex++;
-                    continue;
-                }
-                break;
+                tripleShotIndex++;
+                continue;
             }
-        }
-        else if (_isPoolMaxed)
-        {
-            //fire rate must not surpass laser pool check if object is disabled before using.
-            //Lock rotations add recochet later
-            for (int i = 0; i < _lasers.Count; i++)
-            {
-                if (!_lasers[i].gameObject.activeSelf)
-                {
-                    if (tripleShotIndex > 2) break;
-                    _lasers[i].gameObject.SetActive(true);
-                    _lasers[i].position = _tripleShot[tripleShotIndex].position + _offset;
-                    AudioManager.Instance.PlayAudioOneShot(Types.SFX.Laser);
-                    if (_isTrippleShot)
-                    {
-                        tripleShotIndex++;
-                        continue;
-                    }
-                    break;
-                }
-            }
+            break;
         }
     }
 

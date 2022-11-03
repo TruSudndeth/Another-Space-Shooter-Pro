@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class LaserBehavior : MonoBehaviour
 {
+    private Types.LaserTag _laserTag;
+    private Renderer _renderer;
+    private Material _laserMaterial;
     private Camera _camera;
     private float _cameraAspecRatio = 1.7777778f;
     private float _xBounds = 0;
@@ -15,6 +18,7 @@ public class LaserBehavior : MonoBehaviour
 
     private void Awake()
     {
+        _renderer = GetComponent<Renderer>();
         _camera = Camera.main;
         _yBounds = _camera.orthographicSize;
         _xBounds = _yBounds * _cameraAspecRatio;
@@ -23,6 +27,17 @@ public class LaserBehavior : MonoBehaviour
     private void OnEnable()
     {
         _move = true;
+    }
+    public void SetMaterial(Material material)
+    {
+        _renderer.material = material;
+    }
+    public void SetTag(Types.Tag tag)
+    {
+        if (tag == Types.Tag.Player)
+            gameObject.tag = Types.LaserTag.PlayerLaser.ToString();
+        else if (tag == Types.Tag.Enemies)
+            gameObject.tag = Types.LaserTag.EnemyLaser.ToString(); //Debug: Enemy is not defined
     }
 
     private void OnDisable()

@@ -7,7 +7,7 @@ public class StartingAsteroids : MonoBehaviour
     [SerializeField] private Types.SFX _sfxType;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Types.CollisionTags.Player.ToString()))
+        if (other.CompareTag(Types.Tag.Player.ToString()))
         {
             if(other.TryGetComponent(out PlayerInput playerInput))
             {
@@ -19,7 +19,7 @@ public class StartingAsteroids : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        else if (other.CompareTag(Types.CollisionTags.Laser.ToString()))
+        else if (other.CompareTag(Types.LaserTag.PlayerLaser.ToString()))
         {
             other.gameObject.SetActive(false);
             Destroy(gameObject);

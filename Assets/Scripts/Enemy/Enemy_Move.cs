@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
 public class Enemy_Move : MonoBehaviour
 {
     private float _cameraAspecRatio = 1.7777778f;

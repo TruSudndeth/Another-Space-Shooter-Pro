@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 8536037456945010754}
   m_Layer: 8
   m_Name: Primary Shot Spawn
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,14 +56,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8536037456945169506}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 1.043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8536037456945010766}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &8536037456945169508
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 8536037456945010756}
   m_Layer: 8
   m_Name: DualShot1 Spawn
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,14 +87,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8536037456945169508}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.4, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8536037456945010766}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &8536037456945169512
 GameObject:
   m_ObjectHideFlags: 0
@@ -9706,7 +9706,7 @@ GameObject:
   - component: {fileID: 8536037456945010764}
   m_Layer: 8
   m_Name: DualShot2 Spawn
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9718,14 +9718,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8536037456945169516}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.4, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8536037456945010766}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &8536037456945169518
 GameObject:
   m_ObjectHideFlags: 0
@@ -9741,6 +9741,7 @@ GameObject:
   - component: {fileID: 8536037456947276488}
   - component: {fileID: 8536037456950503177}
   - component: {fileID: 223729743}
+  - component: {fileID: 2682496241059238741}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -9875,15 +9876,9 @@ MonoBehaviour:
   _trippleFireRate: 0.5
   _isTrippleShot: 0
   _powerUpTimeout: 5
-  _laserPool: {fileID: 0}
-  _laserAsset: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
-    type: 3}
   _primaryLaserSpawn: {fileID: 8536037456945010754}
   _dualLaser_LSpawn: {fileID: 8536037456945010756}
   _dualLaser_RSpawn: {fileID: 8536037456945010764}
-  _lasers: []
-  _maxPool: 15
-  _iterateLaser: 0
   _damageLeftENG: {fileID: 8561259504665264764}
   _damageRighENG: {fileID: 3180163401601869307}
   _shield: {fileID: 5669655066000267629}
@@ -9903,6 +9898,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxType: 0
+--- !u!114 &2682496241059238741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8536037456945169518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e70b7482ae12e674b8916a1960df9cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sfx: 0c0000000d0000000e0000000f000000
 --- !u!1001 &3497074788838476807
 PrefabInstance:
   m_ObjectHideFlags: 0

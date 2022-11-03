@@ -9,7 +9,8 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
     [SerializeField] private Transform _audioSourcePrefab;
     [Tooltip ("Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4," +
-        "BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11")]
+        "BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11" +
+        "LaserDamage01 = 12, LaserDamage02 = 13, LaserDamage03 = 14, LaserDamage04 = 15")]
     [SerializeField] private List<AudioClip> _clipAssets;
     private List<DisableOnComplete> _clipPool;
     private int _poolMax = 10;
@@ -58,6 +59,7 @@ public class AudioManager : MonoBehaviour
     {
         //Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4,
         //BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11
+        //Debug: REPLACE SWITCH WITH FACTORY PATTERN
         int clip = 0;
         switch (sfx)
         {
@@ -96,6 +98,18 @@ public class AudioManager : MonoBehaviour
                 break;
             case Types.SFX.PickUp:
                 clip = 11;
+                break;
+            case Types.SFX.LaserDamage01:
+                clip = 12;
+                break;
+            case Types.SFX.LaserDamage02:
+                clip = 13;
+                break;
+            case Types.SFX.LaserDamage03:
+                clip = 14;
+                break;
+            case Types.SFX.LaserDamage04:
+                clip = 15;
                 break;
         }
         if (clip > _clipAssets.Count - 1) clip = 0;
