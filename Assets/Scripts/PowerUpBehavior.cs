@@ -30,7 +30,7 @@ public class PowerUpBehavior : MonoBehaviour
     {
         if(other.CompareTag(Types.Tag.Player.ToString()))
         {
-            if(other.TryGetComponent(out PlayerInput playerIO))
+            if(other.TryGetComponent(out Player playerIO))
             {
                 switch(_powerUpType)
                 {

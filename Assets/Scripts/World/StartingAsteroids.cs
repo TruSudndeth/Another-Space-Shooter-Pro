@@ -9,7 +9,7 @@ public class StartingAsteroids : MonoBehaviour
     {
         if (other.CompareTag(Types.Tag.Player.ToString()))
         {
-            if(other.TryGetComponent(out PlayerInput playerInput))
+            if(other.TryGetComponent(out Player playerInput))
             {
                 if (transform.parent.TryGetComponent(out StartGameAsteroids startingGameAsteroids))
                 {

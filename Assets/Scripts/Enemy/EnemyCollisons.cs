@@ -29,7 +29,7 @@ public class EnemyCollisons : MonoBehaviour
         }
         else if(other.CompareTag(Types.Tag.Player.ToString()))
         {
-            if(other.TryGetComponent(out PlayerInput _input))
+            if(other.TryGetComponent(out Player _input))
             {
                 _input.Health = 1;
                 DisableParent();

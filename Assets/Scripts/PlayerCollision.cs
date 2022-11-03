@@ -10,7 +10,7 @@ public class PlayerCollision : MonoBehaviour
         if (other.gameObject.tag == Types.LaserTag.EnemyLaser.ToString())
         {
             other.gameObject.SetActive(false);
-            GetComponent<PlayerInput>().Health = 1;
+            GetComponent<Player>().Health = 1;
             if(_sfx.Count > 0)
             AudioManager.Instance.PlayAudioOneShot(RandomDamageSFX());
         }

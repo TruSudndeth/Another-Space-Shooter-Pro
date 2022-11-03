@@ -46,7 +46,7 @@ public class EnemySpawnManager : MonoBehaviour
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
-        PlayerInput.gameOver += PlayerIsDead;
+        Player.gameOver += PlayerIsDead;
     }
     
     private void GameDificulty()
@@ -126,7 +126,7 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        PlayerInput.gameOver -= PlayerIsDead;
+        Player.gameOver -= PlayerIsDead;
         StartGameAsteroids._startGame -= GameStarted;
         BackGroundMusic_Events._BGM_events -= () => { _beatEnemySpawner = true; };
     }

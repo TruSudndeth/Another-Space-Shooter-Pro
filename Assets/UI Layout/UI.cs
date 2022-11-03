@@ -51,19 +51,18 @@ public class UI : MonoBehaviour
     private List<StyleBackground> _healthStatusStyle;
     
     [Space]
-    private MyBaseInputs _UIbaseInputs;
-    private InputAction _restartInput;
     private bool _hasRestarted = false;
 
     private void Start()
     {
         if(!_isMainMenu)
         {
-            _restartInput.started += _ => _hasRestarted = true;
+            InputManager.Instance.Restart.started += _ => _hasRestarted = true;
+            InputManager.Instance.EnablePlayerIO();
 
-            PlayerInput.Score += UpdateScore;
-            PlayerInput.UpdateHealth += UpdateHealth;
-            PlayerInput.gameOver += GameOver;
+            Player.Score += UpdateScore;
+            Player.UpdateHealth += UpdateHealth;
+            Player.gameOver += GameOver;
             StartGameAsteroids._startGame += GameStarted;
 
             UpdateScore(0);
@@ -92,6 +91,7 @@ public class UI : MonoBehaviour
     }
     private void LoadLevelOne()
     {
+        InputManager.Instance.EnablePlayerIO();
         _gameState = Types.GameState.Level1;
         _loadScene?.Invoke(_gameState);
     }
@@ -107,7 +107,7 @@ public class UI : MonoBehaviour
         {
             _resetLevel?.Invoke();
             _hasRestarted = false;
-            _restartInput.Disable();
+            InputManager.Instance.DisableRestart();
         }
     }
     private void FixedUpdate()
@@ -136,7 +136,7 @@ public class UI : MonoBehaviour
             //create a on off logic over time
             _isGameOver = true;
             _restartText.visible = true;
-            _restartInput.Enable();
+            InputManager.Instance.EnableRestart();
         }
     }
 
@@ -160,9 +160,9 @@ public class UI : MonoBehaviour
 
         if (!_isMainMenu)
         {
-            
-            _UIbaseInputs = new();
-            _restartInput = _UIbaseInputs.UI.Restart;
+            //Debug: Delete 2 comments
+            //_UIbaseInputs = new();
+            //_restartInput = _UIbaseInputs.UI.Restart;
             _healthStatusStyle = new(4);
             for (int i = 0; i < _healthStatus.Count; i++)
             {
@@ -190,11 +190,11 @@ public class UI : MonoBehaviour
     {
         if (!_isMainMenu)
         {
-            _restartInput.started -= _ => _hasRestarted = false;
-            _restartInput.Disable();
-            PlayerInput.Score -= UpdateScore;
-            PlayerInput.UpdateHealth -= UpdateHealth;
-            PlayerInput.gameOver -= GameOver;
+            InputManager.Instance.Restart.started -= _ => _hasRestarted = true;
+            InputManager.Instance.DisableRestart();
+            Player.Score -= UpdateScore;
+            Player.UpdateHealth -= UpdateHealth;
+            Player.gameOver -= GameOver;
         }else if(_isMainMenu)
         {
             StartGameAsteroids._startGame -= GameStarted;

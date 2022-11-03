@@ -1,11 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using UnityEditor.Rendering;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class PlayerInput : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public delegate void GameOver();
     public static GameOver gameOver;
@@ -24,13 +20,10 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float _speedBoostTimeout = 5.0f;
     private float _speedBoostTime = 0.0f;
     private bool _isSpeedBoostActive = false;
-    private MyBaseInputs _playerInputs;
-    private InputAction _WSAD;
     private Vector2 _movePlayerFixed;
     private Vector2 _movePlayer = Vector2.zero;
     private float _bank = 0;
     [Space]
-    private InputAction _fire;
     [SerializeField] private bool _fired = false;
     [Space]
     private Transform _myCamera; //set in the inspector.
@@ -67,7 +60,6 @@ public class PlayerInput : MonoBehaviour
     private void Awake()
     {
         _myCamera = Camera.main.transform;
-        _playerInputs = new(); //Create a new instance of MyBaseInputs
         _tripleShot = new(){_primaryLaserSpawn, _dualLaser_LSpawn, _dualLaser_RSpawn};
     }
 
@@ -78,7 +70,6 @@ public class PlayerInput : MonoBehaviour
         _xBounds = _cameraOrthoSize * _cameraAspectRatio;
         _yBounds = _cameraOrthoSize;
         _xyBounds = new Vector2(_xBounds, _yBounds);
-        EnableInputs();
         SubscribeToInputs();
         EnemyCollisons.EnemyPointsEvent += UpdateScore;
     }
@@ -91,7 +82,7 @@ public class PlayerInput : MonoBehaviour
             _updateScore = false;
             UpdateScore(111);
         }
-        Vector2 movement = _WSAD.ReadValue<Vector2>();
+        Vector2 movement = InputManager.Instance.WSAD.ReadValue<Vector2>();
         //smooth out banks -                        Lets Incorperate
         float _bankSpeed = Time.deltaTime * this._bankSpeed;
         if(movement.x < 0)
@@ -193,14 +184,6 @@ public class PlayerInput : MonoBehaviour
             break;
         }
     }
-
-    private void EnableInputs()
-    {
-        _WSAD = _playerInputs.Player.Move;
-        _WSAD.Enable();
-        _fire = _playerInputs.Player.Fire;
-        _fire.Enable();
-    }
     public void UpdateScore(int points)
     {
         _playerScore += points;
@@ -209,15 +192,14 @@ public class PlayerInput : MonoBehaviour
 
     private void SubscribeToInputs()
     {
-        _fire.performed += _ => _fired = true;
+        InputManager.Instance.Fire.performed += _ => _fired = true;
     }
     private void OnDisable()
     {
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;
-        _fire.performed -= _ => _fired = false; //??? Look into this unsubscribe
+        InputManager.Instance.Fire.performed -= _ => _fired = true; //??? Look into this unsubscribe
         gameOver?.Invoke();
-        _WSAD.Disable();
-        _fire.Disable();
+        InputManager.Instance.DisablePlayerIO();
     }
     
 }
