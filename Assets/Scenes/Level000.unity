@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18200694, g: 0.22426511, b: 0.28750092, a: 1}
+  m_IndirectSpecularColor: {r: 0.4491279, g: 0.4958256, b: 0.5575779, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -328,6 +328,75 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!1001 &434251652
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1106993626}
+    m_Modifications:
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.9351969
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.213408
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1453743
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781520208192830823, guid: 2f6749d653b5dce4e85e25385482ab37,
+        type: 3}
+      propertyPath: m_Name
+      value: LaserManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f6749d653b5dce4e85e25385482ab37, type: 3}
 --- !u!1001 &469727610
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -656,6 +725,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26f78298eb7517c41b7becfd9e242c32, type: 3}
+--- !u!4 &1072097146 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3781520208192830820, guid: 2f6749d653b5dce4e85e25385482ab37,
+    type: 3}
+  m_PrefabInstance: {fileID: 434251652}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1106993625
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,6 +763,7 @@ Transform:
   - {fileID: 2122006682}
   - {fileID: 647288233}
   - {fileID: 191617092}
+  - {fileID: 1072097146}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

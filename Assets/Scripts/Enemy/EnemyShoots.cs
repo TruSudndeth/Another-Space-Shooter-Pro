@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyShoots : MonoBehaviour
 {
+    [SerializeField] private Types.SFX _sfx;
     [SerializeField] private List<Transform> _laserSpawnPoints;
     [Space]
     [Tooltip("If random 01 float is greater than this value")]
@@ -17,7 +18,10 @@ public class EnemyShoots : MonoBehaviour
     private void Shoot()
     {
         if (_shouldFire < ShouldFire())
-        LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()]);
+        {
+            LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()]);
+            AudioManager.Instance.PlayAudioOneShot(_sfx);
+        }
     }
     
     private int RandomGun()

@@ -39,7 +39,7 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlayAudioOneShot(Types.SFX sfx)
-    {
+    { //Todo: Volume Controll when instance is called
         _sfx = sfx;
         if (_clipAssets.Count > 0)
         {
@@ -110,6 +110,18 @@ public class AudioManager : MonoBehaviour
                 break;
             case Types.SFX.LaserDamage04:
                 clip = 15;
+                break;
+            case Types.SFX.LaserDamage05:
+                clip = 16;
+                break;
+            case Types.SFX.EnemyLaser:
+                clip = 17;
+                break;
+            case Types.SFX.MiniBossLaser:
+                clip = 18;
+                break;
+            case Types.SFX.BossLaser:
+                clip = 19;
                 break;
         }
         if (clip > _clipAssets.Count - 1) clip = 0;
