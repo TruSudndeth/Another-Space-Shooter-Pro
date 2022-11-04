@@ -202,7 +202,7 @@ public class Player : MonoBehaviour
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;
         InputManager.Instance.Fire.performed -= _ => _fired = true; //??? Look into this unsubscribe
         gameOver?.Invoke();
-        InputManager.Instance.DisablePlayerIO();
+        InputManager.Instance.EnablePlayerIO(false);
     }
     
 }

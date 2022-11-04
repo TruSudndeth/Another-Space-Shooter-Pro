@@ -8,18 +8,21 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
     private MyBaseInputs _playerInputs;
     
-    [HideInInspector] public InputAction WSAD;
-    [HideInInspector] public InputAction Fire;
-    [HideInInspector] public InputAction Restart;
-
-    [SerializeField] private bool enableInputs = false;
+    [HideInInspector] public InputAction WSAD { get; private set; }
+    [HideInInspector] public InputAction Fire { get; private set; }
+    [HideInInspector] public InputAction Restart { get; private set; }
+    [HideInInspector] public InputAction Exit { get; private set; }
 
     private void Awake()
     {
         _playerInputs = new();
+        Exit = _playerInputs.UI.Exit;
         WSAD = _playerInputs.Player.Move;
         Fire = _playerInputs.Player.Fire;
         Restart = _playerInputs.UI.Restart;
+
+        Exit.Enable();
+        
         if (Instance)
             Destroy(gameObject);
         else
@@ -28,36 +31,40 @@ public class InputManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    void Update()
+    public void EnableExit(bool enable)
     {
-        if(enableInputs)
+        if (enable)
+            Exit.Enable();
+        else
+            Exit.Disable();
+    }
+    public void EnableRestart(bool enable)
+    {
+        if (enable)
         {
-            enableInputs = false;
-            EnablePlayerIO();
+            EnablePlayerIO(false);
+            Restart.Enable();
         }
+        else
+            Restart.Disable();
     }
-    public void EnableRestart()
+    public void EnablePlayerIO(bool enable)
     {
-        DisablePlayerIO();
-        Restart.Enable();
-    }
-    public void DisableRestart()
-    {
-        Restart.Disable();
-    }
-    public void EnablePlayerIO()
-    {
-        DisableRestart();
-        WSAD.Enable();
-        Fire.Enable();
-    }
-    public void DisablePlayerIO()
-    {
-        WSAD.Disable();
-        Fire.Disable();
+        if (enable)
+        {
+            EnableRestart(false);
+            WSAD.Enable();
+            Fire.Enable();
+        }
+        else
+        {
+            WSAD.Disable();
+            Fire.Disable();
+        }
     }
     private void OnDisable()
     {
+        Exit.Disable();
         Restart.Disable();
         WSAD.Disable();
         Fire.Disable();

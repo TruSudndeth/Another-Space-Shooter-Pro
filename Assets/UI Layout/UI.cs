@@ -58,7 +58,7 @@ public class UI : MonoBehaviour
         if(!_isMainMenu)
         {
             InputManager.Instance.Restart.started += _ => _hasRestarted = true;
-            InputManager.Instance.EnablePlayerIO();
+            InputManager.Instance.EnablePlayerIO(true);
 
             Player.Score += UpdateScore;
             Player.UpdateHealth += UpdateHealth;
@@ -91,7 +91,7 @@ public class UI : MonoBehaviour
     }
     private void LoadLevelOne()
     {
-        InputManager.Instance.EnablePlayerIO();
+        InputManager.Instance.EnablePlayerIO(true);
         _gameState = Types.GameState.Level1;
         _loadScene?.Invoke(_gameState);
     }
@@ -107,7 +107,7 @@ public class UI : MonoBehaviour
         {
             _resetLevel?.Invoke();
             _hasRestarted = false;
-            InputManager.Instance.DisableRestart();
+            InputManager.Instance.EnableRestart(false);
         }
     }
     private void FixedUpdate()
@@ -136,7 +136,7 @@ public class UI : MonoBehaviour
             //create a on off logic over time
             _isGameOver = true;
             _restartText.visible = true;
-            InputManager.Instance.EnableRestart();
+            InputManager.Instance.EnableRestart(true);
         }
     }
 
@@ -191,7 +191,7 @@ public class UI : MonoBehaviour
         if (!_isMainMenu)
         {
             InputManager.Instance.Restart.started -= _ => _hasRestarted = true;
-            InputManager.Instance.DisableRestart();
+            InputManager.Instance.EnableRestart(false);
             Player.Score -= UpdateScore;
             Player.UpdateHealth -= UpdateHealth;
             Player.gameOver -= GameOver;
