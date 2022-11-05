@@ -18,6 +18,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float _maxBank = 45.0f;
     [SerializeField] private float _speed = 1;
     [SerializeField] private float _speedBoostTimeout = 5.0f;
+    [SerializeField] private float _thrustDistance = 3.0f;
+    [SerializeField] private float _thrustCoolDown = 10.0f;
+    private float _thrustTimer = 0.0f;
+    private bool _actuateThrust = false;
     private float _speedBoostTime = 0.0f;
     private bool _isSpeedBoostActive = false;
     private Vector2 _movePlayerFixed;
@@ -52,8 +56,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float _shieldTimeout = 60.0f;
     private bool _isShieldActive = false;
     private float _shieldTime = 0.0f;
-    
     [SerializeField] private bool _updateScore = false;
+
+    
     
     private void Awake()
     {
@@ -93,16 +98,30 @@ public class Player : MonoBehaviour
         //Interpolate Movement
         float direction = _isSpeedBoostActive ? 1 : _interPoMoveSpeed * Time.deltaTime;
         _movePlayer = Vector2.MoveTowards(_movePlayer, movement, direction);
-        
+
         //Bounds
         _movePlayerFixed = _speed * Time.fixedDeltaTime * _movePlayer;
+        //Todo: Thrust Add a speed boost
+        bool canThrust = false;
+        if (_thrustCoolDown + _thrustTimer < Time.time && _actuateThrust) canThrust = true;
+        else if (_actuateThrust) _actuateThrust = false;
+        _movePlayerFixed = canThrust ? AddThrust() * _movePlayerFixed.normalized + _movePlayerFixed : _movePlayerFixed;
         _movePlayerFixed = OutOfBounds.CalculateMove(transform, _movePlayerFixed, _xyBounds);
+    }
+    
+    private float AddThrust()
+    {
+        return _thrustDistance;
     }
 
     private void FixedUpdate()
     {
         if (_fired) UseLaserPool();
-        
+        if(_actuateThrust)
+        {
+            _actuateThrust = false;
+            _thrustTimer = Time.time;
+        }
         transform.Translate(_movePlayerFixed, Space.World);
 
         if (_powerUpTime + _powerUpTimeout <= Time.time && _isTrippleShot)
@@ -196,9 +215,11 @@ public class Player : MonoBehaviour
     private void SubscribeToInputs()
     {
         InputManager.Instance.Fire.performed += _ => _fired = true;
+        InputManager.Instance.Thrust.started += _ => _actuateThrust = true;
     }
     private void OnDisable()
     {
+        InputManager.Instance.Thrust.started -= _ => _actuateThrust = true;
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;
         InputManager.Instance.Fire.performed -= _ => _fired = true; //??? Look into this unsubscribe
         gameOver?.Invoke();

@@ -28,12 +28,6 @@ public class GameManager : MonoBehaviour
         UI._loadScene -= LoadScene;
         UI._resetLevel -= RestartCurrentLevel;
     }
-    void OnDisable()
-    {
-        InputManager.Instance.Exit.started -= _ => ExitGame();
-        UI._loadScene -= LoadScene;
-        UI._resetLevel -= RestartCurrentLevel;
-    }
     void LoadScene(Types.GameState gameState)
     {
         SceneManager.LoadScene((int) gameState);

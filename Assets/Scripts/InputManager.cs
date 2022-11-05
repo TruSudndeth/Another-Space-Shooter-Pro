@@ -12,10 +12,13 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public InputAction Fire { get; private set; }
     [HideInInspector] public InputAction Restart { get; private set; }
     [HideInInspector] public InputAction Exit { get; private set; }
+    [HideInInspector] public InputAction Thrust { get; private set; }
 
     private void Awake()
     {
         _playerInputs = new();
+
+        Thrust = _playerInputs.Player.Thrust;
         Exit = _playerInputs.UI.Exit;
         WSAD = _playerInputs.Player.Move;
         Fire = _playerInputs.Player.Fire;
@@ -53,17 +56,20 @@ public class InputManager : MonoBehaviour
         if (enable)
         {
             EnableRestart(false);
+            Thrust.Enable();
             WSAD.Enable();
             Fire.Enable();
         }
         else
         {
+            Thrust.Disable();
             WSAD.Disable();
             Fire.Disable();
         }
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
+        Thrust.Disable();
         Exit.Disable();
         Restart.Disable();
         WSAD.Disable();
