@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.TextCore.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _shieldTimeout = 60.0f;
     private bool _isShieldActive = false;
     private float _shieldTime = 0.0f;
+    private bool _resetShield = false;
     [SerializeField] private bool _updateScore = false;
 
     
@@ -143,6 +145,11 @@ public class Player : MonoBehaviour
     }
     public void ShieldActive()
     {
+        if (_isShieldActive)
+        {
+            _resetShield = true;
+            Damage(0);
+        }
         AudioManager.Instance.PlayAudioOneShot(Types.SFX.ShieldOn);
         _shieldTime = Time.time;
         _shield.gameObject.SetActive(true);
@@ -152,10 +159,24 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive)
         {
-            AudioManager.Instance.PlayAudioOneShot(Types.SFX.ShieldOff);
-            _shield.gameObject.SetActive(false);
-            _isShieldActive = false;
-            return;
+            if (_shield.gameObject.TryGetComponent(out ShieldBehavior shieldB))
+            {
+                if (_resetShield)
+                {
+                    _resetShield = false;
+                    shieldB.ResetShield();
+                }
+                shieldB.Damage(damage);
+                if (!shieldB.isActiveAndEnabled) _isShieldActive = false;
+                return;
+            }
+            else
+            {
+                AudioManager.Instance.PlayAudioOneShot(Types.SFX.ShieldOff);
+                _isShieldActive = false;
+                _shield.gameObject.SetActive(false);
+                return;
+            }
         }
         _health -= damage;
         UpdateHealth?.Invoke(_health);
