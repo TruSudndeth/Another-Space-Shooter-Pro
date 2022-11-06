@@ -5,7 +5,7 @@ using UnityEngine;
 public class StartGameAsteroids : MonoBehaviour
 {
     public delegate void StartGame();
-    public static StartGame _startGame;
+    public static StartGame GameStarted;
     public delegate void Dificulty();
     public static Dificulty _difficulty;
 
@@ -35,7 +35,7 @@ public class StartGameAsteroids : MonoBehaviour
         if (transform.childCount <= 0)
         {
             Debug.Log("Started Game");
-            _startGame?.Invoke();
+            GameStarted?.Invoke();
             Destroy(gameObject);
         }
     }

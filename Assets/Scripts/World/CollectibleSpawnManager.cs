@@ -19,7 +19,7 @@ public class CollectibleSpawnManager : MonoBehaviour
 
     private void Start()
     {
-        StartGameAsteroids._startGame += GameStarted;
+        StartGameAsteroids.GameStarted += GameStarted;
     }
     
     void GameStarted()
@@ -60,6 +60,6 @@ public class CollectibleSpawnManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        StartGameAsteroids._startGame -= GameStarted;
+        StartGameAsteroids.GameStarted -= GameStarted;
     }
 }

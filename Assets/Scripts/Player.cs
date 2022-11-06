@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public static Points Score;
     public delegate void PlayerHealth(int health);
     public static PlayerHealth UpdateHealth;
+    public delegate void PlayerAmmo(int ammo);
+    public static PlayerAmmo UpdateAmmo;
     public int Health { get { return _health; } set { Damage(value); } }
     [Space]
     [SerializeField] private Types.SFX _playerDeath;
@@ -37,6 +39,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _trippleFireRate = 0.5f;
     [SerializeField] private bool _isTrippleShot = false;
     [SerializeField] private float _powerUpTimeout = 5.0f;
+    [SerializeField] private int _ammoBank = 15;
+    private int _ammoBankMax;
     private float _powerUpTime = 0.0f;
     private List<Transform> _tripleShot;
     private float _canFire = 0;
@@ -59,11 +63,12 @@ public class Player : MonoBehaviour
     private float _shieldTime = 0.0f;
     private bool _resetShield = false;
     [SerializeField] private bool _updateScore = false;
-
+    private bool _gameStarted = false;
     
     
     private void Awake()
     {
+        _ammoBankMax = _ammoBank;
         _myCamera = Camera.main.transform;
         _tripleShot = new(){_primaryLaserSpawn, _dualLaser_LSpawn, _dualLaser_RSpawn};
     }
@@ -203,6 +208,18 @@ public class Player : MonoBehaviour
     }
     private void UseLaserPool()
     {
+        if (_gameStarted)
+        {
+            if (_ammoBank <= 0)
+            {
+                //Todo: Sound Invoke Out of ammo sound FX
+                _ammoBank = 0;
+                _fired = false;
+                return;
+            } 
+            _ammoBank--;
+            UpdateAmmo?.Invoke(_ammoBank);
+        }
         int tripleShotIndex = 0;
         _fired = false;
         if (_canFire + _singeFireRate > Time.time) return;
@@ -227,6 +244,12 @@ public class Player : MonoBehaviour
             break;
         }
     }
+    private void GameStarted()
+    {
+        _gameStarted = true;
+        _ammoBank = _ammoBankMax;
+        UpdateAmmo?.Invoke(_ammoBank);
+    }
     public void UpdateScore(int points)
     {
         _playerScore += points;
@@ -235,11 +258,13 @@ public class Player : MonoBehaviour
 
     private void SubscribeToInputs()
     {
+        StartGameAsteroids.GameStarted += () => GameStarted();
         InputManager.Instance.Fire.performed += _ => _fired = true;
         InputManager.Instance.Thrust.started += _ => _actuateThrust = true;
     }
     private void OnDisable()
     {
+        StartGameAsteroids.GameStarted -= () => GameStarted();
         InputManager.Instance.Thrust.started -= _ => _actuateThrust = true;
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;
         InputManager.Instance.Fire.performed -= _ => _fired = true; //??? Look into this unsubscribe

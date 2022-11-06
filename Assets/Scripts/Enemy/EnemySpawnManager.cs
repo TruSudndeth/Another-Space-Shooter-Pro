@@ -42,7 +42,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         StartGameAsteroids._difficulty += () => GameDificulty();
         BackGroundMusic_Events._BGM_events += () => { _beatEnemySpawner = true; };
-        StartGameAsteroids._startGame += GameStarted;
+        StartGameAsteroids.GameStarted += GameStarted;
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
@@ -127,7 +127,7 @@ public class EnemySpawnManager : MonoBehaviour
     private void OnDisable()
     {
         Player.gameOver -= PlayerIsDead;
-        StartGameAsteroids._startGame -= GameStarted;
+        StartGameAsteroids.GameStarted -= GameStarted;
         BackGroundMusic_Events._BGM_events -= () => { _beatEnemySpawner = true; };
     }
 }

@@ -37,6 +37,7 @@ public class UI : MonoBehaviour
     private VisualElement _healthBar;
     private int _score = 0;
     private Label _scoreLabel;
+    private Label _Ammo;
     
     [Space]
     [SerializeField] private float _gameOverFlashTime = 1.0f;
@@ -60,10 +61,11 @@ public class UI : MonoBehaviour
             InputManager.Instance.Restart.started += _ => _hasRestarted = true;
             InputManager.Instance.EnablePlayerIO(true);
 
+            Player.UpdateAmmo += UpdateAmmo;
             Player.Score += UpdateScore;
             Player.UpdateHealth += UpdateHealth;
             Player.gameOver += GameOver;
-            StartGameAsteroids._startGame += GameStarted;
+            StartGameAsteroids.GameStarted += GameStarted;
 
             UpdateScore(0);
         }else if (_isMainMenu)
@@ -129,6 +131,13 @@ public class UI : MonoBehaviour
             _scoreLabel.text = "Score: " + _score;
         }
     }
+    private void UpdateAmmo(int _ammo)
+    {
+        if (!_isMainMenu)
+        {
+            _Ammo.text = "Ammo: " + _ammo;
+        }
+    }
     private void GameOver()
     {
         if(!_isMainMenu)
@@ -178,6 +187,7 @@ public class UI : MonoBehaviour
             _scoreLabel = root.Q<Label>("Score");
             _gameOver = root.Q<Label>("GameOver");
             _restartText = root.Q<Label>("Restart_Text");
+            _Ammo = root.Q<Label>("Ammo");
 
             //Set
             _healthBar.style.backgroundImage = _healthStatusStyle[_healthStatus.Count - 1];
@@ -195,9 +205,11 @@ public class UI : MonoBehaviour
             Player.Score -= UpdateScore;
             Player.UpdateHealth -= UpdateHealth;
             Player.gameOver -= GameOver;
-        }else if(_isMainMenu)
+            Player.UpdateAmmo -= UpdateAmmo;
+        }
+        else if(_isMainMenu)
         {
-            StartGameAsteroids._startGame -= GameStarted;
+            StartGameAsteroids.GameStarted -= GameStarted;
             _optionsBTN.clicked -= AudioEnableDisable;
             _startBTN.clicked -= LoadLevelOne;
             _quitBTN.clicked -= Application.Quit;

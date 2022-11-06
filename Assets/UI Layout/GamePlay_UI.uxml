@@ -8,9 +8,12 @@
         </ui:VisualElement>
         <ui:VisualElement name="Center_Text" style="margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0;">
             <ui:Label text="Game Over" display-tooltip-when-elided="true" name="GameOver" class="gameOverText" />
-        </ui:VisualElement>
-        <ui:VisualElement name="Bottom_Text" style="margin-bottom: 224px;">
             <ui:Label text="Press R to Restart..." display-tooltip-when-elided="true" name="Restart_Text" class="restart restartText" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Bottom_Text" style="margin-bottom: 0;">
+            <ui:VisualElement style="margin-left: 0; margin-right: 20px; margin-bottom: 20px;">
+                <ui:Label text="Ammo: 999" display-tooltip-when-elided="true" name="Ammo" class="scoreText" style="-unity-text-align: upper-right;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
