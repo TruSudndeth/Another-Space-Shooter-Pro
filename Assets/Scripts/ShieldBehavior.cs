@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ShieldBehavior : MonoBehaviour
 {
+    //Todo: After shield is Disabled Decrease player movement for 3-5 seconds
     [SerializeField] private float _alphaSpeed = 1.5f;
     [SerializeField] private int _shieldHealth = 3;
     [Space]
@@ -53,10 +54,5 @@ public class ShieldBehavior : MonoBehaviour
             _flashAlpha.a = 1.0f - Mathf.PingPong(_alphaSpeed * Time.time, alpha);
             _renderer.material.color = _flashAlpha;
         }
-    }
-    
-    private void OnDisable()
-    {
-        //stop listening to event
     }
 }
