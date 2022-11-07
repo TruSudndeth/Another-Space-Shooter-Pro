@@ -121,6 +121,13 @@ public class Player : MonoBehaviour
         return _thrustDistance;
     }
 
+    public void AddAmmo()
+    {
+        //Todo: Ammo Reload Sound effect
+        _ammoBank = _ammoBankMax;
+        UpdateAmmo(_ammoBank);
+    }
+
     private void FixedUpdate()
     {
         if (_fired) UseLaserPool();

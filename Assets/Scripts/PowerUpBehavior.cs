@@ -30,20 +30,32 @@ public class PowerUpBehavior : MonoBehaviour
     {
         if(other.CompareTag(Types.Tag.Player.ToString()))
         {
-            if(other.TryGetComponent(out Player playerIO))
+            if(other.TryGetComponent(out Player playerPowerups))
             {
                 switch(_powerUpType)
                 {
                     case Types.PowerUps.Tripple:
-                        playerIO.TripleShotActive();
+                        playerPowerups.TripleShotActive();
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Shield:
-                        playerIO.ShieldActive();
+                        playerPowerups.ShieldActive();
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Speed:
-                        playerIO.SpeedBoost();
+                        playerPowerups.SpeedBoost();
+                        gameObject.SetActive(false);
+                        break;
+                    case Types.PowerUps.Ammo:
+                        playerPowerups.AddAmmo();
+                        gameObject.SetActive(false);
+                        break;
+                    case Types.PowerUps.Health:
+                        //Todo: Add Health to Player playerPowerups.AddHealth();
+                        gameObject.SetActive(false);
+                        break;
+                    case Types.PowerUps.Rocket:
+                        //Todo: Add Rockets to playerPowerups.AddRocket();
                         gameObject.SetActive(false);
                         break;
                     default:
