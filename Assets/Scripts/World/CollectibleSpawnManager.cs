@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CollectibleSpawnManager : MonoBehaviour
 {
     [SerializeField] private List<Transform> _powerUpAssets;
-    private List<Transform> _powerUps;
+    private List<Transform> _powerups;
     [Space]
     private float _cameraAspecRatio = 1.7777778f;
     private Vector2 _xyBounds = Vector2.zero;
@@ -31,7 +32,7 @@ public class CollectibleSpawnManager : MonoBehaviour
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
-        _powerUps = new(_powerUpAssets.Count); //currently 3 power ups
+        _powerups = new(_powerUpAssets.Count); //currently 3 power ups
     }
 
     // Update is called once per frame
@@ -43,7 +44,7 @@ public class CollectibleSpawnManager : MonoBehaviour
         {
             _currentSpawnTime = Time.time;
             int powerUpCount = _powerUpAssets.Count;
-            _powerUps.Add(Instantiate(_powerUpAssets[RandomInt(powerUpCount)], RandomXSpawn(), Quaternion.identity, transform));
+            _powerups.Add(Instantiate(_powerUpAssets[RandomInt(powerUpCount)], RandomXSpawn(), Quaternion.identity, transform));
         }
     }
 
@@ -56,7 +57,11 @@ public class CollectibleSpawnManager : MonoBehaviour
 
     private int RandomInt(int myInt)
     {
-        return Random.Range(0, myInt);
+        //GDHQ: New Projectile RareSpawn
+        if (Random.Range(0, 100) <= 10)
+            return _powerups.FindIndex(b => b.name == "BombPickup");
+        else
+            return Random.Range(0, myInt);
     }
     private void OnDestroy()
     {

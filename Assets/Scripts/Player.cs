@@ -66,9 +66,11 @@ public class Player : MonoBehaviour
     private bool _gameStarted = false;
     private Rigidbody _rigidbody;
     [Space]
+    [SerializeField] private float _bombTimeout = 5.0f;
     private bool _useBomb = false;
-    
-    
+    private float _bombTime = 0.0f;
+
+
     private void Awake()
     {
         if (TryGetComponent(out Rigidbody rigidbody))
@@ -142,6 +144,12 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //GDHQ: New Projectile 5 Second Time out.
+        if(_useBomb && Time.time > _bombTime + _bombTimeout)
+        {
+            _useBomb = false;
+            AudioManager.Instance.PlayAudioOneShot(Types.SFX.ErrorSound);
+        }
         if (_fired) UseLaserPool();
         if(_actuateThrust)
         {
@@ -181,7 +189,9 @@ public class Player : MonoBehaviour
     }
     public void UseBomb()
     {
+        //GDHQ: New Projectile Prt 2 5 Second Time out.
         _useBomb = true;
+        _bombTime = Time.time;
     }
     private void Damage(int damage)
     {
@@ -234,10 +244,9 @@ public class Player : MonoBehaviour
     }
     private void UseLaserPool()
     {
-        Debug.Log("LaserPool is called"); //DeleteLIne: Debug.log
         if (_gameStarted)
         {
-            if (_useBomb)
+            if (_useBomb) //GDHQ: New Projectile UsingBomb
             {
                 _fired = false;
                 _useBomb = false;

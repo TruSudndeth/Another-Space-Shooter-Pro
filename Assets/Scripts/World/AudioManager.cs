@@ -128,6 +128,9 @@ public class AudioManager : MonoBehaviour
             case Types.SFX.BombAlert:
                 clip = 20;
                 break;
+            case Types.SFX.ErrorSound:
+                clip = 21;
+                break;
         }
         if (clip > _clipAssets.Count - 1) clip = 0;
         return _clipAssets[clip];
