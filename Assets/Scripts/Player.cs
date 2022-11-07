@@ -169,6 +169,7 @@ public class Player : MonoBehaviour
     }
     private void Damage(int damage)
     {
+        //Shield Damage
         if (_isShieldActive)
         {
             if (_shield.gameObject.TryGetComponent(out ShieldBehavior shieldB))
@@ -190,6 +191,8 @@ public class Player : MonoBehaviour
                 return;
             }
         }
+        //Player Damage
+        
         _health -= damage;
         UpdateHealth?.Invoke(_health);
         
@@ -262,7 +265,21 @@ public class Player : MonoBehaviour
         _playerScore += points;
         Score?.Invoke(_playerScore);
     }
-
+    public void AddHealth()
+    {
+        if (_health == 3) return;
+        _health++;
+        if (_health == 3)
+        {
+            _damageLeftENG.SetActive(false);
+            _damageRighENG.SetActive(false);
+        }
+        else if (_health == 2)
+        {
+            _damageRighENG.SetActive(false);
+        }
+        UpdateHealth?.Invoke(_health);
+    }
     private void SubscribeToInputs()
     {
         StartGameAsteroids.GameStarted += () => GameStarted();

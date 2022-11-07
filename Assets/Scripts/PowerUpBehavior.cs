@@ -51,7 +51,8 @@ public class PowerUpBehavior : MonoBehaviour
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Health:
-                        //Todo: Add Health to Player playerPowerups.AddHealth();
+                        //Todo: Add Health to Player
+                        playerPowerups.AddHealth();
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Rocket:

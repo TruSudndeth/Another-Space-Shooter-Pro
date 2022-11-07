@@ -775,6 +775,7 @@ MonoBehaviour:
   - {fileID: 4974586365812555957, guid: b08f0cc1e9d3d4844ae7b603f835224c, type: 3}
   - {fileID: 8199417894411597980, guid: b5b942d4a2ba49347a2556417cb23d00, type: 3}
   - {fileID: 4879673912583380412, guid: d8c290ef8ca7c8b4cb18d46e26bd39fa, type: 3}
+  - {fileID: 4747155658115944, guid: a5ad3b53c234b9040b754b2c2c9d8fc6, type: 3}
   _spawnRate: 7
   _spawnPowerUps: 0
 --- !u!4 &2122006682
