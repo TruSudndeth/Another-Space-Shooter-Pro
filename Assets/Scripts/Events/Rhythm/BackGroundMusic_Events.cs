@@ -5,7 +5,7 @@ using UnityEngine;
 public class BackGroundMusic_Events : RhythmListener
 {
     public delegate void BGM_Events();
-    public static BGM_Events _BGM_events;
+    public static BGM_Events BGMEvents;
     public override void BPMEvent(RhythmEventData data)
     {
         throw new System.NotImplementedException();
@@ -20,7 +20,7 @@ public class BackGroundMusic_Events : RhythmListener
         }
         if (data.layer.layerName == "BaseBeat")
         {
-            _BGM_events?.Invoke();
+            BGMEvents?.Invoke();
         }
     }
 }

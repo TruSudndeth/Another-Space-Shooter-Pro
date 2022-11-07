@@ -20,15 +20,15 @@ public class EnemySpawnManager : MonoBehaviour
     private int _maxPoolTemp = 0;
     [SerializeField] private float _spawnRate = 0.5f; //Temp: Timmer might delete variable timmer
     private bool _isPoolMaxed = false;
-    private float _canSpawn = 0; //Temp: Timmer might delete variable Timmer
-    private float _offset = 0;
     private int _iterateEnemy = 0;
     private bool _gameOver = false;
     private bool _gameStarted = false;
     [Space]
     private bool _beatEnemySpawner = false;
     private int _difficulty = 1;
-
+    [Space]
+    [SerializeField] private float _SpawnDelay = 5.0f; //Temp: Timmer might delete variable Timmer
+    private float _canSpawnTime = 0.0f;
 
     private void Awake()
     {
@@ -40,13 +40,19 @@ public class EnemySpawnManager : MonoBehaviour
 
     void Start()
     {
+        BombEplode.BombExplosionEvent += () => PauseSpawning();
         StartGameAsteroids._difficulty += () => GameDificulty();
-        BackGroundMusic_Events._BGM_events += () => { _beatEnemySpawner = true; };
+        BackGroundMusic_Events.BGMEvents += () => { _beatEnemySpawner = true; };
         StartGameAsteroids.GameStarted += GameStarted;
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
         Player.gameOver += PlayerIsDead;
+    }
+    
+    private void PauseSpawning()
+    {
+        _canSpawnTime = Time.time;
     }
     
     private void GameDificulty()
@@ -67,7 +73,7 @@ public class EnemySpawnManager : MonoBehaviour
         //Temp: Timmer might not have to spawn enemies with time 
         //Temp: Timmer if (_canSpawn + _spawnRate > Time.time) return;
         //Note: Spawn manager was stopped during game play for a brif moment
-        if(_beatEnemySpawner)
+        if(_beatEnemySpawner && _SpawnDelay + _canSpawnTime < Time.time)
         {
             SpawnSystem();
             if (_difficulty > 1 && Random.Range(0, 100) < 50) SpawnSystem(); //Note: Hard coded Randoms 001
@@ -126,8 +132,9 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void OnDisable()
     {
+        BombEplode.BombExplosionEvent -= () => PauseSpawning();
         Player.gameOver -= PlayerIsDead;
         StartGameAsteroids.GameStarted -= GameStarted;
-        BackGroundMusic_Events._BGM_events -= () => { _beatEnemySpawner = true; };
+        BackGroundMusic_Events.BGMEvents -= () => { _beatEnemySpawner = true; };
     }
 }

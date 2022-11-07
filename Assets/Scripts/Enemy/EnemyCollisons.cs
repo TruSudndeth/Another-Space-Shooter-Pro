@@ -37,6 +37,12 @@ public class EnemyCollisons : MonoBehaviour
         }
     }
 
+    public void DestroyEnemy()
+    {
+        EnemyPointsEvent?.Invoke((int)_enemyPointValue);
+        DisableParent();
+    }
+
     private void DisableParent()
     {
         AudioManager.Instance.PlayAudioOneShot(_sfxType);

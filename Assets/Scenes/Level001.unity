@@ -243,26 +243,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &206008344 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5669655066000267626, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-    type: 3}
-  m_PrefabInstance: {fileID: 3497074787618936804}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &206008346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 206008344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3608d8dd8b87a674c8cd883fb8c1e7d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _alphaSpeed: 2
-  _shieldHealth: 3
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,6 +665,7 @@ MonoBehaviour:
   - {fileID: 7553858412400719953, guid: df840bcaee32e1942a5603dd2585d721, type: 3}
   _maxPool: 100
   _spawnRate: 0.1
+  _SpawnDelay: 5
 --- !u!1 &1439911904
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,6 +757,7 @@ MonoBehaviour:
   - {fileID: 8199417894411597980, guid: b5b942d4a2ba49347a2556417cb23d00, type: 3}
   - {fileID: 4879673912583380412, guid: d8c290ef8ca7c8b4cb18d46e26bd39fa, type: 3}
   - {fileID: 4747155658115944, guid: a5ad3b53c234b9040b754b2c2c9d8fc6, type: 3}
+  - {fileID: 5978479948048738441, guid: 3ace1df4275cdaf48815cba768b4ce0c, type: 3}
   _spawnRate: 7
   _spawnPowerUps: 0
 --- !u!4 &2122006682
@@ -869,31 +851,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5669655066000267626, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669655066000267631, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669655066000267631, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669655066000267631, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669655066000267631, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8536037456945010766, guid: 4407d9f9cc3d5254fa7f9cd7addcd216,
         type: 3}
       propertyPath: m_RootOrder

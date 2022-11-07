@@ -8,6 +8,7 @@ public class PowerUpBehavior : MonoBehaviour
     [SerializeField] private Types.PowerUps _powerUpType;
     [Space]
     [SerializeField] private float _speed = 3.0f;
+    [Space]
     private float _cameraAspecRatio = 1.7777778f;
     private Vector3 _move = Vector3.down;
     private Vector2 _xyBounds = Vector2.zero;
@@ -55,8 +56,9 @@ public class PowerUpBehavior : MonoBehaviour
                         playerPowerups.AddHealth();
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.Rocket:
-                        //Todo: Add Rockets to playerPowerups.AddRocket();
+                    case Types.PowerUps.Bomb:
+                        //Todo: Add Bombs to Player
+                        playerPowerups.UseBomb();
                         gameObject.SetActive(false);
                         break;
                     default:

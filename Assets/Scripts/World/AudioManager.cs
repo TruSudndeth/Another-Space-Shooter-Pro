@@ -125,6 +125,9 @@ public class AudioManager : MonoBehaviour
             case Types.SFX.BossLaser:
                 clip = 19;
                 break;
+            case Types.SFX.BombAlert:
+                clip = 20;
+                break;
         }
         if (clip > _clipAssets.Count - 1) clip = 0;
         return _clipAssets[clip];

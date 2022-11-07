@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _fired = false;
     [Space]
     private Transform _myCamera;
-    [SerializeField] private Vector3 _offset = new Vector3(0, 0.8f, 0);
+    [SerializeField] private Vector3 _offset = new Vector3(0, 0.8f, 0); //DeleteLine: Not used
     [SerializeField] private float _singeFireRate = 0.25f;
     [SerializeField] private float _trippleFireRate = 0.5f;
     [SerializeField] private bool _isTrippleShot = false;
@@ -64,10 +64,21 @@ public class Player : MonoBehaviour
     private bool _resetShield = false;
     [SerializeField] private bool _updateScore = false;
     private bool _gameStarted = false;
+    private Rigidbody _rigidbody;
+    [Space]
+    private bool _useBomb = false;
     
     
     private void Awake()
     {
+        if (TryGetComponent(out Rigidbody rigidbody))
+        {
+            _rigidbody = rigidbody;
+        }
+        else
+        {
+            Debug.LogError("Rigidbody not found on Player");
+        }
         _ammoBankMax = _ammoBank;
         _myCamera = Camera.main.transform;
         _tripleShot = new(){_primaryLaserSpawn, _dualLaser_LSpawn, _dualLaser_RSpawn};
@@ -114,6 +125,7 @@ public class Player : MonoBehaviour
         else if (_actuateThrust) _actuateThrust = false;
         _movePlayerFixed = canThrust ? AddThrust() * _movePlayerFixed.normalized + _movePlayerFixed : _movePlayerFixed;
         _movePlayerFixed = OutOfBounds.CalculateMove(transform, _movePlayerFixed, _xyBounds);
+        if (_movePlayerFixed == Vector2.zero) _rigidbody.velocity = Vector3.zero;
     }
     
     private float AddThrust()
@@ -167,6 +179,10 @@ public class Player : MonoBehaviour
         _shield.gameObject.SetActive(true);
         _isShieldActive = true;
     }
+    public void UseBomb()
+    {
+        _useBomb = true;
+    }
     private void Damage(int damage)
     {
         //Shield Damage
@@ -218,8 +234,16 @@ public class Player : MonoBehaviour
     }
     private void UseLaserPool()
     {
+        Debug.Log("LaserPool is called"); //DeleteLIne: Debug.log
         if (_gameStarted)
         {
+            if (_useBomb)
+            {
+                _fired = false;
+                _useBomb = false;
+                LaserManager.Instance.CallBombPool(transform);
+                return;
+            }
             if (_ammoBank <= 0)
             {
                 //Todo: Sound Invoke Out of ammo sound FX
@@ -267,6 +291,7 @@ public class Player : MonoBehaviour
     }
     public void AddHealth()
     {
+        //Todo: Add Health Sound FX
         if (_health == 3) return;
         _health++;
         if (_health == 3)

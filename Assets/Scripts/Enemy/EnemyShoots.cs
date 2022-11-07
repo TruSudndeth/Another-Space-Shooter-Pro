@@ -14,7 +14,7 @@ public class EnemyShoots : MonoBehaviour
     {
         //_laserSpawnPoints = new(3);
         _fired = false;
-        BackGroundMusic_Events._BGM_events += Shoot;
+        BackGroundMusic_Events.BGMEvents += Shoot;
     }
 
     private void Shoot()
@@ -39,6 +39,6 @@ public class EnemyShoots : MonoBehaviour
 
     private void OnDisable()
     {
-        BackGroundMusic_Events._BGM_events -= Shoot;
+        BackGroundMusic_Events.BGMEvents -= Shoot;
     }
 }

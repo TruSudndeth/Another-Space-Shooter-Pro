@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3781520208192830823}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.9351969, y: 0.213408, z: 0.1453743}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,9 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de467f479c735a469a098d7340c14c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bomb: {fileID: 7037138832937195801, guid: ee962d11fdfd95a47840ec0e79ba2482, type: 3}
   _enemyLaser: {fileID: 2100000, guid: ea65f2ece1b5a6f468c33e4dd07cca9b, type: 2}
   _playerLaser: {fileID: 2100000, guid: f562c6ad7d9470d42848bee90528ce03, type: 2}
   _laserAsset: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
     type: 3}
   _maxPool: 15
   _iterateLaser: 0
+  _maxBombPool: 3

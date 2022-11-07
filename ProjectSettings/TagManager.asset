@@ -8,6 +8,8 @@ TagManager:
   - Astroids
   - EnemyLaser
   - PlayerLaser
+  - Laser
+  - Collectible
   layers:
   - Default
   - TransparentFX

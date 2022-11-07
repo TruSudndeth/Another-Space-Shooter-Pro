@@ -9830,13 +9830,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8536037456945169518}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
+  m_Mass: 50
+  m_Drag: 5
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 8
   m_CollisionDetection: 0
 --- !u!64 &8536037456947276488
 MeshCollider:
@@ -9870,12 +9870,15 @@ MonoBehaviour:
   _maxBank: 45
   _speed: 5
   _speedBoostTimeout: 5
+  _thrustDistance: 3
+  _thrustCoolDown: 10
   _fired: 0
   _offset: {x: 0, y: 0.8, z: 0}
   _singeFireRate: 0.25
   _trippleFireRate: 0.5
   _isTrippleShot: 0
   _powerUpTimeout: 5
+  _ammoBank: 15
   _primaryLaserSpawn: {fileID: 8536037456945010754}
   _dualLaser_LSpawn: {fileID: 8536037456945010756}
   _dualLaser_RSpawn: {fileID: 8536037456945010764}
@@ -10136,6 +10139,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf56928f3d8033943b1d1197d2fd2442, type: 3}
+--- !u!1 &5669655066000267626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8105445064172275415, guid: bf56928f3d8033943b1d1197d2fd2442,
+    type: 3}
+  m_PrefabInstance: {fileID: 4526955905071062973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &206008346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669655066000267626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3608d8dd8b87a674c8cd883fb8c1e7d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alphaSpeed: 2
+  _shieldHealth: 3
 --- !u!4 &5669655066000267629 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8105445064172275408, guid: bf56928f3d8033943b1d1197d2fd2442,
