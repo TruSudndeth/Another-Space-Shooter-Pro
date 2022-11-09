@@ -8,10 +8,10 @@ public class CameraShake : MonoBehaviour
 {
     [SerializeField] private float shakeTime = 0.5f;
     private float _shakeTimer = 0;
-    private CinemachineVirtualCamera _CMVCamera;
+    private CinemachineVirtualCamera _cameraCMV;
     void Start()
     {
-        _CMVCamera = GetComponent<CinemachineVirtualCamera>();
+        _cameraCMV = GetComponent<CinemachineVirtualCamera>();
         Player.OnPlayerDamage += ShakeCamera;
     }
     
@@ -24,10 +24,10 @@ public class CameraShake : MonoBehaviour
             if(_shakeTimer >= 1)
             {
                 _shakeTimer = 0;
-                _CMVCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
+                _cameraCMV.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
             }
             float lerpShake = Mathf.Lerp(0, 1, _shakeTimer);
-            _CMVCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = lerpShake;
+            _cameraCMV.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = lerpShake;
         }
     }
 

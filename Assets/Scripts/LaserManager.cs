@@ -7,6 +7,8 @@ using UnityEngine;
 public class LaserManager : MonoBehaviour
 {
     public static LaserManager Instance { get; private set; }
+    
+    [Space]
     [SerializeField] private Transform _bomb;
     [SerializeField] private Material _enemyLaser;
     [SerializeField] private Material _playerLaser;

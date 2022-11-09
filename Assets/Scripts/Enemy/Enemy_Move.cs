@@ -5,7 +5,7 @@ using UnityEngine;
 //Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
 public class Enemy_Move : MonoBehaviour
 {
-    private float _cameraAspecRatio = 1.7777778f;
+    private readonly float _cameraAspecRatio = 1.7777778f;
     private float _xBounds = 0;
     private float _yBounds = 0;
     private Camera _camera;

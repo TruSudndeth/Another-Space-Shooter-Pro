@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    private int _sceneIndex = 0; //Todo: delete this line
+    private int _sceneIndex = 0; //DeleteLine: Not used
     private void Start()
     {
         InputManager.Instance.Exit.started += _ => ExitGame();
-        UI._loadScene += LoadScene;
-        UI._resetLevel += RestartCurrentLevel;
+        UI.Load_Scene += LoadScene;
+        UI.ResetLevel += RestartCurrentLevel;
         if(Instance)
         { 
             Destroy(gameObject);
@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         InputManager.Instance.Exit.started -= _ => ExitGame();
-        UI._loadScene -= LoadScene;
-        UI._resetLevel -= RestartCurrentLevel;
+        UI.Load_Scene -= LoadScene;
+        UI.ResetLevel -= RestartCurrentLevel;
     }
     void LoadScene(Types.GameState gameState)
     {

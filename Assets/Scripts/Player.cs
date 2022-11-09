@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public delegate void GameOver();
-    public static GameOver gameOver;
+    public static GameOver Game_Over;
     public delegate void Points(int points);
     public static Points Score;
     public delegate void PlayerHealth(int health);
@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public delegate void PlayerDamage(float Duration);
     public static PlayerDamage OnPlayerDamage;
     public int Health { get { return _health; } set { Damage(value); } }
+    
     [Space]
     [SerializeField] private Types.SFX _playerDeath;
     private int _playerScore = 0;
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
     private List<Transform> _tripleShot;
     private float _canFire = 0;
     private float _cameraOrthoSize = 5;
-    private float _cameraAspectRatio = 1.7777778f;
+    private readonly float _cameraAspectRatio = 1.7777778f;
     private float _xBounds = 0;
     private float _yBounds = 0;
     private Vector2 _xyBounds = Vector2.zero;
@@ -333,7 +334,7 @@ public class Player : MonoBehaviour
         InputManager.Instance.Thrust.started -= _ => _actuateThrust = true;
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;
         InputManager.Instance.Fire.performed -= _ => _fired = true; //??? Look into this unsubscribe
-        gameOver?.Invoke();
+        Game_Over?.Invoke();
         InputManager.Instance.EnablePlayerIO(false);
     }
     

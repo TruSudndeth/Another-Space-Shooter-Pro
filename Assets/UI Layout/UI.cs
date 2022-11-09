@@ -13,12 +13,12 @@ using UnityEngine.UIElements;
 public class UI : MonoBehaviour
 {
     public delegate void Reset();
-    public static Reset _resetLevel;
+    public static Reset ResetLevel;
     public delegate void LoadScene(Types.GameState index);
-    public static LoadScene _loadScene;
+    public static LoadScene Load_Scene;
         
     [Space]
-    private UIDocument _UIDoc;
+    private UIDocument _docUI;
     [SerializeField] private VisualTreeAsset _mainMenu_UI;
     [SerializeField] private VisualTreeAsset _gamePlay_UI;
     private Types.GameState _gameState; 
@@ -38,14 +38,14 @@ public class UI : MonoBehaviour
     private VisualElement _healthBar;
     private int _score = 0;
     private Label _scoreLabel;
-    private Label _Ammo;
+    private Label _ammo;
     
     [Space]
     [SerializeField] private float _gameOverFlashTime = 1.0f;
     private Label _gameOver;
     private float _gameOverTime = 0.0f;
     private bool _isGameOver = false;
-    private bool _gameStarted = false;
+    private bool _gameStarted = false; //DeleteLine: not Used ???
     private Label _restartText;
     
     [Space]
@@ -77,7 +77,7 @@ public class UI : MonoBehaviour
             Player.UpdateAmmo += UpdateAmmo;
             Player.Score += UpdateScore;
             Player.UpdateHealth += UpdateHealth;
-            Player.gameOver += GameOver;
+            Player.Game_Over += GameOver;
             StartGameAsteroids.GameStarted += GameStarted;
 
             UpdateScore(0);
@@ -108,7 +108,7 @@ public class UI : MonoBehaviour
     {
         InputManager.Instance.EnablePlayerIO(true);
         _gameState = Types.GameState.Level1;
-        _loadScene?.Invoke(_gameState);
+        Load_Scene?.Invoke(_gameState);
     }
     private void AudioEnableDisable()
     {
@@ -120,7 +120,7 @@ public class UI : MonoBehaviour
     {
         if(_hasRestarted)
         {
-            _resetLevel?.Invoke();
+            ResetLevel?.Invoke();
             _hasRestarted = false;
             InputManager.Instance.EnableRestart(false);
         }
@@ -178,7 +178,7 @@ public class UI : MonoBehaviour
     {
         if (!_isMainMenu)
         {
-            _Ammo.text = "Ammo: " + _ammo;
+            this._ammo.text = "Ammo: " + _ammo;
         }
     }
     private void GameOver()
@@ -203,12 +203,12 @@ public class UI : MonoBehaviour
     {
         if (TryGetComponent(out UIDocument uiDoc))
         {
-            _UIDoc = uiDoc;
+            _docUI = uiDoc;
         }
         else Debug.Log("No UI Document Component" + transform);
         
-        _isMainMenu = _UIDoc.visualTreeAsset == _mainMenu_UI ? true : false;
-        root = _UIDoc.rootVisualElement;
+        _isMainMenu = _docUI.visualTreeAsset == _mainMenu_UI ? true : false;
+        root = _docUI.rootVisualElement;
         
 
         if (!_isMainMenu)
@@ -225,15 +225,15 @@ public class UI : MonoBehaviour
         if (!_isMainMenu)
         {
             //Reff
-            _UIDoc.visualTreeAsset = _gamePlay_UI;
-            root = _UIDoc.rootVisualElement;
+            _docUI.visualTreeAsset = _gamePlay_UI;
+            root = _docUI.rootVisualElement;
 
             _thrusterCoolDown = root.Q<ProgressBar>("ThrusterCoolDown");
             _healthBar = root.Q<VisualElement>("HealthBar");
             _scoreLabel = root.Q<Label>("Score");
             _gameOver = root.Q<Label>("GameOver");
             _restartText = root.Q<Label>("Restart_Text");
-            _Ammo = root.Q<Label>("Ammo");
+            _ammo = root.Q<Label>("Ammo");
 
             //SetUp
             _healthBar.style.backgroundImage = _healthStatusStyle[_healthStatus.Count - 1];
@@ -266,7 +266,7 @@ public class UI : MonoBehaviour
             InputManager.Instance.EnableRestart(false);
             Player.Score -= UpdateScore;
             Player.UpdateHealth -= UpdateHealth;
-            Player.gameOver -= GameOver;
+            Player.Game_Over -= GameOver;
             Player.UpdateAmmo -= UpdateAmmo;
         }
         else if(_isMainMenu)

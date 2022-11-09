@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class EnemyCollisons : MonoBehaviour
 {
-    [SerializeField] private Types.SFX _sfxType;
-    [SerializeField] private Types.Points _enemyPointValue;
-    private bool _hasChildren = false;
     //create a delegate for the event of enemyPoints
     public delegate void EnemyPoints(int points);
     public static event EnemyPoints EnemyPointsEvent;
+    
+    [SerializeField] private Types.SFX _sfxType;
+    [SerializeField] private Types.Points _enemyPointValue;
+    private bool _hasChildren = false;
 
     private void Awake()
     {

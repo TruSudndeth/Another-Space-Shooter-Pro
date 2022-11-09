@@ -12,8 +12,8 @@ public class EnemySpawnManager : MonoBehaviour
     [Space]
     private float _boundsOffset = 0;
     [Space]
-    private Camera _camera;
-    private float _cameraAspecRatio = 1.7777778f;
+    private Camera _camera; //DeleteLine: Not used ???
+    private readonly float _cameraAspecRatio = 1.7777778f;
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private int _maxPool = 10;
@@ -27,7 +27,7 @@ public class EnemySpawnManager : MonoBehaviour
     private bool _beatEnemySpawner = false;
     private int _difficulty = 1;
     [Space]
-    [SerializeField] private float _SpawnDelay = 5.0f; //Temp: Timmer might delete variable Timmer
+    [SerializeField] private float _spawnDelay = 5.0f; //Temp: Timmer might delete variable Timmer
     private float _canSpawnTime = 0.0f;
 
     private void Awake()
@@ -41,13 +41,13 @@ public class EnemySpawnManager : MonoBehaviour
     void Start()
     {
         BombEplode.BombExplosionEvent += () => PauseSpawning();
-        StartGameAsteroids._difficulty += () => GameDificulty();
+        StartGameAsteroids.SetDifficulty += () => GameDificulty();
         BackGroundMusic_Events.BGMEvents += () => { _beatEnemySpawner = true; };
         StartGameAsteroids.GameStarted += GameStarted;
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
-        Player.gameOver += PlayerIsDead;
+        Player.Game_Over += PlayerIsDead;
     }
     
     private void PauseSpawning()
@@ -73,7 +73,7 @@ public class EnemySpawnManager : MonoBehaviour
         //Temp: Timmer might not have to spawn enemies with time 
         //Temp: Timmer if (_canSpawn + _spawnRate > Time.time) return;
         //Note: Spawn manager was stopped during game play for a brif moment
-        if(_beatEnemySpawner && _SpawnDelay + _canSpawnTime < Time.time)
+        if(_beatEnemySpawner && _spawnDelay + _canSpawnTime < Time.time)
         {
             SpawnSystem();
             if (_difficulty > 1 && Random.Range(0, 100) < 50) SpawnSystem(); //Note: Hard coded Randoms 001
@@ -133,7 +133,7 @@ public class EnemySpawnManager : MonoBehaviour
     private void OnDisable()
     {
         BombEplode.BombExplosionEvent -= () => PauseSpawning();
-        Player.gameOver -= PlayerIsDead;
+        Player.Game_Over -= PlayerIsDead;
         StartGameAsteroids.GameStarted -= GameStarted;
         BackGroundMusic_Events.BGMEvents -= () => { _beatEnemySpawner = true; };
     }

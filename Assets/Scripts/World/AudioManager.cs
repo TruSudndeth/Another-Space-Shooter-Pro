@@ -7,6 +7,8 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
+    
+    [Space]
     [SerializeField] private Transform _audioSourcePrefab;
     [Tooltip ("Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4," +
         "BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11" +
@@ -14,6 +16,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private List<AudioClip> _clipAssets;
     private List<DisableOnComplete> _clipPool;
     private int _poolMax = 10;
+    
     [Space]
     private Types.SFX _sfx;
     private float _clipDuplicates = 0.1f;
