@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     public static PlayerAmmo UpdateAmmo;
     public delegate void PlayerThruster(float Duration);
     public static PlayerThruster Thruster;
+    public delegate void PlayerDamage(float Duration);
+    public static PlayerDamage OnPlayerDamage;
     public int Health { get { return _health; } set { Damage(value); } }
     [Space]
     [SerializeField] private Types.SFX _playerDeath;
@@ -71,6 +73,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _bombTimeout = 5.0f;
     private bool _useBomb = false;
     private float _bombTime = 0.0f;
+    [Space]
+    [SerializeField] private float _playerDamageShake = 0.5f;
 
 
     private void Awake()
@@ -198,8 +202,8 @@ public class Player : MonoBehaviour
     }
     private void Damage(int damage)
     {
-        //Shield Damage
-        if (_isShieldActive)
+        OnPlayerDamage?.Invoke(_playerDamageShake);
+        if (_isShieldActive) //Shield Damage
         {
             if (_shield.gameObject.TryGetComponent(out ShieldBehavior shieldB))
             {
