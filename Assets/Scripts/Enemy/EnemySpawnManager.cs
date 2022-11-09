@@ -42,7 +42,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         BombEplode.BombExplosionEvent += () => PauseSpawning();
         StartGameAsteroids.SetDifficulty += () => GameDificulty();
-        BackGroundMusic_Events.BGMEvents += () => { _beatEnemySpawner = true; };
+        BackGroundMusic_Events.BGM_Events += () => { _beatEnemySpawner = true; };
         StartGameAsteroids.GameStarted += GameStarted;
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
@@ -135,6 +135,6 @@ public class EnemySpawnManager : MonoBehaviour
         BombEplode.BombExplosionEvent -= () => PauseSpawning();
         Player.Game_Over -= PlayerIsDead;
         StartGameAsteroids.GameStarted -= GameStarted;
-        BackGroundMusic_Events.BGMEvents -= () => { _beatEnemySpawner = true; };
+        BackGroundMusic_Events.BGM_Events -= () => { _beatEnemySpawner = true; };
     }
 }

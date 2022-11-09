@@ -14,11 +14,11 @@ public class BeatScale : MonoBehaviour
         _initialScale = transform.localScale;
         float _setScale = _scale / 100 + 1;
         _targetScale = transform.localScale * _setScale;
-        BackGroundMusic_Events.BGMEvents += ScaleBeat;
+        BackGroundMusic_Events.BGM_Events += ScaleBeat;
     }
     private void OnDisable()
     {
-        BackGroundMusic_Events.BGMEvents -= ScaleBeat;
+        BackGroundMusic_Events.BGM_Events -= ScaleBeat;
     }
     private void ScaleBeat()
     {

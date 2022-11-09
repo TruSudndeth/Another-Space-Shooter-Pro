@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
+  _shiftProbability: 1
 --- !u!114 &2686800014187623707
 MonoBehaviour:
   m_ObjectHideFlags: 0

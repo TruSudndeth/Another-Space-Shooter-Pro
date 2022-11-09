@@ -72,7 +72,7 @@ public class UI : MonoBehaviour
             InputManager.Instance.Restart.started += _ => _hasRestarted = true;
             InputManager.Instance.EnablePlayerIO(true);
 
-            BackGroundMusic_Events.BGMEvents += () => _thrustBPM = true;
+            BackGroundMusic_Events.BGM_Events += () => _thrustBPM = true;
             Player.Thruster += ThrusterCoolDown;
             Player.UpdateAmmo += UpdateAmmo;
             Player.Score += UpdateScore;
@@ -260,7 +260,7 @@ public class UI : MonoBehaviour
     {
         if (!_isMainMenu)
         {
-            BackGroundMusic_Events.BGMEvents -= () => _thrustBPM = true;
+            BackGroundMusic_Events.BGM_Events -= () => _thrustBPM = true;
             Player.Thruster -= ThrusterCoolDown;
             InputManager.Instance.Restart.started -= _ => _hasRestarted = true;
             InputManager.Instance.EnableRestart(false);

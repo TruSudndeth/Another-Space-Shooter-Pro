@@ -13,7 +13,17 @@ public class Enemy_Move : MonoBehaviour
     [SerializeField] private float _speed = 4.0f;
     private bool _move = false;
 
+    [Space]
+    [SerializeField] private float _shiftSpeedMin = 0.5f;
+    [SerializeField] private float _ShiftSpeedMax = 2.0f;
+    private float _shiftSpeed = 0.5f;
+    private float _shiftProbability = 0.25f;
+    private bool _isShifting = false;
+    private float _randomShiftLocation;
 
+    //Todo: Eplayer behaviour to move towards player
+    //Todo: Eplayers All move Right all move left
+    //Todo: Eplayers all move towards player
     private void Awake()
     {
         _camera = Camera.main;
@@ -21,23 +31,48 @@ public class Enemy_Move : MonoBehaviour
         _xBounds = _yBounds * _cameraAspecRatio;
         _xyBounds = new Vector2(_xBounds, _yBounds);
     }
+    private void Start()
+    {
+        BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
+    }
     void FixedUpdate()
     {
         if (_move)
         {
-            Vector3 movePlayer = _speed * Vector3.down * Time.fixedDeltaTime;
-            movePlayer = OutOfBounds.CalculateMove(transform, movePlayer, _xyBounds);
-            if (movePlayer == Vector3.zero) gameObject.SetActive(false);
-            transform.Translate(movePlayer);
+            float fixedTime = Time.fixedDeltaTime;
+            Vector3 movePlayer = _speed * fixedTime * Vector3.down;
+
+            Vector3 shiftPlayer = ShiftWithBPM(fixedTime);
+            
+            movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
+            if (movePlayer.y == 0) gameObject.SetActive(false);
+            transform.position += movePlayer;
         }
+    }
+    private Vector3 ShiftWithBPM(float fixedTime)
+    {
+        if (_isShifting)
+        {
+            Vector3 shiftPlayer = _shiftSpeed * fixedTime * (Vector3.right) * Mathf.Sign(_randomShiftLocation);
+            return shiftPlayer;
+        }
+        else
+            return Vector3.zero;
     }
     private void OnEnable()
     {
+        Debug.Log("EShip Enabled");
+        _shiftProbability = Random.Range(0.0f, 1.0f);
+        _shiftSpeed = Random.Range(_shiftSpeedMin, _ShiftSpeedMax);
+        _randomShiftLocation = Random.Range(0.0f, 1.0f) <= _shiftProbability ? Random.Range(-_xBounds, _xBounds) :
+                _randomShiftLocation;
+        _randomShiftLocation = transform.position.x;
         _move = true;
     }
 
     private void OnDisable()
     {
+        BackGroundMusic_Events.BGM_Events -= () => _isShifting = !_isShifting;
         transform.position = Vector3.zero;
         _move = false;
     }

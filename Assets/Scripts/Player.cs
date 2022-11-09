@@ -203,6 +203,7 @@ public class Player : MonoBehaviour
     }
     private void Damage(int damage)
     {
+        //Todo: Make Shield Camera shake Damage less than player damage
         OnPlayerDamage?.Invoke(_playerDamageShake);
         if (_isShieldActive) //Shield Damage
         {
