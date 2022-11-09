@@ -7,6 +7,7 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     [SerializeField] private float shakeTime = 0.5f;
+    [SerializeField] [Range(1.0f,5.0f)] private float shakeAmplitude = 1f;
     private float _shakeTimer = 0;
     private CinemachineVirtualCamera _cameraCMV;
     void Start()
@@ -27,10 +28,9 @@ public class CameraShake : MonoBehaviour
                 _cameraCMV.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
             }
             float lerpShake = Mathf.Lerp(0, 1, _shakeTimer);
-            _cameraCMV.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = lerpShake;
+            _cameraCMV.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = lerpShake * shakeAmplitude;
         }
     }
-
     private void ShakeCamera(float damageDurationSec)
     {
         _shakeTimer = damageDurationSec;

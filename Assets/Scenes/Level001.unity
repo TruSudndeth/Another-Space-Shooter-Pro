@@ -768,7 +768,7 @@ MonoBehaviour:
   - {fileID: 7553858412400719953, guid: df840bcaee32e1942a5603dd2585d721, type: 3}
   _maxPool: 100
   _spawnRate: 0.1
-  _SpawnDelay: 5
+  _spawnDelay: 5
 --- !u!1 &1439911904
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,6 +904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeTime: 0.5
+  shakeAmplitude: 2.31
 --- !u!4 &2033705794 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 428331490918898395, guid: 32bf5c459d215124f92bc534fcf42ca5,
