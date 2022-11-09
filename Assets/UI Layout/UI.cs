@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -54,6 +55,16 @@ public class UI : MonoBehaviour
     [Space]
     private bool _hasRestarted = false;
 
+    [Space]
+    [SerializeField] private float _thrusterCoolDownTime = 1.0f;
+    private float _thrusterTime = 0.0f;
+    private bool _canThrust = false;
+    
+    private ProgressBar _thrusterCoolDown;
+    private VisualElement _thrusterColor;
+    private bool _thrustBPM = false;
+    //Todo: Listen for player thruster event
+
     private void Start()
     {
         if(!_isMainMenu)
@@ -61,6 +72,8 @@ public class UI : MonoBehaviour
             InputManager.Instance.Restart.started += _ => _hasRestarted = true;
             InputManager.Instance.EnablePlayerIO(true);
 
+            BackGroundMusic_Events.BGMEvents += () => _thrustBPM = true;
+            Player.Thruster += ThrusterCoolDown;
             Player.UpdateAmmo += UpdateAmmo;
             Player.Score += UpdateScore;
             Player.UpdateHealth += UpdateHealth;
@@ -88,7 +101,7 @@ public class UI : MonoBehaviour
     }
     private void GameStarted()
     {
-        _gameStarted = true;
+        _gameStarted = true; //DeleteLine: Variable not used ??
         _scoreLabel.visible = true;
     }
     private void LoadLevelOne()
@@ -119,8 +132,38 @@ public class UI : MonoBehaviour
             _gameOverTime = Time.time;
             _gameOver.style.visibility = _gameOver.style.visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden;
         }
+        if(!_canThrust)
+        {
+            UpdateThrusters(_thrusterCoolDownTime);
+        }
     }
-
+    private void ThrusterCoolDown(float time)
+    {
+        _thrusterTime = 0;
+        _thrusterCoolDownTime = time;
+        _canThrust = false;
+    }
+    private void UpdateThrusters(float timeDuration)
+    {
+        //GDHQ: Progress bar color;
+        if(_thrusterTime >= 1 && _thrustBPM)
+        {
+            _thrustBPM = false;
+            _canThrust = true;
+            _thrusterTime = 1;
+            _thrusterColor.style.backgroundColor = Color.green;
+            _thrusterCoolDown.value = Mathf.Lerp(0, 1, _thrusterTime);
+            return;
+        }
+        _thrusterTime += Time.fixedDeltaTime / timeDuration;
+        Color color = Color.Lerp(Color.red, Color.green, _thrusterTime);
+        if(_thrustBPM)
+        {
+            _thrustBPM = false;
+            _thrusterCoolDown.value = Mathf.Lerp(0, 1, _thrusterTime);
+            _thrusterColor.style.backgroundColor = color;
+        }
+    }
     private void UpdateScore(int points)
     {
         if(!_isMainMenu)
@@ -148,6 +191,7 @@ public class UI : MonoBehaviour
             InputManager.Instance.EnableRestart(true);
         }
     }
+
 
     private void UpdateHealth(int health)
     {
@@ -183,23 +227,41 @@ public class UI : MonoBehaviour
             //Reff
             _UIDoc.visualTreeAsset = _gamePlay_UI;
             root = _UIDoc.rootVisualElement;
+
+            _thrusterCoolDown = root.Q<ProgressBar>("ThrusterCoolDown");
             _healthBar = root.Q<VisualElement>("HealthBar");
             _scoreLabel = root.Q<Label>("Score");
             _gameOver = root.Q<Label>("GameOver");
             _restartText = root.Q<Label>("Restart_Text");
             _Ammo = root.Q<Label>("Ammo");
 
-            //Set
+            //SetUp
             _healthBar.style.backgroundImage = _healthStatusStyle[_healthStatus.Count - 1];
             _gameOver.visible = false;
             _restartText.visible = false;
             _scoreLabel.visible = false;
+
+            _thrusterCoolDown.highValue = 1;
+            _thrusterCoolDown.lowValue = 0;
+            _thrusterCoolDown.value = 0;
+            _thrusterColor = root.Q(className: "unity-progress-bar__progress");
+
+
+            //unity-progress-bar__progress
+            //unity-progress-bar__container
+            //unity-progress-bar__background
+            //unity-progress-bar__title-container
+
+
+            
         }
     }
     private void OnDisable()
     {
         if (!_isMainMenu)
         {
+            BackGroundMusic_Events.BGMEvents -= () => _thrustBPM = true;
+            Player.Thruster -= ThrusterCoolDown;
             InputManager.Instance.Restart.started -= _ => _hasRestarted = true;
             InputManager.Instance.EnableRestart(false);
             Player.Score -= UpdateScore;

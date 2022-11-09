@@ -44,7 +44,7 @@ public class CollectibleSpawnManager : MonoBehaviour
         {
             _currentSpawnTime = Time.time;
             int powerUpCount = _powerUpAssets.Count;
-            _powerups.Add(Instantiate(_powerUpAssets[RandomInt(powerUpCount)], RandomXSpawn(), Quaternion.identity, transform));
+            _powerups.Add(Instantiate(_powerUpAssets[RandomInt(powerUpCount)], RandomXSpawn(), Quaternion.identity, transform)); //Debugit: IndexOut of Range -1, < collection
         }
     }
 

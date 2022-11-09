@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public static PlayerHealth UpdateHealth;
     public delegate void PlayerAmmo(int ammo);
     public static PlayerAmmo UpdateAmmo;
+    public delegate void PlayerThruster(float Duration);
+    public static PlayerThruster Thruster;
     public int Health { get { return _health; } set { Damage(value); } }
     [Space]
     [SerializeField] private Types.SFX _playerDeath;
@@ -153,6 +155,7 @@ public class Player : MonoBehaviour
         if (_fired) UseLaserPool();
         if(_actuateThrust)
         {
+            Thruster?.Invoke(_thrustCoolDown);
             _actuateThrust = false;
             _thrustTimer = Time.time;
         }
