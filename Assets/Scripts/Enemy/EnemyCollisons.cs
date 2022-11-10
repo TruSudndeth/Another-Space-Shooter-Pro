@@ -14,11 +14,9 @@ public class EnemyCollisons : MonoBehaviour
 
     private void Awake()
     {
-        //This is dirty and a temp fix
+        //Todo: dirty and a temp fix
         _hasChildren = transform.parent.childCount > 0 && transform.parent.name != "EnemySpwanManager";
     }
-
-
     private void OnTriggerEnter(Collider other)
     {
         
@@ -37,13 +35,11 @@ public class EnemyCollisons : MonoBehaviour
             }
         }
     }
-
     public void DestroyEnemy()
     {
         EnemyPointsEvent?.Invoke((int)_enemyPointValue);
         DisableParent();
     }
-
     private void DisableParent()
     {
         AudioManager.Instance.PlayAudioOneShot(_sfxType);

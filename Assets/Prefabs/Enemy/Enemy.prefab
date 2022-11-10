@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7694785402383826994}
   - component: {fileID: 1901573231561009593}
   - component: {fileID: 6163445108804000952}
-  - component: {fileID: 5704261232608747397}
   - component: {fileID: 1221466559}
+  - component: {fileID: 5704261232608747397}
   - component: {fileID: 5177605654574377705}
   - component: {fileID: 2686800014187623707}
   m_Layer: 7
@@ -102,20 +102,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5704261232608747397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 518612957841860837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8a6a2e8d1f35eb45a589365130d81f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sfxType: 2
-  _enemyPointValue: 20
 --- !u!54 &1221466559
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -132,6 +118,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5704261232608747397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518612957841860837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a6a2e8d1f35eb45a589365130d81f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sfxType: 2
+  _enemyPointValue: 20
 --- !u!114 &5177605654574377705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
-  _shiftProbability: 1
+  _shiftSpeedMin: 0.5
+  _ShiftSpeedMax: 2
 --- !u!114 &2686800014187623707
 MonoBehaviour:
   m_ObjectHideFlags: 0

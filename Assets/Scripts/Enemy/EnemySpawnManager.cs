@@ -29,6 +29,9 @@ public class EnemySpawnManager : MonoBehaviour
     [Space]
     [SerializeField] private float _spawnDelay = 5.0f; //Temp: Timmer might delete variable Timmer
     private float _canSpawnTime = 0.0f;
+    [Space]
+    [SerializeField] private int _waveSize = 3;
+    private int _enemiesKilled = 0;
 
     private void Awake()
     {
@@ -40,6 +43,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     void Start()
     {
+        EnemyCollisons.EnemyPointsEvent += EnemiesKilled;
         BombEplode.BombExplosionEvent += () => PauseSpawning();
         StartGameAsteroids.SetDifficulty += () => GameDificulty();
         BackGroundMusic_Events.BGM_Events += () => { _beatEnemySpawner = true; };
@@ -49,18 +53,18 @@ public class EnemySpawnManager : MonoBehaviour
 
         Player.Game_Over += PlayerIsDead;
     }
-    
+
     private void PauseSpawning()
     {
         _canSpawnTime = Time.time;
     }
-    
+
     private void GameDificulty()
     {
         _difficulty++;
         _maxPoolTemp = _maxPool * _difficulty;
     }
-    
+
     private void GameStarted()
     {
         _maxPool = _maxPoolTemp;
@@ -73,16 +77,28 @@ public class EnemySpawnManager : MonoBehaviour
         //Temp: Timmer might not have to spawn enemies with time 
         //Temp: Timmer if (_canSpawn + _spawnRate > Time.time) return;
         //Note: Spawn manager was stopped during game play for a brif moment
-        if(_beatEnemySpawner && _spawnDelay + _canSpawnTime < Time.time)
+        if (_beatEnemySpawner && _spawnDelay + _canSpawnTime < Time.time)
         {
+            //return all active enemies int the list in hierarchy
+            int activeEnemies = _enemies.FindAll(x => x.gameObject.activeSelf).Count;
+            if (activeEnemies >= _waveSize - _enemiesKilled) return;
             SpawnSystem();
+            _beatEnemySpawner = false;
+            if (_difficulty <= 1) return;
             if (_difficulty > 1 && Random.Range(0, 100) < 50) SpawnSystem(); //Note: Hard coded Randoms 001
             if (_difficulty > 2 && Random.Range(0, 100) < 80) SpawnSystem(); //Note: Hard coded Randoms 002
-            _beatEnemySpawner = false;
         }
-        // Temp: Timmer delete line _canSpawn = Time.time;
     }
-
+    private void EnemiesKilled(int notUsed)
+    {
+        _enemiesKilled++;
+        if (_enemiesKilled >= _waveSize)
+        {
+            _enemiesKilled = 0;
+            _waveSize += Random.Range(1,3);
+            _canSpawnTime = Time.time;
+        }
+    }
     private void SpawnSystem()
     {
             if (_enemies.Count < _maxPool && !_isPoolMaxed)
@@ -132,6 +148,7 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void OnDisable()
     {
+        EnemyCollisons.EnemyPointsEvent -= EnemiesKilled;
         BombEplode.BombExplosionEvent -= () => PauseSpawning();
         Player.Game_Over -= PlayerIsDead;
         StartGameAsteroids.GameStarted -= GameStarted;
