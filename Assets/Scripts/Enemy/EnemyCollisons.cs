@@ -30,6 +30,7 @@ public class EnemyCollisons : MonoBehaviour
         {
             if(other.TryGetComponent(out Player _input))
             {
+                EnemyPointsEvent?.Invoke(0);
                 _input.Health = 1;
                 DisableParent();
             }
