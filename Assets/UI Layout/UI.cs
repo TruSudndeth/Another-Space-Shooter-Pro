@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -174,11 +175,12 @@ public class UI : MonoBehaviour
             _scoreLabel.text = "Score: " + _score;
         }
     }
-    private void UpdateAmmo(int _ammo)
+    private void UpdateAmmo(int _ammo, int _maxAmmo)
     {
         if (!_isMainMenu)
         {
-            this._ammo.text = "Ammo: " + _ammo;
+            StringBuilder ammoText = new(String.Format("Ammo: {0}/{1}", _ammo, _maxAmmo));
+            this._ammo.text = ammoText.ToString();
         }
     }
     private void GameOver()

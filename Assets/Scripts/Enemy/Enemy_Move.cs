@@ -53,7 +53,7 @@ public class Enemy_Move : MonoBehaviour
     {
         if (_isShifting)
         {
-            Vector3 shiftPlayer = _shiftSpeed * fixedTime * (Vector3.right) * Mathf.Sign(_randomShiftLocation);
+            Vector3 shiftPlayer = _shiftSpeed * fixedTime * Mathf.Sign(_randomShiftLocation) * (Vector3.right);
             return shiftPlayer;
         }
         else
@@ -61,9 +61,9 @@ public class Enemy_Move : MonoBehaviour
     }
     private void OnEnable()
     {
-        Debug.Log("EShip Enabled");
         _shiftProbability = Random.Range(0.0f, 1.0f);
         _shiftSpeed = Random.Range(_shiftSpeedMin, _ShiftSpeedMax);
+        //Todo: Add a zero probability. (straight)
         _randomShiftLocation = Random.Range(0.0f, 1.0f) <= _shiftProbability ? Random.Range(-_xBounds, _xBounds) :
                 _randomShiftLocation;
         _randomShiftLocation = transform.position.x;

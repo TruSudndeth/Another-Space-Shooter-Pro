@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public static Points Score;
     public delegate void PlayerHealth(int health);
     public static PlayerHealth UpdateHealth;
-    public delegate void PlayerAmmo(int ammo);
+    public delegate void PlayerAmmo(int ammo, int maxAmmo);
     public static PlayerAmmo UpdateAmmo;
     public delegate void PlayerThruster(float Duration);
     public static PlayerThruster Thruster;
@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
     {
         //Todo: Ammo Reload Sound effect
         _ammoBank = _ammoBankMax;
-        UpdateAmmo(_ammoBank);
+        UpdateAmmo(_ammoBank, _ammoBankMax);
     }
 
     private void FixedUpdate()
@@ -270,7 +270,7 @@ public class Player : MonoBehaviour
                 return;
             } 
             _ammoBank--;
-            UpdateAmmo?.Invoke(_ammoBank);
+            UpdateAmmo?.Invoke(_ammoBank, _ammoBankMax);
         }
         int tripleShotIndex = 0;
         _fired = false;
@@ -300,7 +300,7 @@ public class Player : MonoBehaviour
     {
         _gameStarted = true;
         _ammoBank = _ammoBankMax;
-        UpdateAmmo?.Invoke(_ammoBank);
+        UpdateAmmo?.Invoke(_ammoBank, _ammoBankMax);
     }
     public void UpdateScore(int points)
     {
