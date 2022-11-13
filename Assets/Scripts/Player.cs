@@ -77,7 +77,6 @@ public class Player : MonoBehaviour
     [Space]
     [SerializeField] private float _playerDamageShake = 0.5f;
 
-
     private void Awake()
     {
         if (TryGetComponent(out Rigidbody rigidbody))
@@ -136,19 +135,6 @@ public class Player : MonoBehaviour
         _movePlayerFixed = OutOfBounds.CalculateMove(transform, _movePlayerFixed, _xyBounds);
         if (_movePlayerFixed == Vector2.zero) _rigidbody.velocity = Vector3.zero;
     }
-    
-    private float AddThrust()
-    {
-        return _thrustDistance;
-    }
-
-    public void AddAmmo()
-    {
-        //Todo: Ammo Reload Sound effect
-        _ammoBank = _ammoBankMax;
-        UpdateAmmo(_ammoBank, _ammoBankMax);
-    }
-
     private void FixedUpdate()
     {
         //GDHQ: New Projectile 5 Second Time out.
@@ -173,18 +159,54 @@ public class Player : MonoBehaviour
         if (_shieldTime + _shieldTimeout <= Time.time && _isShieldActive)
             Damage(0);
     }
+    public void AddHealth()
+    {
+        //Todo: Add a negative Override to health
+        //Override will have a 50% chance to remove a health else add health can kill you
+        //Todo: Add Health Sound FX
+        if (_health == 3) return;
+        _health++;
+        if (_health == 3)
+        {
+            _damageLeftENG.SetActive(false);
+            _damageRighENG.SetActive(false);
+        }
+        else if (_health == 2)
+        {
+            _damageRighENG.SetActive(false);
+        }
+        UpdateHealth?.Invoke(_health);
+    }
+    private float AddThrust()
+    {
+        return _thrustDistance;
+    }
+    public void AddAmmo()
+    {
+        //Todo: Add a negative overide to Ammo
+        //Override will ony have a 50% change to give full ammo else give 3
+        //Todo: Ammo Reload Sound effect
+        _ammoBank = _ammoBankMax;
+        UpdateAmmo(_ammoBank, _ammoBankMax);
+    }
     public void SpeedBoost()
     {
+        //Todo: Add a negative override to speed boost
+        //Override will give the player an Ugly speed boost for a short time
         _isSpeedBoostActive = true;
         _speedBoostTime = Time.time;
     }
     public void TripleShotActive()
     {
+        //Todo: Add a negative override to tripple shot
+        //Override Tripple shot will take 3 x ammo
         _isTrippleShot = true;
         _powerUpTime = Time.time;
     }
     public void ShieldActive()
     {
+        //Todo: Add a negative override to Shield
+        //Override Shild has a 50% change to protect player from damage
         if (_isShieldActive)
         {
             _resetShield = true;
@@ -197,7 +219,7 @@ public class Player : MonoBehaviour
     }
     public void UseBomb()
     {
-        //GDHQ: New Projectile Prt 2 5 Second Time out.
+        //GDHQ: New Projectile Prt 2 for a 5 Second Time out.
         _useBomb = true;
         _bombTime = Time.time;
     }
@@ -306,22 +328,6 @@ public class Player : MonoBehaviour
     {
         _playerScore += points;
         Score?.Invoke(_playerScore);
-    }
-    public void AddHealth()
-    {
-        //Todo: Add Health Sound FX
-        if (_health == 3) return;
-        _health++;
-        if (_health == 3)
-        {
-            _damageLeftENG.SetActive(false);
-            _damageRighENG.SetActive(false);
-        }
-        else if (_health == 2)
-        {
-            _damageRighENG.SetActive(false);
-        }
-        UpdateHealth?.Invoke(_health);
     }
     private void SubscribeToInputs()
     {

@@ -94,6 +94,18 @@ public class UI : MonoBehaviour
             _quitBTN.clicked += Application.Quit;
             _optionsBTN.clicked += AudioEnableDisable;
             _startBTN.clicked += LoadLevelOne;
+
+            _startBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+            _optionsBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+            _quitBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+            
+            _startBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+            _optionsBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+            _quitBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+            
+            //Todo: Add Audio Settings
+            //_musicSlider.RegisterValueChangedCallback((evt) => _musicVolume = evt.newValue);
+            //_soundSlider.RegisterValueChangedCallback((evt) => _soundVolume = evt.newValue);
         }
         else
         {
@@ -107,6 +119,7 @@ public class UI : MonoBehaviour
     }
     private void LoadLevelOne()
     {
+        //Play start button Audio
         InputManager.Instance.EnablePlayerIO(true);
         _gameState = Types.GameState.Level1;
         Load_Scene?.Invoke(_gameState);

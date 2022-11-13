@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    //Todo: Add a negative sound Effect for negative powerups.
     public static AudioManager Instance { get; private set; }
     
     [Space]
@@ -28,6 +29,7 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }else
         {
+            DontDestroyOnLoad(gameObject);
             Instance = this;
         }
     }
@@ -133,6 +135,12 @@ public class AudioManager : MonoBehaviour
                 break;
             case Types.SFX.ErrorSound:
                 clip = 21;
+                break;
+            case Types.SFX.UI_Hover:
+                clip = 22;
+                break;
+            case Types.SFX.UI_Click:
+                clip = 23;
                 break;
         }
         if (clip > _clipAssets.Count - 1) clip = 0;

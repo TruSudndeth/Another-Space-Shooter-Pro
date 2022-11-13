@@ -40,6 +40,6 @@ public static class Types
         Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4,
         BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11,
         LaserDamage01 = 12, LaserDamage02 = 13, LaserDamage03 = 14, LaserDamage04 = 15, LaserDamage05 = 16, EnemyLaser = 17,
-        MiniBossLaser = 18, BossLaser = 19, BombAlert = 20, ErrorSound = 21
+        MiniBossLaser = 18, BossLaser = 19, BombAlert = 20, ErrorSound = 21, UI_Hover = 22, UI_Click = 23
     }
 }
