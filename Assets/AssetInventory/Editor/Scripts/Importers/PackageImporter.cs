@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace AssetInventory
 {
-    public sealed class PackageImporter : AssertImporter
+    public sealed class PackageImporter : AssetImporter
     {
         private const float MAX_META_DATA_WAIT_TIME = 30f;
         private const int BREAK_INTERVAL = 50;
@@ -103,41 +103,49 @@ namespace AssetInventory
             if (!CancellationRequested)
             {
                 progressId = MetaProgress.Start("Discovering additional packages");
-                List<PackageInfo> projectPackages = AssetStore.GetProjectPackages().ToList();
-                MainCount = projectPackages.Count;
-                for (int i = 0; i < projectPackages.Count; i++)
+                PackageCollection packageCollection = AssetStore.GetProjectPackages();
+                if (packageCollection != null)
                 {
-                    if (CancellationRequested) break;
-
-                    PackageInfo package = projectPackages[i];
-                    if (package.source == PackageSource.BuiltIn) continue;
-
-                    MetaProgress.Report(progressId, i + 1, packages.Length, package.name);
-                    if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath
-
-                    // create asset
-                    Asset asset = new Asset(package);
-
-                    // skip unchanged or older 
-                    Asset existing = Fetch(asset);
-                    if (existing != null)
+                    List<PackageInfo> projectPackages = packageCollection.ToList();
+                    MainCount = projectPackages.Count;
+                    for (int i = 0; i < projectPackages.Count; i++)
                     {
-                        if (new SemVer(existing.Version) >= new SemVer(asset.Version)) continue;
-                        asset = existing.CopyFrom(package);
+                        if (CancellationRequested) break;
+
+                        PackageInfo package = projectPackages[i];
+                        if (package.source == PackageSource.BuiltIn) continue;
+
+                        MetaProgress.Report(progressId, i + 1, packages.Length, package.name);
+                        if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath
+
+                        // create asset
+                        Asset asset = new Asset(package);
+
+                        // skip unchanged or older 
+                        Asset existing = Fetch(asset);
+                        if (existing != null)
+                        {
+                            if (new SemVer(existing.Version) >= new SemVer(asset.Version)) continue;
+                            asset = existing.CopyFrom(package);
+                        }
+                        else
+                        {
+                            if (AssetInventory.Config.excludeByDefault) asset.Exclude = true;
+                        }
+
+                        // update progress only if really doing work to save refresh time in UI
+                        CurrentMain = $"{asset.SafeName} - {asset.Version}";
+                        MainProgress = i + 1;
+
+                        if (!string.IsNullOrWhiteSpace(asset.Location)) asset.PackageSize = await IOUtils.GetFolderSize(asset.Location);
+
+                        asset.CurrentState = Asset.State.InProcess;
+                        UpdateOrInsert(asset);
                     }
-                    else
-                    {
-                        if (AssetInventory.Config.excludeByDefault) asset.Exclude = true;
-                    }
-
-                    // update progress only if really doing work to save refresh time in UI
-                    CurrentMain = $"{asset.SafeName} - {asset.Version}";
-                    MainProgress = i + 1;
-
-                    if (!string.IsNullOrWhiteSpace(asset.Location)) asset.PackageSize = await IOUtils.GetFolderSize(asset.Location);
-
-                    asset.CurrentState = Asset.State.InProcess;
-                    UpdateOrInsert(asset);
+                }
+                else
+                {
+                    Debug.LogWarning("Could not retrieve list of project packages to scan.");
                 }
                 MetaProgress.Remove(progressId);
             }
@@ -185,6 +193,7 @@ namespace AssetInventory
                     importSpec.location = asset.Location;
                     await new MediaImporter().Index(importSpec, asset, true, true);
                 }
+                if (CancellationRequested) break;
 
                 asset.CurrentState = Asset.State.Done;
                 Persist(asset);

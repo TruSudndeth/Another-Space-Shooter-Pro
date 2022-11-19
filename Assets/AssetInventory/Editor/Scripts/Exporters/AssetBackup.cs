@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace AssetInventory
 {
-    public sealed class AssetBackup : AssertProgress
+    public sealed class AssetBackup : AssetProgress
     {
         private const string SEPARATOR = "-~-";
 
@@ -58,7 +58,7 @@ namespace AssetInventory
 
             string backupFolder = AssetInventory.GetBackupFolder();
             List<Asset> assets = DBAdapter.DB.Table<Asset>()
-                .Where(a => a.ForeignId > 0 && a.AssetSource != Asset.Source.Package && !a.Exclude && !string.IsNullOrEmpty(a.Version) && !string.IsNullOrEmpty(a.Location))
+                .Where(a => a.ForeignId > 0 && a.AssetSource != Asset.Source.Package && a.Backup && !a.Exclude && !string.IsNullOrEmpty(a.Version) && !string.IsNullOrEmpty(a.Location))
                 .ToList();
 
             MainCount = assets.Count;

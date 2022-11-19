@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AssetInventory
 {
-    public abstract class AssertImporter : AssertProgress
+    public abstract class AssetImporter : AssetProgress
     {
         protected Asset Fetch(Asset asset)
         {

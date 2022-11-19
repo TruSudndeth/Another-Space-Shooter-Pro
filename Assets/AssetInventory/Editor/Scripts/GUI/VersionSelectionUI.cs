@@ -54,10 +54,14 @@ namespace AssetInventory
                 {
                     GUI.backgroundColor = Color.yellow;
                 }
+#if UNITY_2023_1_OR_NEWER
+                if (version == _packageInfo.versions.recommended)
+#else
                 if (version == _packageInfo.versions.verified)
+#endif
                 {
                     GUI.backgroundColor = Color.green;
-                    attributes.Add("verified");
+                    attributes.Add("recommended");
                 }
                 if (AssetStore.IsInstalled(_packageInfo.name, version))
                 {

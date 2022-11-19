@@ -22,7 +22,7 @@ namespace AssetInventory
             }
             catch (Exception e)
             {
-                Debug.LogError($"Could not extract archive '{fileName}'. It is most likely corrupted: {e.Message}");
+                Debug.LogError($"Could not extract archive '{fileName}'. The process was either interrupted or the file is corrupted: {e.Message}");
             }
 
             gzipStream.Close();

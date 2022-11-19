@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AssetInventory
 {
-    public sealed class ZipImporter : AssertImporter
+    public sealed class ZipImporter : AssetImporter
     {
         private const int BREAK_INTERVAL = 30;
 
@@ -59,6 +59,9 @@ namespace AssetInventory
                 Persist(asset);
 
                 await IndexPackage(asset);
+                await Task.Yield();
+
+                if (CancellationRequested) break;
 
                 asset.CurrentState = Asset.State.Done;
                 Persist(asset);

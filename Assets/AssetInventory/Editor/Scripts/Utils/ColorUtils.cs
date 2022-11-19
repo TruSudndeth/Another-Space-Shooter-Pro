@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace AssetInventory
@@ -106,6 +107,61 @@ namespace AssetInventory
             if (colorCount.Count == 0) return Color.clear;
 
             return colorCount.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key;
+        }
+
+        public static float GetHue(Texture2D source)
+        {
+            if (source == null) return -1;
+
+            Color32[] texColors = source.GetPixels32();
+            int total = texColors.Length;
+            float r = 0;
+            float g = 0;
+            float b = 0;
+            float count = 0;
+
+            for (int i = 0; i < total; i++)
+            {
+                Color32 pixelColor = texColors[i];
+                if (pixelColor.a > .25f)
+                {
+                    count++;
+                    r += pixelColor.r;
+                    g += pixelColor.g;
+                    b += pixelColor.b;
+                }
+            }
+            return RGBToHue(r / 256f / count, g / 256f / count, b / 256f / count);
+        }
+
+        public static float ToHue(this Color color) => RGBToHue(color.r, color.g, color.b);
+
+        // adapted from https://stackoverflow.com/questions/23090019/fastest-formula-to-get-hue-from-rgb
+        public static float RGBToHue(float r, float g, float b)
+        {
+            float min = Mathf.Min(Mathf.Min(r, g), b);
+            float max = Mathf.Max(Mathf.Max(r, g), b);
+            if (min == max) return 0;
+            float delta = max - min;
+
+            float hue = 0;
+            if (r == max)
+            {
+                hue = (g - b) / delta;
+            }
+            else if (g == max)
+            {
+                hue = 2 + (b - r) / delta;
+            }
+            else if (b == max)
+            {
+                hue = 4 + (r - g) / delta;
+            }
+            hue *= 60;
+
+            if (hue < 0.0f) hue += 360;
+
+            return hue;
         }
 
         public static Texture FillTexture(Texture2D texture, Color color)

@@ -265,7 +265,7 @@ namespace AssetInventory
                 if (!Directory.Exists(_customFolder)) Directory.CreateDirectory(_customFolder);
             }
 
-            AssetDatabase.StartAssetEditing(); // TODO : will cause progress UI to stay on top and not close anymore
+            AssetDatabase.StartAssetEditing(); // TODO: will cause progress UI to stay on top and not close anymore
             try
             {
                 foreach (AssetInfo info in _importQueue.Where(info => info.ImportState == AssetInfo.ImportStateOptions.Queued))

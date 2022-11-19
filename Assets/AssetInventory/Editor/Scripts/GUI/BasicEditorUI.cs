@@ -6,7 +6,7 @@ namespace AssetInventory
 {
     public abstract class BasicEditorUI : EditorWindow
     {
-        protected Texture2D Logo
+        public static Texture2D Logo
         {
             get
             {
@@ -15,9 +15,9 @@ namespace AssetInventory
             }
         }
 
-        private Texture2D _logo;
+        private static Texture2D _logo;
 
-        private void LoadLogo()
+        private static void LoadLogo()
         {
             string logo = AssetDatabase.FindAssets("t:Texture2d asset-inventory-logo").FirstOrDefault();
             _logo = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(logo));

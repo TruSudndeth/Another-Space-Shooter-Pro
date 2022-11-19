@@ -3,14 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
-using UnityEngine;
 
 namespace AssetInventory
 {
-    public sealed class MediaImporter : AssertImporter
+    public sealed class MediaImporter : AssetImporter
     {
         private const int BREAK_INTERVAL = 30;
-
+ 
         public async Task Index(FolderSpec spec, Asset attachedAsset = null, bool storeRelativePath = false, bool actAsSubImporter = false)
         {
             if (!actAsSubImporter) ResetState(false);
@@ -97,36 +96,12 @@ namespace AssetInventory
                 }
                 Persist(af);
 
-                if (spec.createPreviews && (AssetInventory.IsFileType(af.FileName, "Audio") || AssetInventory.IsFileType(af.FileName, "Images") || AssetInventory.IsFileType(af.FileName, "Models")))
+                if (spec.createPreviews && PreviewGenerator.IsPreviewable(af.FileName, false))
                 {
                     // let Unity generate a preview for whitelisted types (CS and ASMDEF will trigger recompile and fail the indexer) 
-                    string previewFile = Path.Combine(previewPath, "af-" + af.Id + ".png");
+                    string previewFile = Path.Combine(previewPath, af.AssetId.ToString(), "af-" + af.Id + ".png");
 
-                    PreviewGenerator.RegisterPreviewRequest(af.Id, af.SourcePath, previewFile, req =>
-                    {
-                        if (!File.Exists(req.DestinationFile)) return;
-                        AssetFile paf = DBAdapter.DB.Find<AssetFile>(req.Id);
-                        if (paf == null) return;
-
-                        if (req.Obj != null)
-                        {
-                            if (req.Obj is Texture2D tex)
-                            {
-                                paf.Width = tex.width;
-                                paf.Height = tex.height;
-                            }
-                            if (req.Obj is AudioClip clip)
-                            {
-                                paf.Length = clip.length;
-                            }
-                        }
-
-                        paf.PreviewFile = Path.GetFileName(previewFile);
-                        paf.DominantColor = null;
-                        paf.DominantColorGroup = null;
-
-                        Persist(paf);
-                    });
+                    PreviewGenerator.RegisterPreviewRequest(af.Id, af.SourcePath, previewFile, req => { PreviewImporter.StorePreviewResult(req, previewFile); });
 
                     // from time to time store the previews in case something goes wrong
                     PreviewGenerator.EnsureProgress();

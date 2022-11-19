@@ -11,8 +11,9 @@ namespace AssetInventory
     public static class PreviewGenerator
     {
         private const string PREVIEW_FOLDER = "_AssetInventoryPreviewsTemp";
-        private const int MIN_PREVIEW_CACHE_SIZE = 200;
+        private const int MIN_PREVIEW_CACHE_SIZE = 200; 
         private const float PREVIEW_TIMEOUT = 20f;
+        private const float MIN_PREVIEW_WAIT = 5f;
         private const int BREAK_INTERVAL = 30;
         private static readonly List<PreviewRequest> _requests = new List<PreviewRequest>();
 
@@ -23,18 +24,31 @@ namespace AssetInventory
 
         public static int ActiveRequestCount() => _requests.Count;
 
-        public static void RegisterPreviewRequest(int id, string sourceFile, string previewDestination, Action<PreviewRequest> onSuccess)
+        public static string GetPreviewWorkFolder()
+        {
+            string targetDir = Path.Combine(Application.dataPath, PREVIEW_FOLDER);
+            if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
+
+            return targetDir;
+        }
+
+        public static void RegisterPreviewRequest(int id, string sourceFile, string previewDestination, Action<PreviewRequest> onSuccess, bool useSourceDirectly = false)
         {
             PreviewRequest request = new PreviewRequest
             {
                 Id = id, SourceFile = sourceFile, DestinationFile = previewDestination, OnSuccess = onSuccess
             };
 
-            string targetDir = Path.Combine(Application.dataPath, PREVIEW_FOLDER);
-            if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
-
-            request.TempFile = Path.Combine(targetDir, id + Path.GetExtension(sourceFile));
-            File.Copy(sourceFile, request.TempFile);
+            if (useSourceDirectly)
+            {
+                request.TempFile = sourceFile;
+            }
+            else
+            {
+                string targetDir = GetPreviewWorkFolder();
+                request.TempFile = Path.Combine(targetDir, id + Path.GetExtension(sourceFile));
+                File.Copy(sourceFile, request.TempFile);
+            }
 
             request.TempFileRel = request.TempFile;
             if (request.TempFileRel.StartsWith(Application.dataPath))
@@ -55,9 +69,12 @@ namespace AssetInventory
             {
                 request.TimeStarted = Time.realtimeSinceStartup;
                 AssetPreview.GetAssetPreview(request.Obj);
+                _requests.Add(request);
             }
-
-            _requests.Add(request);
+            else
+            {
+                Debug.LogError($"Queuing preview request failed for: {sourceFile}");
+            }
         }
 
         public static void EnsureProgress()
@@ -93,21 +110,36 @@ namespace AssetInventory
                             if (Time.realtimeSinceStartup - req.TimeStarted < PREVIEW_TIMEOUT) continue;
                         }
                         if (req.Icon == null) req.Icon = AssetPreview.GetAssetPreview(req.Obj);
+                        if (req.Icon == null && Time.realtimeSinceStartup - req.TimeStarted < MIN_PREVIEW_WAIT) continue;
                     }
 
                     // still will not return something for all assets
                     if (req.Icon != null && req.Icon.isReadable)
                     {
                         byte[] bytes = req.Icon.EncodeToPNG();
-                        if (bytes != null) File.WriteAllBytes(req.DestinationFile, bytes);
+                        if (bytes != null)
+                        {
+                            string targetDir = Path.GetDirectoryName(req.DestinationFile);
+                            if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
+                            File.WriteAllBytes(req.DestinationFile, bytes);
+                        }
                     }
                     req.OnSuccess?.Invoke(req);
 
-                    // delete asset again, this will also null the Obj field
-                    if (!AssetDatabase.DeleteAsset(req.TempFileRel))
+                    // check if file is directly in temp folder or in a sub directory
+                    string tempFile = req.TempFile;
+                    string tempFileRel = req.TempFileRel;
+                    if (Path.GetFileName(Path.GetDirectoryName(req.TempFile)) != PREVIEW_FOLDER)
                     {
-                        await IOUtils.DeleteFileOrDirectory(req.TempFile);
-                        await IOUtils.DeleteFileOrDirectory(req.TempFile + ".meta");
+                        tempFile = Path.GetDirectoryName(req.TempFile);
+                        tempFileRel = Path.GetDirectoryName(req.TempFileRel);
+                    }
+
+                    // delete asset again, this will also null the Obj field
+                    if (!AssetDatabase.DeleteAsset(tempFileRel))
+                    {
+                        await IOUtils.DeleteFileOrDirectory(tempFile);
+                        await IOUtils.DeleteFileOrDirectory(tempFile + ".meta");
                     }
                     _requests.RemoveAt(i);
                     if (i % BREAK_INTERVAL == 0) await Task.Yield(); // let editor breath in case many files are already indexed
@@ -133,6 +165,24 @@ namespace AssetInventory
             }
 
             AssetDatabase.Refresh();
+        }
+
+        public static bool IsPreviewable(string file, bool includeProblematic)
+        {
+            if (includeProblematic)
+            {
+                // TODO: will need dependency materialization
+                // Materials will not have correct texture references but stock shaders and colors will work
+                // Prefabs always have a reference to another object and will always be broken
+                return AssetInventory.IsFileType(file, "Audio")
+                       || AssetInventory.IsFileType(file, "Images")
+                       || AssetInventory.IsFileType(file, "Models")
+                       || AssetInventory.IsFileType(file, "Prefabs")
+                       || AssetInventory.IsFileType(file, "Materials");
+            }
+            return AssetInventory.IsFileType(file, "Audio")
+                   || AssetInventory.IsFileType(file, "Images")
+                   || AssetInventory.IsFileType(file, "Models");
         }
     }
 

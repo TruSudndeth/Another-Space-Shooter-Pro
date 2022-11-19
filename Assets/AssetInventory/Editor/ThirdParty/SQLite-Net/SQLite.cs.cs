@@ -351,7 +351,7 @@ namespace SQLite
 		/// <param name="unsafeString">The unsafe string to quote.</param>
 		static string Quote (string unsafeString)
 		{
-			// TODO : Doesn't call sqlite3_mprintf("%Q", u) because we're waiting on https://github.com/ericsink/SQLitePCL.raw/issues/153
+			// TODO: Doesn't call sqlite3_mprintf("%Q", u) because we're waiting on https://github.com/ericsink/SQLitePCL.raw/issues/153
 			if (unsafeString == null)
 				return "NULL";
 			var safe = unsafeString.Replace ("'", "''");
@@ -1295,7 +1295,7 @@ namespace SQLite
 					if (sqlExp != null) {
 						// It is recommended that applications respond to the errors listed below
 						//    by explicitly issuing a ROLLBACK command.
-						// TODO : This rollback failsafe should be localized to all throw sites.
+						// TODO: This rollback failsafe should be localized to all throw sites.
 						switch (sqlExp.Result) {
 							case SQLite3.Result.IOError:
 							case SQLite3.Result.Full:
@@ -1343,7 +1343,7 @@ namespace SQLite
 				if (sqlExp != null) {
 					// It is recommended that applications respond to the errors listed below
 					//    by explicitly issuing a ROLLBACK command.
-					// TODO : This rollback failsafe should be localized to all throw sites.
+					// TODO: This rollback failsafe should be localized to all throw sites.
 					switch (sqlExp.Result) {
 						case SQLite3.Result.IOError:
 						case SQLite3.Result.Full:
@@ -1445,7 +1445,7 @@ namespace SQLite
 			if (firstLen >= 2 && savepoint.Length > firstLen + 1) {
 				int depth;
 				if (Int32.TryParse (savepoint.Substring (firstLen + 1), out depth)) {
-					// TODO : Mild race here, but inescapable without locking almost everywhere.
+					// TODO: Mild race here, but inescapable without locking almost everywhere.
 					if (0 <= depth && depth < _transactionDepth) {
 #if NETFX_CORE || USE_SQLITEPCL_RAW || NETCORE
 						Volatile.Write (ref _transactionDepth, depth);

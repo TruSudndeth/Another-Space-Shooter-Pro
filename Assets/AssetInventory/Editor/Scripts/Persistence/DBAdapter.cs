@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using SQLite;
 
 namespace AssetInventory
@@ -31,6 +33,12 @@ namespace AssetInventory
         public static long GetDBSize()
         {
             return new FileInfo(GetDBPath()).Length;
+        }
+
+        public static bool ColumnExists(string tableName, string columnName)
+        {
+            List<SQLiteConnection.ColumnInfo> cols = DB.GetTableInfo(tableName);
+            return cols.Any(c => c.Name == columnName);
         }
 
         public static long Compact()

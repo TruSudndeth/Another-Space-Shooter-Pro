@@ -12,11 +12,27 @@ public class PowerUpBehavior : MonoBehaviour
     private float _cameraAspecRatio = 1.7777778f;
     private Vector3 _move = Vector3.down;
     private Vector2 _xyBounds = Vector2.zero;
+    [Space]
+    [Tooltip("float Random Range is less than Range float from 0 to 100%")]
+    [SerializeField] [Range(0, 100)] private float _antiProbablity = 0.5f;
+    [SerializeField] Transform _negativePowerupVisual;
+    private bool _antiPowerups = false;
 
     private void Awake()
     {
+        _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity;
+        //Todo: Add a negative visual to the powerup
+        CheckIfVisualExistAndSet(_antiPowerups);
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
+    }
+    
+    private void CheckIfVisualExistAndSet(bool isActive)
+    {
+        if (_negativePowerupVisual != null)
+        {
+            _negativePowerupVisual.gameObject.SetActive(isActive);
+        }
     }
 
     void FixedUpdate()
@@ -29,31 +45,31 @@ public class PowerUpBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(Types.Tag.Player.ToString()))
+        if (other.CompareTag(Types.Tag.Player.ToString()))
         {
             if(other.TryGetComponent(out Player playerPowerups))
             {
                 switch(_powerUpType)
                 {
                     case Types.PowerUps.Tripple:
-                        playerPowerups.TripleShotActive();
+                        playerPowerups.TripleShotActive(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Shield:
-                        playerPowerups.ShieldActive();
+                        playerPowerups.ShieldActive(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Speed:
-                        playerPowerups.SpeedBoost();
+                        playerPowerups.SpeedBoost(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Ammo:
-                        playerPowerups.AddAmmo();
+                        playerPowerups.AddAmmo(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Health:
                         //Todo: Add Health to Player
-                        playerPowerups.AddHealth();
+                        playerPowerups.AddHealth(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
                     case Types.PowerUps.Bomb:
@@ -65,7 +81,10 @@ public class PowerUpBehavior : MonoBehaviour
                         Debug.Log(transform + "Power Up type not set");
                         break;
                 }
-                AudioManager.Instance.PlayAudioOneShot(Types.SFX.PickUp);
+                if(_antiPowerups)
+                    AudioManager.Instance.PlayAudioOneShot(Types.SFX.ErrorSound);
+                else
+                    AudioManager.Instance.PlayAudioOneShot(Types.SFX.PickUp);
             }
         }
     }

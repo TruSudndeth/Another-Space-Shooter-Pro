@@ -7,6 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -26,6 +27,22 @@ namespace AssetInventory
         public static void ClearCache()
         {
             _previewCache.Clear();
+        }
+
+        public static string RemoveTrailing(this string source, string text)
+        {
+            while (source.EndsWith(text)) source = source.Substring(0, source.Length - text.Length);
+            return source;
+        }
+
+        public static int RemoveMissingScripts(this Transform obj)
+        {
+            int result = GameObjectUtility.RemoveMonoBehavioursWithMissingScript(obj.gameObject);
+            for (int i = 0; i < obj.childCount; i++)
+            {
+                result += RemoveMissingScripts(obj.GetChild(i));
+            }
+            return result;
         }
 
         public static async Task<AudioClip> LoadAudioFromFile(string filePath)
@@ -90,8 +107,12 @@ namespace AssetInventory
             if (string.IsNullOrEmpty(assetInfo.PreviewImage)) yield break;
 
             string previewFolder = AssetInventory.GetPreviewFolder();
-            string previewFile = Path.Combine(previewFolder, assetInfo.PreviewImage);
-            if (!File.Exists(previewFile)) yield break;
+            string previewFile = Path.Combine(previewFolder, assetInfo.AssetId.ToString(), assetInfo.PreviewImage);
+            if (!File.Exists(previewFile))
+            {
+                // TODO: mark file as invalid
+                yield break;
+            }
 
             yield return LoadTexture(previewFile, result => { assetInfo.PreviewTexture = result; }, true);
         }
@@ -184,6 +205,13 @@ namespace AssetInventory
             clean = Regex.Replace(clean, @"\s+", " ");
 
             return clean.Trim();
+        }
+
+        public static List<AssetInfo> Guid2File(string guid)
+        {
+            string query = "select * from AssetFile inner join Asset on Asset.Id = AssetFile.AssetId where Guid=?";
+            List<AssetInfo> files = DBAdapter.DB.Query<AssetInfo>($"{query}", guid);
+            return files;
         }
 
         public static string ExtractGuidFromFile(string path)

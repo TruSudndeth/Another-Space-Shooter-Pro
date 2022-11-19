@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 
 namespace AssetInventory
 {
-    public sealed class ColorImporter : AssertImporter
+    public sealed class ColorImporter : AssetImporter
     {
         public IEnumerator Index()
         {
@@ -15,7 +14,7 @@ namespace AssetInventory
             string previewFolder = AssetInventory.GetPreviewFolder();
 
             List<AssetFile> files = DBAdapter.DB.Table<AssetFile>()
-                .Where(a => a.PreviewFile != null && a.DominantColor == null)
+                .Where(a => a.PreviewFile != null && a.Hue < 0)
                 .ToList();
 
             SubCount = files.Count;
@@ -27,7 +26,10 @@ namespace AssetInventory
                 AssetFile file = files[i];
                 MetaProgress.Report(progressId, i + 1, files.Count, file.FileName);
 
-                string previewFile = Path.Combine(previewFolder, file.PreviewFile);
+                // skip audio files per default
+                if (!AssetInventory.Config.extractAudioColors && AssetInventory.IsFileType(file.Path, "Audio")) continue;
+
+                string previewFile = Path.Combine(previewFolder, file.AssetId.ToString(), file.PreviewFile);
                 if (!File.Exists(previewFile)) continue;
 
                 CurrentSub = $"Extracting colors from {file.FileName}";
@@ -37,12 +39,7 @@ namespace AssetInventory
                 {
                     if (result == null) return;
 
-                    Color mostUsedColor = ColorUtils.GetMostUsedColor(result);
-                    Color colorGroup = ColorUtils.GetNearestColor(mostUsedColor);
-
-                    file.DominantColor = "#" + ColorUtility.ToHtmlStringRGB(mostUsedColor);
-                    file.DominantColorGroup = "#" + ColorUtility.ToHtmlStringRGB(colorGroup);
-
+                    file.Hue = ColorUtils.GetHue(result);
                     Persist(file);
                 });
             }

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AssetInventory
 {
-    public sealed class UnityPackageImporter : AssertImporter
+    public sealed class UnityPackageImporter : AssetImporter
     {
         private const int BREAK_INTERVAL = 10;
 
@@ -139,6 +139,7 @@ namespace AssetInventory
 
                 await IndexPackage(assets[i], progressId);
                 await Task.Yield(); // let editor breath
+                if (CancellationRequested) break;
 
                 AssetHeader header = ReadHeader(assets[i].Location);
                 ApplyHeader(header, assets[i]);
@@ -165,7 +166,9 @@ namespace AssetInventory
             string assetPreviewFile = Path.Combine(tempPath, ".icon.png");
             if (File.Exists(assetPreviewFile))
             {
-                string targetFile = Path.Combine(previewPath, "a-" + asset.Id + Path.GetExtension(assetPreviewFile));
+                string targetDir = Path.Combine(previewPath, asset.Id.ToString());
+                string targetFile = Path.Combine(targetDir, "a-" + asset.Id + Path.GetExtension(assetPreviewFile));
+                if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
                 File.Copy(assetPreviewFile, targetFile, true);
                 asset.PreviewImage = Path.GetFileName(targetFile);
             }
@@ -218,11 +221,12 @@ namespace AssetInventory
                 // update preview 
                 if (AssetInventory.Config.extractPreviews && File.Exists(previewFile))
                 {
-                    string targetFile = Path.Combine(previewPath, "af-" + af.Id + Path.GetExtension(previewFile));
+                    string targetDir = Path.Combine(previewPath, asset.Id.ToString());
+                    if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
+                    string targetFile = Path.Combine(targetDir, "af-" + af.Id + Path.GetExtension(previewFile));
                     File.Copy(previewFile, targetFile, true);
                     af.PreviewFile = Path.GetFileName(targetFile);
-                    af.DominantColor = null;
-                    af.DominantColorGroup = null;
+                    af.Hue = -1;
                     Persist(af);
                 }
                 if (CancellationRequested) break;

@@ -70,6 +70,7 @@ namespace AssetInventory
         public string OfficialState { get; set; }
         public bool IsHidden { get; set; }
         public bool Exclude { get; set; }
+        public bool Backup { get; set; }
         public string ETag { get; set; }
         public DateTime LastOnlineRefresh { get; set; }
         public int FileCount { get; set; }
@@ -78,8 +79,6 @@ namespace AssetInventory
         // runtime only
         public AssetDownloader PackageDownloader;
         public Texture2D PreviewTexture { get; set; }
-        public string ProjectPath { get; set; }
-        public bool InProject => !string.IsNullOrWhiteSpace(ProjectPath);
         public bool IsIndexed => AssetSource == Asset.Source.Directory || (FileCount > 0 && CurrentState == Asset.State.Done);
         public bool IsDeprecated => OfficialState == "deprecated";
         public bool IsAbandoned => OfficialState == "disabled";
@@ -284,7 +283,7 @@ namespace AssetInventory
 
         public override string ToString()
         {
-            return $"Asset Info '{GetDisplayName()}'";
+            return $"Asset Info '{FileName}' ({GetDisplayName()})'";
         }
     }
 }
