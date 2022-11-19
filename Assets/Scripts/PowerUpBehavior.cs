@@ -20,7 +20,7 @@ public class PowerUpBehavior : MonoBehaviour
 
     private void Awake()
     {
-        _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity;
+        _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity; //Fix: Move to enabled for pooling
         //Todo: Add a negative visual to the powerup
         CheckIfVisualExistAndSet(_antiPowerups);
         _xyBounds.y = Camera.main.orthographicSize;

@@ -644,7 +644,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _powerUpType: 3
   _speed: 3
-  _antiProbablity: 15
+  _antiProbablity: 25
   _negativePowerupVisual: {fileID: 1611347731671481344}
 --- !u!1 &6333735301177807415
 GameObject:

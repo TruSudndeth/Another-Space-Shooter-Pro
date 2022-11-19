@@ -4947,5 +4947,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _powerUpType: 2
   _speed: 3
-  _antiProbablity: 25
+  _antiProbablity: 15
   _negativePowerupVisual: {fileID: 2770523264516710930}
