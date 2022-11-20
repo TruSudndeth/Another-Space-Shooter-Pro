@@ -8,6 +8,11 @@ public static class Types
     {
         Player, Enemies, Astroids, ELaser, Laser
     };
+    
+    public enum Enemy
+    {
+        Default, Enemy, EDrone, MiniBoss, Boss
+    }
 
     public enum PowerUps
     {

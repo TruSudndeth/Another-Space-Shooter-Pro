@@ -20,6 +20,9 @@ public class Enemy_Move : MonoBehaviour
     private float _shiftProbability = 0.25f;
     private bool _isShifting = false;
     private float _randomShiftLocation;
+    [Space]
+    [SerializeField] private Types.Enemy _enemyType = Types.Enemy.Default;
+    private Transform _trackPlayer;
 
     //Todo: Eplayer behaviour to move towards player
     //Todo: Eplayers All move Right all move left
@@ -39,15 +42,37 @@ public class Enemy_Move : MonoBehaviour
     {
         if (_move)
         {
-            float fixedTime = Time.fixedDeltaTime;
-            Vector3 movePlayer = _speed * fixedTime * Vector3.down;
-
-            Vector3 shiftPlayer = ShiftWithBPM(fixedTime);
-            
-            movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
-            if (movePlayer.y == 0) gameObject.SetActive(false);
-            transform.position += movePlayer;
+            Move();
+            if (_enemyType == Types.Enemy.EDrone)
+            TrackPlayer();
         }
+        
+    }
+    private void TrackPlayer()
+    {
+        if(!_trackPlayer)
+        {
+            _trackPlayer = GameObject.FindGameObjectWithTag(Types.Tag.Player.ToString()).transform;
+        }
+        else
+        {
+            if (_enemyType == Types.Enemy.EDrone)
+            {
+                _randomShiftLocation = Vector2.Dot(Vector2.left, transform.position - _trackPlayer.position);
+            }
+        }
+    }
+    private void Move()
+    {
+        float fixedTime = Time.fixedDeltaTime;
+        Vector3 movePlayer = _speed * fixedTime * Vector3.down;
+
+        Vector3 shiftPlayer = ShiftWithBPM(fixedTime);
+
+        movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
+        if (!_isShifting && _enemyType == Types.Enemy.EDrone) movePlayer.y *= 0.01f;
+        if (movePlayer.y == 0) gameObject.SetActive(false);
+        transform.position += movePlayer;
     }
     private Vector3 ShiftWithBPM(float fixedTime)
     {

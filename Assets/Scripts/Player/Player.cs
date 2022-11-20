@@ -158,7 +158,10 @@ public class Player : MonoBehaviour
         if (_powerUpTime + _powerUpTimeout <= Time.time && _isTrippleShot)
             _isTrippleShot = false;
         if (_speedBoostTime + _speedBoostTimeout <= Time.time && _isSpeedBoostActive)
+        {
+            _isAntiSpeed = false;
             _isSpeedBoostActive = false;
+        }
         if (_shieldTime + _shieldTimeout <= Time.time && _isShieldActive)
             Damage(0);
     }

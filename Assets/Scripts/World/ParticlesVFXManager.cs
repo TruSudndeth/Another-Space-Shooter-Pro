@@ -64,7 +64,7 @@ public class ParticlesVFXManager : MonoBehaviour
                 break;
         }
         if (explosionType <= _particleExplode.Count - 1)
-            return _explosionsAssets[explosionType];
+            return _explosionsAssets[0];
         else
             return _explosionsAssets[explosionType];
     }

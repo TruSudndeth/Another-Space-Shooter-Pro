@@ -147,6 +147,7 @@ MonoBehaviour:
   _speed: 4
   _shiftSpeedMin: 0.5
   _ShiftSpeedMax: 2
+  _enemyType: 1
 --- !u!114 &2686800014187623707
 MonoBehaviour:
   m_ObjectHideFlags: 0
