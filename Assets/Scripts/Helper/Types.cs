@@ -16,7 +16,7 @@ public static class Types
 
     public enum PowerUps
     {
-        Tripple, Shield, Speed, Ammo, Health, Bomb
+        TripleShotPowerUp, ShieldPowerUp, SpeedPowerUp, AmmoPickup, HealthPackRed, BombPickup
     }
     
     public enum Points

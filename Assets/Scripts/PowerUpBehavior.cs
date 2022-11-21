@@ -51,28 +51,28 @@ public class PowerUpBehavior : MonoBehaviour
             {
                 switch(_powerUpType)
                 {
-                    case Types.PowerUps.Tripple:
+                    case Types.PowerUps.TripleShotPowerUp:
                         playerPowerups.TripleShotActive(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.Shield:
+                    case Types.PowerUps.ShieldPowerUp:
                         playerPowerups.ShieldActive(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.Speed:
+                    case Types.PowerUps.SpeedPowerUp:
                         playerPowerups.SpeedBoost(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.Ammo:
+                    case Types.PowerUps.AmmoPickup:
                         playerPowerups.AddAmmo(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.Health:
+                    case Types.PowerUps.HealthPackRed:
                         //Todo: Add Health to Player
                         playerPowerups.AddHealth(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.Bomb:
+                    case Types.PowerUps.BombPickup:
                         //Todo: Add Bombs to Player
                         playerPowerups.UseBomb();
                         gameObject.SetActive(false);

@@ -191,7 +191,10 @@ public class Player : MonoBehaviour
         //Todo: Ammo Reload Sound effect
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
         if (_ammoBank == _ammoBankMax && antiProbablility) return;
+        if(Anti_Powerup)
         _ammoBank = antiProbablility ? _ammoBankMax : Mathf.Clamp(_ammoBank + 3, 0, _ammoBankMax);
+        else
+            _ammoBank = Mathf.Clamp(_ammoBank + 15, 0, _ammoBankMax);
         UpdateAmmo(_ammoBank, _ammoBankMax);
     }
     public void SpeedBoost(bool Anti_Powerup)

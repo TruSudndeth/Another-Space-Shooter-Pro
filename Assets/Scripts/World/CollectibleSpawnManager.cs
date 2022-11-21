@@ -14,13 +14,14 @@ public class CollectibleSpawnManager : MonoBehaviour
     [SerializeField] private float _spawnRate = 7.0f;
     private float _currentSpawnTime = 0;
     [Space]
-    [SerializeField] private bool _spawnPowerUps = false;
+    private bool _spawningBPM = false;
 
     private bool _gameStarted = false;
 
     private void Start()
     {
         StartGameAsteroids.GameStarted += GameStarted;
+        BackGroundMusic_Events.BGM_Events += () => _spawningBPM = true;
     }
     
     void GameStarted()
@@ -40,12 +41,14 @@ public class CollectibleSpawnManager : MonoBehaviour
     {
         //Add if statment to spawn every 7 seconds Time.time
         if (_powerUpAssets.Count == 0 || !_gameStarted) return;
-        if(_currentSpawnTime + _spawnRate <= Time.time)
+        if (_currentSpawnTime + _spawnRate <= Time.time && _spawningBPM)
         {
+            _spawningBPM = false;
             _currentSpawnTime = Time.time;
-            int powerUpCount = _powerUpAssets.Count;
-            _powerups.Add(Instantiate(_powerUpAssets[RandomInt(powerUpCount)], RandomXSpawn(), Quaternion.identity, transform)); //Debugit: IndexOut of Range -1, < collection
+            _powerups.Add(Instantiate(_powerUpAssets[RandomInt()], RandomXSpawn(), Quaternion.identity, transform)); //Debugit: IndexOut of Range -1, < collection
         }
+        else
+            _spawningBPM = false;
     }
 
     private Vector3 RandomXSpawn()
@@ -55,16 +58,27 @@ public class CollectibleSpawnManager : MonoBehaviour
         return new Vector3(randomRandx, _xyBounds.y, transform.position.z);
     }
 
-    private int RandomInt(int myInt)
+    private int RandomInt()
     {
         //GDHQ: New Projectile RareSpawn
-        if (Random.Range(0, 100) <= 10)
-            return _powerups.FindIndex(b => b.name == "BombPickup");
+        int randomInt = Random.Range(0, 101);
+        if (randomInt <= 10)
+            if (Random.Range(0, 101) <= 50)
+                return _powerups.FindIndex(b => b.name == Types.PowerUps.BombPickup.ToString());
+            else
+                return _powerups.FindIndex(b => b.name == Types.PowerUps.HealthPackRed.ToString());
+        else if (randomInt <= 20)
+            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.ShieldPowerUp.ToString());
+        else if (randomInt <= 25)
+            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.SpeedPowerUp.ToString());
+        else if (randomInt <= 35)
+            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.TripleShotPowerUp.ToString());
         else
-            return Random.Range(0, myInt);
+            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.AmmoPickup.ToString());
     }
     private void OnDestroy()
     {
         StartGameAsteroids.GameStarted -= GameStarted;
+        BackGroundMusic_Events.BGM_Events -= () => _spawningBPM = true;
     }
 }

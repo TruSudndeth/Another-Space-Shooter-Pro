@@ -664,7 +664,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyAsset:
   - {fileID: 4273339059823214585, guid: 16dcb56211d4a184f852d4b8f3c03c96, type: 3}
-  - {fileID: 7553858412400719953, guid: df840bcaee32e1942a5603dd2585d721, type: 3}
   _maxPool: 100
   _spawnRate: 0.1
   _spawnDelay: 5
@@ -761,8 +760,7 @@ MonoBehaviour:
   - {fileID: 4879673912583380412, guid: d8c290ef8ca7c8b4cb18d46e26bd39fa, type: 3}
   - {fileID: 4747155658115944, guid: a5ad3b53c234b9040b754b2c2c9d8fc6, type: 3}
   - {fileID: 5978479948048738441, guid: 3ace1df4275cdaf48815cba768b4ce0c, type: 3}
-  _spawnRate: 1
-  _spawnPowerUps: 0
+  _spawnRate: 3.5
 --- !u!4 &2122006682
 Transform:
   m_ObjectHideFlags: 0
