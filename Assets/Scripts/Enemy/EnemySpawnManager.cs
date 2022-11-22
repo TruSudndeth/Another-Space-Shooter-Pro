@@ -32,6 +32,11 @@ public class EnemySpawnManager : MonoBehaviour
     [Space]
     [SerializeField] private int _waveSize = 3;
     private int _enemiesKilled = 0;
+    [Space]
+    private int _enemyDroneCount = 0;
+    private int _enemyDroneKilled = 0;
+    private int _enemyMiniBossCount = 0;
+    private int _enemyMiniBossKilled = 0;
 
     private void Awake()
     {
@@ -39,6 +44,20 @@ public class EnemySpawnManager : MonoBehaviour
         _maxPoolTemp = _maxPool;
         _enemies = new(_maxPool);
         _enemyCount = _enemyAsset.Count;
+        PopulatePool();
+    }
+    
+    private void PopulatePool()
+    {
+        for (int i = 0; i < _enemyAsset.Count; i++)
+        {
+            for (int j = 0; j < _maxPool / _enemyAsset.Count; j++)
+            {
+                _enemies.Add(Instantiate(_enemyAsset[i], new Vector3(0, 0, 0), Quaternion.identity, transform));
+                _enemies[^1].gameObject.SetActive(false);
+                _isPoolMaxed = true;
+            }
+        }
     }
 
     void Start()
@@ -52,6 +71,7 @@ public class EnemySpawnManager : MonoBehaviour
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
         Player.Game_Over += PlayerIsDead;
+        SpawnRandomEnemiesWave();
     }
 
     private void PauseSpawning()
@@ -89,43 +109,69 @@ public class EnemySpawnManager : MonoBehaviour
             if (_difficulty > 2 && Random.Range(0, 100) < 80) SpawnSystem(); //Note: Hard coded Randoms 002
         }
     }
-    private void EnemiesKilled(int notUsed)
+    private void EnemiesKilled(int notUsed, string enemyName)
     {
         _enemiesKilled++;
+        if (enemyName == Types.Enemy.Scifi_Drone_04.ToString()) _enemyDroneKilled++;
+        if (enemyName == Types.Enemy.Alien_Ship_001.ToString()) _enemyMiniBossKilled++;
         if (_enemiesKilled >= _waveSize)
         {
             _enemiesKilled = 0;
             _waveSize += Random.Range(1,3);
             _canSpawnTime = Time.time;
+            SpawnRandomEnemiesWave();
+        }
+    }
+    private void SpawnRandomEnemiesWave()
+    {
+        _enemyDroneCount = 0;
+        _enemyMiniBossCount = 0;
+        _enemyDroneKilled = 0;
+        _enemyMiniBossKilled = 0;
+        for (int i = 0; i < _waveSize; i++)
+        {
+            if (Random.Range(0, 101) <= 25) _enemyMiniBossCount++;
+            else _enemyDroneCount++;
         }
     }
     private void SpawnSystem()
     {
-            if (_enemies.Count < _maxPool && !_isPoolMaxed)
+        if (_isPoolMaxed)
+        {
+            //fire rate must not surpass laser pool check if object is disabled before using.
+            //Todo: Lock rotations add recochet later
+            //LeftOff: Only spawn the needed enemies quantity
+            
+            if (_enemies.FindAll(x => x.name == Types.Enemy.Scifi_Drone_04.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyDroneCount - _enemyDroneKilled)
+                SpawnEnemyType(Types.Enemy.Scifi_Drone_04);
+            else if (_enemies.FindAll(x => x.name == Types.Enemy.Alien_Ship_001.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyMiniBossCount - _enemyMiniBossKilled)
+                SpawnEnemyType(Types.Enemy.Alien_Ship_001);
+
+            
+            if(false) //DeleteLine: for Loop is not used delete block after testing
+            for (int i = 0; i < _enemies.Count; i++)
             {
-                int enemyIndex = Random.Range(0, _enemyCount);
-                _enemies.Add(Instantiate(_enemyAsset[enemyIndex], RandomEnemySpawn() + CalcOffset(_enemyAsset[enemyIndex]), Quaternion.identity, transform));
-                _iterateEnemy++;
-                if (_iterateEnemy == _maxPool)
+                if (!_enemies[i].gameObject.activeSelf)
                 {
-                    _iterateEnemy = 0;
-                    _isPoolMaxed = true;
+                    _enemies[i].gameObject.SetActive(true);
+                    _enemies[i].position = RandomEnemySpawn() + CalcOffset(_enemies[i]);
+                    break;
                 }
             }
-            else if (_isPoolMaxed)
+        }
+    }
+    
+    private void SpawnEnemyType(Types.Enemy enemyType)
+    {
+        if (_enemies.FindAll(x => x.name == enemyType.ToString()+"(Clone)").Count <= _enemies.Count / _enemyAsset.Count)
+        {
+            int tempEnemy = _enemies.FindIndex(x => !x.gameObject.activeSelf && x.name == enemyType.ToString()+"(Clone)");
+            if(tempEnemy != -1)
             {
-                //fire rate must not surpass laser pool check if object is disabled before using.
-                //Todo: Lock rotations add recochet later
-                for (int i = 0; i < _enemies.Count; i++)
-                {
-                    if (!_enemies[i].gameObject.activeSelf)
-                    {
-                        _enemies[i].gameObject.SetActive(true);
-                        _enemies[i].position = RandomEnemySpawn() + CalcOffset(_enemies[i]);
-                        break;
-                    }
-                }
+                _enemies[tempEnemy].gameObject.SetActive(true);
+                _enemies[tempEnemy].position = RandomEnemySpawn() + CalcOffset(_enemies[tempEnemy]);
             }
+        }
     }
 
     private Vector3 CalcOffset(Transform enemyAsset)

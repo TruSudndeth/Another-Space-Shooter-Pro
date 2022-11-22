@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 7386902935266328409}
   - component: {fileID: 841812636567573475}
   m_Layer: 7
-  m_Name: Model
+  m_Name: Alien_Ship_001
   m_TagString: Enemies
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

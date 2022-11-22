@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyCollisons : MonoBehaviour
 {
     //create a delegate for the event of enemyPoints
-    public delegate void EnemyPoints(int points);
+    public delegate void EnemyPoints(int points, string enemyName);
     public static event EnemyPoints EnemyPointsEvent;
     
     [SerializeField] private Types.SFX _sfxType;
@@ -22,7 +22,7 @@ public class EnemyCollisons : MonoBehaviour
         
         if(other.CompareTag(Types.LaserTag.PlayerLaser.ToString()))
         {
-            EnemyPointsEvent?.Invoke((int)_enemyPointValue);
+            EnemyPointsEvent?.Invoke((int)_enemyPointValue, transform.name);
             other.gameObject.SetActive(false);
             DisableParent();
         }
@@ -30,7 +30,7 @@ public class EnemyCollisons : MonoBehaviour
         {
             if(other.TryGetComponent(out Player _input))
             {
-                EnemyPointsEvent?.Invoke(0);
+                EnemyPointsEvent?.Invoke(0, transform.name);
                 _input.Health = 1;
                 DisableParent();
             }
@@ -38,7 +38,7 @@ public class EnemyCollisons : MonoBehaviour
     }
     public void DestroyEnemy()
     {
-        EnemyPointsEvent?.Invoke((int)_enemyPointValue);
+        EnemyPointsEvent?.Invoke((int)_enemyPointValue, transform.name);
         DisableParent();
     }
     private void DisableParent()

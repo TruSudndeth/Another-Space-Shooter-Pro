@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2112042850527869557}
   - component: {fileID: 8954363545031130429}
   m_Layer: 7
-  m_Name: Model
+  m_Name: Scifi_Drone_04
   m_TagString: Enemies
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

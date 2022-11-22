@@ -43,7 +43,7 @@ public class Enemy_Move : MonoBehaviour
         if (_move)
         {
             Move();
-            if (_enemyType == Types.Enemy.EDrone)
+            if (_enemyType == Types.Enemy.Scifi_Drone_04)
             TrackPlayer();
         }
         
@@ -56,7 +56,7 @@ public class Enemy_Move : MonoBehaviour
         }
         else
         {
-            if (_enemyType == Types.Enemy.EDrone)
+            if (_enemyType == Types.Enemy.Scifi_Drone_04)
             {
                 _randomShiftLocation = Vector2.Dot(Vector2.left, transform.position - _trackPlayer.position);
             }
@@ -70,7 +70,7 @@ public class Enemy_Move : MonoBehaviour
         Vector3 shiftPlayer = ShiftWithBPM(fixedTime);
 
         movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
-        if (!_isShifting && _enemyType == Types.Enemy.EDrone) movePlayer.y *= 0.01f;
+        if (!_isShifting && _enemyType == Types.Enemy.Scifi_Drone_04) movePlayer.y *= 0.01f;
         if (movePlayer.y == 0) gameObject.SetActive(false);
         transform.position += movePlayer;
     }

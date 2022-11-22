@@ -81,6 +81,7 @@ public class Player : MonoBehaviour
     [Space]
     private bool _antiTrippleShot = false;
 
+    //Toto: Input bug holding Down and left doesn't allow to shoot
     private void Awake()
     {
         if (TryGetComponent(out Rigidbody rigidbody))
@@ -109,7 +110,7 @@ public class Player : MonoBehaviour
         if (_updateScore)
         {
             _updateScore = false;
-            UpdateScore(111);
+            UpdateScore(111, transform.name); //todo: test transform.name for bugs
         }
         Vector2 movement = InputManager.Instance.WSAD.ReadValue<Vector2>();
         //smooth out banks -                        Lets Incorperate
@@ -342,7 +343,7 @@ public class Player : MonoBehaviour
         _ammoBank = _ammoBankMax;
         UpdateAmmo?.Invoke(_ammoBank, _ammoBankMax);
     }
-    public void UpdateScore(int points)
+    public void UpdateScore(int points, string enemyName)
     {
         _playerScore += points;
         Score?.Invoke(_playerScore);

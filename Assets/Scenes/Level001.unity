@@ -664,10 +664,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyAsset:
   - {fileID: 4273339059823214585, guid: 16dcb56211d4a184f852d4b8f3c03c96, type: 3}
+  - {fileID: 7553858412400719953, guid: df840bcaee32e1942a5603dd2585d721, type: 3}
   _maxPool: 100
   _spawnRate: 0.1
   _spawnDelay: 5
-  _waveSize: 3
+  _waveSize: 15
 --- !u!1 &1439911904
 GameObject:
   m_ObjectHideFlags: 0
