@@ -136,7 +136,7 @@ MonoBehaviour:
   _powerUpType: 0
   _speed: 3
   _antiProbablity: 15
-  _negativePowerupVisual: {fileID: 1446349364623122012}
+  _negativePowerupVisual: {fileID: 705018557980588178}
 --- !u!1001 &3033198475821741746
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -206,6 +206,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 456a6b12ad9a86d4cb69bcdbe286a34e, type: 3}
+--- !u!4 &705018557980588178 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2580755369594834464, guid: 456a6b12ad9a86d4cb69bcdbe286a34e,
+    type: 3}
+  m_PrefabInstance: {fileID: 3033198475821741746}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1446349364623122012 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4470494315669711086, guid: 456a6b12ad9a86d4cb69bcdbe286a34e,

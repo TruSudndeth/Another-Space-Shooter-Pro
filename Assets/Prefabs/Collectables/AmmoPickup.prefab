@@ -645,7 +645,7 @@ MonoBehaviour:
   _powerUpType: 3
   _speed: 3
   _antiProbablity: 80
-  _negativePowerupVisual: {fileID: 7510199575334608393}
+  _negativePowerupVisual: {fileID: 5469966911193012885}
 --- !u!1 &6401357193769851435
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,15 +799,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 456a6b12ad9a86d4cb69bcdbe286a34e, type: 3}
---- !u!4 &6211576993856126043 stripped
+--- !u!4 &5469966911193012885 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4470494315669711086, guid: 456a6b12ad9a86d4cb69bcdbe286a34e,
+  m_CorrespondingSourceObject: {fileID: 2580755369594834464, guid: 456a6b12ad9a86d4cb69bcdbe286a34e,
     type: 3}
   m_PrefabInstance: {fileID: 7510199576577250485}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7510199575334608393 stripped
+--- !u!4 &6211576993856126043 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2050411196, guid: 456a6b12ad9a86d4cb69bcdbe286a34e,
+  m_CorrespondingSourceObject: {fileID: 4470494315669711086, guid: 456a6b12ad9a86d4cb69bcdbe286a34e,
     type: 3}
   m_PrefabInstance: {fileID: 7510199576577250485}
   m_PrefabAsset: {fileID: 0}
