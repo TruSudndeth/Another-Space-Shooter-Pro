@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemies
+  - Astroids
+  - EnemyLaser
+  - PlayerLaser
+  - Laser
+  - Collectible
   layers:
   - Default
   - TransparentFX
@@ -11,12 +17,12 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Astroid
+  - Enemies
+  - Player
+  - Laser
+  - Collectible
+  - Post Processing
   - 
   - 
   - 

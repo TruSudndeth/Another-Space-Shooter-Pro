@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Layout/ButtonStyle001.uss?fileID=7433441132597879392&amp;guid=6bce2891584a8da48b9bec194b76af36&amp;type=3#ButtonStyle001" />
+    <ui:VisualElement name="FullScreen" style="flex-grow: 0; flex-shrink: 1; width: 100%; height: 100%; background-image: url(&apos;project://database/Assets/Prefabs/Textures/SplashScreen.png?fileID=21300000&amp;guid=49bc41795e6c0d34d9de18c58d21ba38&amp;type=3#SplashScreen&apos;); -unity-background-scale-mode: scale-to-fit; justify-content: space-between; margin-top: 0; margin-bottom: 0; margin-right: 0; margin-left: 0; align-items: stretch; flex-basis: auto;">
+        <ui:Label text="Another Space&#10;Shooter" display-tooltip-when-elided="true" name="GameTitle" class="gameTitle" />
+        <ui:VisualElement style="flex-direction: column; align-items: stretch; justify-content: space-between; width: auto; margin-left: 30px; margin-bottom: 30px;">
+            <ui:Button text="Start" display-tooltip-when-elided="true" name="Start" class="button" style="white-space: nowrap;" />
+            <ui:Button text="Options" display-tooltip-when-elided="true" name="Options" class="button" />
+            <ui:Slider picking-mode="Ignore" label="Music" value="42" high-value="100" name="Music" class="slider" />
+            <ui:Slider picking-mode="Ignore" label="Sound" value="42" high-value="100" name="Sound" class="slider" />
+            <ui:Button text="Quit" display-tooltip-when-elided="true" name="Quit" class="button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

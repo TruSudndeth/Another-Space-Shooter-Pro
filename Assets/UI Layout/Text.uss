@@ -1,0 +1,28 @@
+.scoreText {
+    transition-duration: 0.5s;
+    color: rgba(255, 255, 255, 255);
+    -unity-text-align: upper-right;
+    font-size: 36px;
+}
+
+.gameOverText {
+    color: rgba(255, 255, 255, 255);
+    font-size: 115px;
+    -unity-text-align: upper-center;
+    -unity-font-style: bold;
+    -unity-font: url('project://database/Library/unity%20default%20resources?fileID=10102&guid=0000000000000000e000000000000000&type=0#Arial');
+    transition-duration: 0.5s;
+}
+
+.restartText {
+    color: rgba(255, 255, 255, 255);
+    font-size: 26px;
+    -unity-text-align: upper-center;
+    transition-duration: 0.5s;
+}
+
+.healthBar {
+    width: 20%;
+    height: 175%;
+    background-image: url('project://database/Assets/GameDevHQ/FileBase/Projects/Tutorials/Starter_Files/2D_Galaxy_Assets/Sprites/UI/Lives/Three.png?fileID=2800000&guid=9fe6f40efddf0b64fb68a3382b14a4db&type=3#Three');
+}

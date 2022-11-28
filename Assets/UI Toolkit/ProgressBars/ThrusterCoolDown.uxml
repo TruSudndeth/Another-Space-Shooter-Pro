@@ -1,0 +1,3 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:ProgressBar name="ThrusterCoolDown" title="thrust" style="width: 20%; margin-left: 2%;" />
+</ui:UXML>

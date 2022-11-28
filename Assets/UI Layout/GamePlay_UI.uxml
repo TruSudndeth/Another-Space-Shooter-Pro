@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Layout/ButtonStyle001.uss?fileID=7433441132597879392&amp;guid=6bce2891584a8da48b9bec194b76af36&amp;type=3#ButtonStyle001" />
+    <Style src="project://database/Assets/UI%20Layout/Text.uss?fileID=7433441132597879392&amp;guid=fa04d9a1d1c0da543b8668f7e241d272&amp;type=3#Text" />
+    <ui:VisualElement name="FullScreen" style="height: 100%; align-items: stretch; max-width: initial; max-height: initial; min-width: auto; min-height: auto; width: 100%; justify-content: space-between; display: flex; overflow: hidden;">
+        <ui:VisualElement name="Top_Text" style="align-items: stretch; justify-content: space-between; flex-direction: row-reverse; -unity-slice-left: 183; margin-top: 20px; margin-left: 20px; margin-right: 20px; margin-bottom: 0;">
+            <ui:Label text="Score: 999" display-tooltip-when-elided="true" name="Score" class="Text text scoreText" />
+            <ui:VisualElement name="HealthBar" class="healthBar" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Center_Text" style="margin-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0;">
+            <ui:Label text="Game Over" display-tooltip-when-elided="true" name="GameOver" class="gameOverText" />
+            <ui:Label text="Press R to Restart..." display-tooltip-when-elided="true" name="Restart_Text" class="restart restartText" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Bottom_Text" style="margin-bottom: 0;">
+            <ui:VisualElement style="margin-left: 0; margin-right: 20px; margin-bottom: 20px; flex-direction: row-reverse; justify-content: space-between; align-items: center;">
+                <ui:Label text="Ammo: 999" display-tooltip-when-elided="true" name="Ammo" class="scoreText" style="-unity-text-align: upper-right;" />
+                <ui:ProgressBar name="ThrusterCoolDown" style="width: 20%; margin-left: 2%; -unity-background-image-tint-color: rgb(255, 255, 255); background-color: rgb(0, 0, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
