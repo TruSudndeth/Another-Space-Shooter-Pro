@@ -668,7 +668,7 @@ MonoBehaviour:
   _maxPool: 100
   _spawnRate: 0.1
   _spawnDelay: 5
-  _waveSize: 15
+  _waveSize: 8
 --- !u!1 &1439911904
 GameObject:
   m_ObjectHideFlags: 0
