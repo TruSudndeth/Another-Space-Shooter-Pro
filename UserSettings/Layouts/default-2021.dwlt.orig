@@ -14,10 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 0
-    y: 42.666668
-    width: 2560
-    height: 1357.3334
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    x: 648
+    y: 50
+    width: 1904.6667
+=======
+    x: 703.3334
+    y: 50
+    width: 1849.3334
+>>>>>>> Stashed changes
+=======
+    x: 703.3334
+    y: 50
+    width: 1849.3334
+>>>>>>> Stashed changes
+    height: 1342.6667
   m_ShowMode: 4
   m_Title: Inspector
   m_RootView: {fileID: 3}
@@ -25,6 +38,57 @@ MonoBehaviour:
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 0
 --- !u!114 &2
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: ConsoleWindow
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    y: 1079.3334
+    width: 956.66675
+    height: 213.33325
+=======
+    y: 1066
+    width: 798.6666
+    height: 226.66663
+>>>>>>> Stashed changes
+=======
+    y: 1066
+    width: 798.6666
+    height: 226.66675
+>>>>>>> Stashed changes
+  m_MinSize: {x: 102, y: 121}
+  m_MaxSize: {x: 4002, y: 4021}
+  m_ActualView: {fileID: 23}
+  m_Panes:
+  - {fileID: 23}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &3
+=======
+    x: 0
+    y: 42.666668
+    width: 2560
+    height: 1357.3334
+  m_ShowMode: 4
+  m_Title: Code Todo List
+  m_RootView: {fileID: 2}
+  m_MinSize: {x: 875, y: 300}
+  m_MaxSize: {x: 10000, y: 10000}
+  m_Maximized: 1
+--- !u!114 &2
+>>>>>>> main
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,8 +108,22 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    width: 1904.6666
+=======
+    width: 1849.3334
+>>>>>>> Stashed changes
+    height: 1342.6666
+=======
+    width: 1849.3334
+    height: 1342.6667
+>>>>>>> Stashed changes
+=======
     width: 2560
     height: 1357.3334
+>>>>>>> main
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
@@ -69,7 +147,19 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    width: 1904.6666
+=======
+    width: 1849.3334
+>>>>>>> Stashed changes
+=======
+    width: 1849.3334
+>>>>>>> Stashed changes
+=======
     width: 2560
+>>>>>>> main
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}

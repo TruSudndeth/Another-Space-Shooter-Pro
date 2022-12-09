@@ -137,7 +137,7 @@ public class EnemySpawnManager : MonoBehaviour
     private void SpawnSystem()
     {
         if (_isPoolMaxed)
-        {
+        {            
             if (_enemies.FindAll(x => x.name == Types.Enemy.Scifi_Drone_04.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyDroneCount - _enemyDroneKilled)
                 SpawnEnemyType(Types.Enemy.Scifi_Drone_04);
             else if (_enemies.FindAll(x => x.name == Types.Enemy.Alien_Ship_001.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyMiniBossCount - _enemyMiniBossKilled)
