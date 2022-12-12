@@ -230,7 +230,7 @@ MonoBehaviour:
   _Eshoots: {fileID: 0}
   _aggressiveCrash: 5
   _isAggressive: 0
-  _aggressiveProbability: 1
+  _aggressiveProbability: 0.5
   _trackerSpeedReduction: 0.25
 --- !u!1001 &8543222459736107441
 PrefabInstance:
