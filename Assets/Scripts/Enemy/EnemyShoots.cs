@@ -10,6 +10,7 @@ public class EnemyShoots : MonoBehaviour
     [Tooltip("If random 01 float is greater than this value")]
     [SerializeField] private float _shouldFire = 0.25f;
     private bool _fired = false;
+    public bool Fired { get => _fired; }
     private void OnEnable()
     {
         //_laserSpawnPoints = new(3);

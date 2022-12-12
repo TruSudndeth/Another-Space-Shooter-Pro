@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
+    public delegate void NewWave();
+    public static event NewWave NewWaveEvent;
+
     [SerializeField] private List<Transform> _enemyAsset;
     private List<Transform> _enemies;
     private int _enemyCount = 0;
@@ -124,6 +127,7 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void SpawnRandomEnemiesWave()
     {
+        NewWaveEvent?.Invoke();
         _enemyDroneCount = 0;
         _enemyMiniBossCount = 0;
         _enemyDroneKilled = 0;

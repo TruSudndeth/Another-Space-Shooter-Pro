@@ -225,8 +225,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   _shiftSpeedMin: 0.5
-  _ShiftSpeedMax: 2
+  _ShiftSpeedMax: 3
   _enemyType: 2
+  _Eshoots: {fileID: 0}
+  _aggressiveCrash: 5
+  _isAggressive: 0
+  _aggressiveProbability: 1
+  _trackerSpeedReduction: 0.25
 --- !u!1001 &8543222459736107441
 PrefabInstance:
   m_ObjectHideFlags: 0
