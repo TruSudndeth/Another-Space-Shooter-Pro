@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
+    public delegate void NewWave();
+    public static event NewWave NewWaveEvent;
+
     [SerializeField] private List<Transform> _enemyAsset;
     private List<Transform> _enemies;
     private int _enemyCount = 0;
@@ -124,6 +127,7 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void SpawnRandomEnemiesWave()
     {
+        NewWaveEvent?.Invoke();
         _enemyDroneCount = 0;
         _enemyMiniBossCount = 0;
         _enemyDroneKilled = 0;
@@ -137,27 +141,11 @@ public class EnemySpawnManager : MonoBehaviour
     private void SpawnSystem()
     {
         if (_isPoolMaxed)
-        {
-            //fire rate must not surpass laser pool check if object is disabled before using.
-            //Todo: Lock rotations add recochet later
-            //LeftOff: Only spawn the needed enemies quantity
-            
+        {            
             if (_enemies.FindAll(x => x.name == Types.Enemy.Scifi_Drone_04.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyDroneCount - _enemyDroneKilled)
                 SpawnEnemyType(Types.Enemy.Scifi_Drone_04);
             else if (_enemies.FindAll(x => x.name == Types.Enemy.Alien_Ship_001.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyMiniBossCount - _enemyMiniBossKilled)
                 SpawnEnemyType(Types.Enemy.Alien_Ship_001);
-
-            
-            if(false) //DeleteLine: for Loop is not used delete block after testing
-            for (int i = 0; i < _enemies.Count; i++)
-            {
-                if (!_enemies[i].gameObject.activeSelf)
-                {
-                    _enemies[i].gameObject.SetActive(true);
-                    _enemies[i].position = RandomEnemySpawn() + CalcOffset(_enemies[i]);
-                    break;
-                }
-            }
         }
     }
     
