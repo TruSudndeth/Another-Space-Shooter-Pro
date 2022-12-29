@@ -17,6 +17,9 @@ public class EnemyShoots : MonoBehaviour
     private bool _reverseFire = false;
     private Vector3 _fireRotation = new(180, 0 , 0);
     private float _inFront = 0;
+    private float _powerupInfront = 0;
+    [SerializeField][Range(0.0f, 1.0f)] float _inFrontRange = 0.1f;
+    private Transform _powerupTransfrom;
 
     private void Start()
     {
@@ -55,14 +58,36 @@ public class EnemyShoots : MonoBehaviour
         }
     }
 
+    private void RequestPowerupLineUp()
+    {
+        //request _Enemy_Move to lineup enemy shot in the x axes
+    }
+
     private void Shoot()
     {
+        foreach(Transform powerup in CollectibleSpawnManager.Instance.GetActivePowerupPool())
+        {
+            if(IsInfront(powerup))
+            {
+                _fired = false;
+            }
+        }
         if (ShouldFire() && !_fired)
         {
             _fired = true;
             LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()]);
             AudioManager.Instance.PlayAudioOneShot(_sfx);
         }
+    }
+
+    private bool IsInfront(Transform powerup)
+    {
+        //LeftOff: Object not set to an instance PowerUp
+        float inFront = Vector3.Dot((powerup.position - transform.position).normalized, Vector3.down);
+        if (1 - _inFrontRange < inFront) 
+            return true;
+        else
+            return false;
     }
     
     private int RandomGun()

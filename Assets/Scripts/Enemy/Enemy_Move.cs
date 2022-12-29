@@ -58,7 +58,6 @@ public class Enemy_Move : MonoBehaviour
             if (_enemyType == Types.Enemy.Scifi_Drone_04)
             TrackPlayer();
         }
-        
     }
     private void TrackPlayer()
     {

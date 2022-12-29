@@ -137,6 +137,7 @@ MonoBehaviour:
   _speed: 3
   _antiProbablity: 15
   _negativePowerupVisual: {fileID: 8865408045254754456}
+  _vfxType: 0
 --- !u!1001 &6402129588065734328
 PrefabInstance:
   m_ObjectHideFlags: 0

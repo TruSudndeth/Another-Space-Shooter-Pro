@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using UnityEngine;
 
 public class CollectibleSpawnManager : MonoBehaviour
 {
+    //LeftOff: 1. Create an instance to this class
+    public static CollectibleSpawnManager Instance;
+
     [SerializeField] private List<Transform> _powerUpAssets;
     private List<Transform> _powerups;
+    private List<Transform> _returnPowerups;
     [Space]
     private float _cameraAspecRatio = 1.7777778f;
     private Vector2 _xyBounds = Vector2.zero;
@@ -20,6 +25,10 @@ public class CollectibleSpawnManager : MonoBehaviour
 
     private void Start()
     {
+        if(!Instance)
+            Instance = this;
+        else
+            Destroy(this);
         StartGameAsteroids.GameStarted += GameStarted;
         BackGroundMusic_Events.BGM_Events += () => _spawningBPM = true;
     }
@@ -32,7 +41,7 @@ public class CollectibleSpawnManager : MonoBehaviour
     {
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
-
+        _returnPowerups = new List<Transform>();
         _powerups = new(_powerUpAssets.Count); //currently 3 power ups
     }
 
@@ -56,6 +65,13 @@ public class CollectibleSpawnManager : MonoBehaviour
         float randomRandx = Random.Range(-(_xyBounds.x) * 1000, _xyBounds.x * 1000);
         randomRandx *= 0.001f;
         return new Vector3(randomRandx, _xyBounds.y, transform.position.z);
+    }
+    
+    public List<Transform> GetActivePowerupPool()
+    {
+        
+        _returnPowerups = _powerups.Where(x => x.gameObject.activeSelf).ToList();
+        return _returnPowerups;
     }
 
     private int RandomInt()

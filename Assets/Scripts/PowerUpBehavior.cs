@@ -14,9 +14,11 @@ public class PowerUpBehavior : MonoBehaviour
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [Tooltip("float Random Range is less than Range float from 0 to 100%")]
-    [SerializeField] [Range(0, 100)] private float _antiProbablity = 0.5f;
+    [SerializeField][Range(0, 100)] private float _antiProbablity = 0.5f;
     [SerializeField] Transform _negativePowerupVisual;
     private bool _antiPowerups = false;
+    [SerializeField] [Space(25)]
+    private Types.VFX _vfxType = Types.VFX.PlayerDeath;
 
     private void Awake()
     {
@@ -86,6 +88,12 @@ public class PowerUpBehavior : MonoBehaviour
                 else
                     AudioManager.Instance.PlayAudioOneShot(Types.SFX.PickUp);
             }
+        }
+        if (other.CompareTag(Types.LaserTag.EnemyLaser.ToString()))
+        {
+            ParticlesVFX.OneShotExplosion?.Invoke(transform, _vfxType);
+            gameObject.SetActive(false);
+            other.gameObject.SetActive(false);
         }
     }
 }

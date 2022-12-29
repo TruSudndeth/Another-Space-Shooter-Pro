@@ -646,6 +646,7 @@ MonoBehaviour:
   _speed: 3
   _antiProbablity: 80
   _negativePowerupVisual: {fileID: 5469966911193012885}
+  _vfxType: 0
 --- !u!1 &6401357193769851435
 GameObject:
   m_ObjectHideFlags: 0

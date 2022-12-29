@@ -117,6 +117,7 @@ MonoBehaviour:
   _speed: 3
   _antiProbablity: 15
   _negativePowerupVisual: {fileID: 8952129790450365038}
+  _vfxType: 0
 --- !u!65 &514872185868989587
 BoxCollider:
   m_ObjectHideFlags: 0

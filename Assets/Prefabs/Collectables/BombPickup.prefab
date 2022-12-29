@@ -184,6 +184,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _powerUpType: 5
   _speed: 3
+  _antiProbablity: 0.5
+  _negativePowerupVisual: {fileID: 0}
+  _vfxType: 0
 --- !u!114 &5978479948048738440
 MonoBehaviour:
   m_ObjectHideFlags: 0
