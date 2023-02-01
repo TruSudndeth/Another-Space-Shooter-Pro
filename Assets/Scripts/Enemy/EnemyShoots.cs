@@ -15,7 +15,8 @@ public class EnemyShoots : MonoBehaviour
 
     private Transform _player;
     private bool _reverseFire = false;
-    private Vector3 _fireRotation = new(180, 0 , 0);
+    private Vector3 _fireRotation = new(90, 0 , 0);
+    private Vector3 _reverseFireRotation = new(-90, 0, 0);
     private float _inFront = 0;
     private float _powerupInfront = 0;
     [SerializeField][Range(0.0f, 1.0f)] float _inFrontRange = 0.1f;
@@ -52,7 +53,7 @@ public class EnemyShoots : MonoBehaviour
             {
                 foreach (Transform laser in _laserSpawnPoints)
                 {
-                    laser.rotation = Quaternion.Euler(Vector3.zero);
+                    laser.rotation = Quaternion.Euler(_reverseFireRotation);
                 }
             }
         }

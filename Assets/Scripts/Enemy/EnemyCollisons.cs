@@ -27,7 +27,7 @@ public class EnemyCollisons : MonoBehaviour
 
         if (other.CompareTag(Types.LaserTag.PlayerLaser.ToString()))
         {
-            other.gameObject.SetActive(false);
+            other.transform.parent.gameObject.SetActive(false);
             if (_life > 1)
             {
                 DisableShield();

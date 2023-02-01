@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Melanchall.DryWetMidi.Core;
 
 public class LaserBehavior : MonoBehaviour
 {
+    [SerializeField] private float _rotationSpeed = 10;
     private Renderer _renderer;
     private Camera _camera;
     private float _cameraAspecRatio = 1.7777778f;
@@ -13,13 +15,14 @@ public class LaserBehavior : MonoBehaviour
     private Vector2 _xyBounds;
     private bool _homingLaser = false;
     private Transform target;
+    private bool tagged = false;
     [Space]
     [SerializeField] private float _speed = 10;
     private bool _move = false;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
+        _renderer = GetComponentInChildren<Renderer>();
         _camera = Camera.main;
         _yBounds = _camera.orthographicSize;
         _xBounds = _yBounds * _cameraAspecRatio;
@@ -35,10 +38,23 @@ public class LaserBehavior : MonoBehaviour
     }
     public void SetTag(Types.Tag tag)
     {
+        Types.LaserTag laserTagType;
         if (tag == Types.Tag.Player)
-            gameObject.tag = Types.LaserTag.PlayerLaser.ToString();
+        {
+            laserTagType = Types.LaserTag.PlayerLaser;
+        }
         else if (tag == Types.Tag.Enemies)
-            gameObject.tag = Types.LaserTag.EnemyLaser.ToString(); //Debug: Enemy is not defined
+            laserTagType = Types.LaserTag.EnemyLaser; //Debug: Enemy is not defined
+        else
+        {
+            laserTagType = Types.LaserTag.PlayerLaser;
+            Debug.Log("laser was not to a Unit, default is player", transform);
+        }
+        GameObject[] setTreeToTags = gameObject.GetComponentsInChildren<Transform>().Select(x => x.gameObject).ToArray();
+        foreach (GameObject child in setTreeToTags)
+        {
+            child.tag = laserTagType.ToString();
+        }
     }
     public void SetHoming(bool SetHoming)
     {
@@ -46,28 +62,40 @@ public class LaserBehavior : MonoBehaviour
     }
     private void OnDisable()
     {
+        tagged = false;
+        target = null;
         transform.position = Vector3.zero;
         _move = false;
         _homingLaser = false;
     }
     void FixedUpdate()
     {
-        if (_move && !_homingLaser)
+        if (_move)
         {
             Vector3 checkForBounds;
-            if (_homingLaser && target == null)
+            if(target == null)
+            target = TargetClosestEnemy();
+            if (_homingLaser && target != null)
             {
-                target = TargetClosestEnemy();
-                if (target.TryGetComponent(out Enemy_Move enemy))
-                    enemy.HasBeenTaggedByLaser();
-                if (!target)
+                Debug.Break();
+                if (target)
                 {
-                    Debug.Log("Laser cant find Target");
+                    if (!tagged && target.TryGetComponent(out Enemy_Move enemy))
+                    {
+                        enemy.HasBeenTaggedByLaser();
+                        tagged = true;
+                    }
+                    transform.LookAt(target, transform.right);
+                    //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target.position - transform.position), 360 * _rotationSpeed * Time.fixedDeltaTime);
+                    Debug.Log("Rotation");
+                }
+                else
+                {
+                    Debug.Log("Laser cant find Target", transform);
                     return;
                 }
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target.position - transform.position), 180 * Time.fixedDeltaTime);
             }
-            Vector3 moveLaser = _speed * Time.fixedDeltaTime * transform.up;
+            Vector3 moveLaser = _speed * Time.fixedDeltaTime * transform.forward;
             checkForBounds = OutOfBounds.CalculateMove(transform, moveLaser, _xyBounds);
             if(moveLaser == Vector3.zero || checkForBounds.magnitude > moveLaser.magnitude * 2)
             {
@@ -86,8 +114,11 @@ public class LaserBehavior : MonoBehaviour
     }
     private Transform TargetClosestEnemy()
     {
-        Transform[] EnemyManager = GameObject.Find("EnemySpwanManager").GetComponentsInChildren<Transform>();
-        Transform[] Enemies = EnemyManager.Where(x => x.tag == Types.Tag.Enemies.ToString()).Where(x => x.gameObject.activeSelf).Where(x => x.GetComponent<Enemy_Move>().HomingTagged == false).ToArray();
+        //if Enemymanager is empty skip everyting that can result in an error
+        Transform[] EnemyManager = GameObject.Find("EnemySpwanManager").GetComponentsInChildren<Enemy_Move>().Select(x => x.transform).Where(x => x.gameObject.activeSelf).ToArray();
+        if (EnemyManager.Length == 0) return null;
+        Transform[] Enemies = EnemyManager.Where(x => x.CompareTag(Types.Tag.Enemies.ToString())).Where(x => x.GetComponent<Enemy_Move>().HomingTagged == false).ToArray();
+        if (Enemies.Length == 0) return null;
         Transform closestEnemy = null;
         float distance = Mathf.Infinity;
         if (Enemies.Length == 0)

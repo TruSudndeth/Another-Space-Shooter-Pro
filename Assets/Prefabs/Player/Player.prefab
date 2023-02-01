@@ -56,14 +56,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8536037456945169506}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8536037456945010766}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8536037456945169508
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,14 +87,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8536037456945169508}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.4, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8536037456945010766}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8536037456945169512
 GameObject:
   m_ObjectHideFlags: 0
@@ -9718,14 +9718,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8536037456945169516}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8536037456945010766}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8536037456945169518
 GameObject:
   m_ObjectHideFlags: 0
@@ -9868,6 +9868,7 @@ MonoBehaviour:
   _interPoMoveSpeed: 3.5
   _bankSpeed: 10
   _maxBank: 45
+  _antiSpeed: 2
   _speed: 5
   _speedBoostTimeout: 5
   _thrustDistance: 3
@@ -9885,9 +9886,11 @@ MonoBehaviour:
   _damageLeftENG: {fileID: 8561259504665264764}
   _damageRighENG: {fileID: 3180163401601869307}
   _shield: {fileID: 5669655066000267629}
-  _health: 3
+  _health: 50
   _shieldTimeout: 120
   _updateScore: 0
+  _bombTimeout: 5
+  _playerDamageShake: 0.5
 --- !u!114 &223729743
 MonoBehaviour:
   m_ObjectHideFlags: 0

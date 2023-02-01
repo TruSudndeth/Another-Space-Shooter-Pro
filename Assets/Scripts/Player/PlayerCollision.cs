@@ -7,9 +7,9 @@ public class PlayerCollision : MonoBehaviour
     [SerializeField] private List<Types.SFX> _sfx;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == Types.LaserTag.EnemyLaser.ToString())
+        if (other.gameObject.CompareTag(Types.LaserTag.EnemyLaser.ToString()))
         {
-            other.gameObject.SetActive(false);
+            other.transform.parent.gameObject.SetActive(false);
             GetComponent<Player>().Health = 1;
             if(_sfx.Count > 0)
             AudioManager.Instance.PlayAudioOneShot(RandomDamageSFX());

@@ -177,9 +177,9 @@ public class Player : MonoBehaviour
         //50% chance to remove a health else add a health. This can kill the player.
         //Todo: Add Health Sound FX
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
-        if (_health == 3 && !antiProbablility) return;
+        if (_health >= 3 && !antiProbablility) return;
         if (antiProbablility) Damage(1); else _health++;
-        if (_health == 3)
+        if (_health >= 3)
         {
             _damageLeftENG.SetActive(false);
             _damageRighENG.SetActive(false);
