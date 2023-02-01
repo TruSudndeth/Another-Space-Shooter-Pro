@@ -9,8 +9,8 @@ public class CollectibleSpawnManager : MonoBehaviour
     //LeftOff: 1. Create an instance to this class
     public static CollectibleSpawnManager Instance;
 
-    [SerializeField] private List<Transform> _powerUpAssets;
-    private List<Transform> _powerups;
+    [SerializeField] private List<Transform> _powerupAssets;
+    private List<Transform> _collectableList;
     private List<Transform> _returnPowerups;
     [Space]
     private float _cameraAspecRatio = 1.7777778f;
@@ -42,19 +42,21 @@ public class CollectibleSpawnManager : MonoBehaviour
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
         _returnPowerups = new List<Transform>();
-        _powerups = new(_powerUpAssets.Count); //currently 3 power ups
+        _collectableList = new(_powerupAssets.Count); //currently 3 power ups
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         //Add if statment to spawn every 7 seconds Time.time
-        if (_powerUpAssets.Count == 0 || !_gameStarted) return;
+        if (_powerupAssets.Count == 0 || !_gameStarted) return;
         if (_currentSpawnTime + _spawnRate <= Time.time && _spawningBPM)
         {
             _spawningBPM = false;
             _currentSpawnTime = Time.time;
-            _powerups.Add(Instantiate(_powerUpAssets[RandomInt()], RandomXSpawn(), Quaternion.identity, transform)); //Debugit: IndexOut of Range -1, < collection
+            int randomPrefab = RandomInt();
+            Debug.Log(randomPrefab);
+            _collectableList.Add(Instantiate(_powerupAssets[randomPrefab], RandomXSpawn(), Quaternion.identity, transform)); //Debugit: IndexOut of Range -1, < collection
         }
         else
             _spawningBPM = false;
@@ -70,27 +72,26 @@ public class CollectibleSpawnManager : MonoBehaviour
     public List<Transform> GetActivePowerupPool()
     {
         
-        _returnPowerups = _powerups.Where(x => x.gameObject.activeSelf).ToList();
+        _returnPowerups = _collectableList.Where(x => x.gameObject.activeSelf).ToList();
         return _returnPowerups;
     }
-
     private int RandomInt()
     {
         //GDHQ: New Projectile RareSpawn
-        int randomInt = Random.Range(0, 101);
-        if (randomInt <= 10)
+        int randomProbability = Random.Range(0, 101);
+        if (randomProbability <= 10)
             if (Random.Range(0, 101) <= 50)
-                return _powerups.FindIndex(b => b.name == Types.PowerUps.BombPickup.ToString());
+                return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.BombPickup.ToString());
             else
-                return _powerups.FindIndex(b => b.name == Types.PowerUps.HealthPackRed.ToString());
-        else if (randomInt <= 20)
-            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.ShieldPowerUp.ToString());
-        else if (randomInt <= 25)
-            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.SpeedPowerUp.ToString());
-        else if (randomInt <= 35)
-            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.TripleShotPowerUp.ToString());
+                return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.HealthPackRed.ToString());
+        else if (randomProbability <= 20)
+            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.ShieldPowerup.ToString());
+        else if (randomProbability <= 25)
+            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.SpeedPowerup.ToString());
+        else if (randomProbability <= 35)
+            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.TripleShotPowerup.ToString());
         else
-            return _powerUpAssets.FindIndex(b => b.name == Types.PowerUps.AmmoPickup.ToString());
+            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.AmmoPickup.ToString());
     }
     private void OnDestroy()
     {
