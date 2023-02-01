@@ -75,7 +75,7 @@ public class EnemyShoots : MonoBehaviour
         if (ShouldFire() && !_fired)
         {
             _fired = true;
-            LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()]);
+            LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()], false);
             AudioManager.Instance.PlayAudioOneShot(_sfx);
         }
     }

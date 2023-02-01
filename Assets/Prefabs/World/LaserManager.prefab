@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3781520208192830820}
   - component: {fileID: 3781520208192830821}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: LaserManager
-  m_TagString: Untagged
+  m_TagString: Laser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,6 +47,7 @@ MonoBehaviour:
   _bomb: {fileID: 7037138832937195801, guid: ee962d11fdfd95a47840ec0e79ba2482, type: 3}
   _enemyLaser: {fileID: 2100000, guid: ea65f2ece1b5a6f468c33e4dd07cca9b, type: 2}
   _playerLaser: {fileID: 2100000, guid: f562c6ad7d9470d42848bee90528ce03, type: 2}
+  _playerLaserHoming: {fileID: 2100000, guid: 90df83409803c2c44924b2fb4724da8b, type: 2}
   _laserAsset: {fileID: 5651855448939826910, guid: c5e1cadbf0a25bf48bd7460a3d215fcb,
     type: 3}
   _maxPool: 15

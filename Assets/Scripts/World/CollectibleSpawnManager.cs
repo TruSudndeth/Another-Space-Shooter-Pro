@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CollectibleSpawnManager : MonoBehaviour
@@ -77,21 +78,38 @@ public class CollectibleSpawnManager : MonoBehaviour
     }
     private int RandomInt()
     {
+        //LeftOff: SpeedPowerup and Tripple shot are rerturn -1 MustFix
         //GDHQ: New Projectile RareSpawn
+        //Fix: This has Dependancies to the powerupAssets list in the inspector (must have all)
         int randomProbability = Random.Range(0, 101);
+        int powerupInt = 0;
         if (randomProbability <= 10)
+        {
             if (Random.Range(0, 101) <= 50)
-                return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.BombPickup.ToString());
+                powerupInt = _powerupAssets.FindIndex(b => b.name == Types.PowerUps.BombPickup.ToString());
             else
-                return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.HealthPackRed.ToString());
+                powerupInt = _powerupAssets.FindIndex(b => b.name == Types.PowerUps.HealthPackRed.ToString());
+        }
         else if (randomProbability <= 20)
-            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.ShieldPowerup.ToString());
+        {
+            if (Random.Range(0, 101) <= 50)
+                powerupInt = _powerupAssets.FindIndex(b => b.name == Types.PowerUps.ShieldPowerup.ToString());
+            else
+                powerupInt = _powerupAssets.FindIndex(x => x.name == Types.PowerUps.HomingMissle.ToString());
+        }
         else if (randomProbability <= 25)
-            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.SpeedPowerup.ToString());
+            powerupInt = _powerupAssets.FindIndex(b => b.name == Types.PowerUps.SpeedPowerup.ToString());
         else if (randomProbability <= 35)
-            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.TripleShotPowerup.ToString());
+            powerupInt = _powerupAssets.FindIndex(b => b.name == Types.PowerUps.TripleShotPowerup.ToString());
         else
-            return _powerupAssets.FindIndex(b => b.name == Types.PowerUps.AmmoPickup.ToString());
+            powerupInt = _powerupAssets.FindIndex(b => b.name == Types.PowerUps.AmmoPickup.ToString());
+        if (powerupInt == -1)
+        {
+            Debug.Log("Probability: " + randomProbability, transform);
+            return 0;
+        }
+        else
+            return powerupInt;
     }
     private void OnDestroy()
     {

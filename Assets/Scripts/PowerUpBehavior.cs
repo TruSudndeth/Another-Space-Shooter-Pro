@@ -79,6 +79,10 @@ public class PowerUpBehavior : MonoBehaviour
                         playerPowerups.UseBomb();
                         gameObject.SetActive(false);
                         break;
+                    case Types.PowerUps.HomingMissle:
+                        playerPowerups.HomingMissleActive(_antiPowerups);
+                        gameObject.SetActive(false);
+                        break;
                     default:
                         Debug.Log(transform + "Power Up type not set");
                         break;
