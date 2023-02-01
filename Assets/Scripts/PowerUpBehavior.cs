@@ -6,6 +6,7 @@ public class PowerUpBehavior : MonoBehaviour
 {
     //Todo: PowerUp Shield energy depleating Timmer warning. Sound (OutOfTimeShield)
     [SerializeField] private Types.PowerUps _powerUpType;
+    public Types.PowerUps PowerUpType { get { return _powerUpType; } private set { } }
     [Space]
     [SerializeField] private float _speed = 3.0f;
     [Space]
