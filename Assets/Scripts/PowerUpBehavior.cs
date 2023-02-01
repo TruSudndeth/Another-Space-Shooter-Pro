@@ -53,15 +53,15 @@ public class PowerUpBehavior : MonoBehaviour
             {
                 switch(_powerUpType)
                 {
-                    case Types.PowerUps.TripleShotPowerUp:
+                    case Types.PowerUps.TripleShotPowerup:
                         playerPowerups.TripleShotActive(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.ShieldPowerUp:
+                    case Types.PowerUps.ShieldPowerup:
                         playerPowerups.ShieldActive(_antiPowerups);
                         gameObject.SetActive(false);
                         break;
-                    case Types.PowerUps.SpeedPowerUp:
+                    case Types.PowerUps.SpeedPowerup:
                         playerPowerups.SpeedBoost(_antiPowerups);
                         gameObject.SetActive(false);
                         break;

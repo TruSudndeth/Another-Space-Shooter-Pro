@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7613096742455358224}
   - component: {fileID: -3602538701067712641}
   m_Layer: 10
-  m_Name: SpeedPowerUp
+  m_Name: SpeedPowerup
   m_TagString: Collectible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

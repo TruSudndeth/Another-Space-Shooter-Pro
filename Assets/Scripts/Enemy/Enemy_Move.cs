@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 //Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
 public class Enemy_Move : MonoBehaviour
@@ -11,8 +12,9 @@ public class Enemy_Move : MonoBehaviour
     private Camera _camera;
     private Vector2 _xyBounds;
     [SerializeField] private float _speed = 4.0f;
+    [SerializeField] private float _avoidSpeed = 10.0f;
     private bool _move = false;
-    
+
     [Space]
     [SerializeField] private float _shiftSpeedMin = 0.5f;
     [SerializeField] private float _ShiftSpeedMax = 2.0f;
@@ -20,7 +22,7 @@ public class Enemy_Move : MonoBehaviour
     private float _shiftProbability = 0.25f;
     private bool _isShifting = false;
     private float _randomShiftLocation;
-    
+
     [Space]
     [SerializeField] private Types.Enemy _enemyType = Types.Enemy.Default;
     private Transform _trackPlayer;
@@ -31,9 +33,11 @@ public class Enemy_Move : MonoBehaviour
     [Space(25)]
     [SerializeField] private float _aggressiveCrash = 5.0f;
     [SerializeField] private bool _isAggressive = false;
-    [SerializeField] [Range(0.0f, 1.0f)] private float _aggressiveProbability = 0.25f;
-    [SerializeField] [Range(0.0f, 1.0f)]private float _trackerSpeedReduction = 0.25f;
+    [SerializeField][Range(0.0f, 1.0f)] private float _aggressiveProbability = 0.25f;
+    [SerializeField][Range(0.0f, 1.0f)] private float _trackerSpeedReduction = 0.25f;
+    [SerializeField] private Transform _laserManager;
     private bool _aggressiveTracking = false;
+    private bool _avoidShots = false;
     //Todo: Eplayer behaviour to move towards player
     //Todo: Eplayers All move Right all move left
     //Todo: Eplayers all move towards player
@@ -46,6 +50,10 @@ public class Enemy_Move : MonoBehaviour
     }
     private void Start()
     {
+        if (!_laserManager)
+        {
+            _laserManager = GameObject.Find("LaserManager").transform;
+        }
         BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
         if (transform.TryGetComponent(out EnemyShoots enemyShoots))
             _Eshoots = enemyShoots;
@@ -56,12 +64,12 @@ public class Enemy_Move : MonoBehaviour
         {
             Move();
             if (_enemyType == Types.Enemy.Scifi_Drone_04)
-            TrackPlayer();
+                TrackPlayer();
         }
     }
     private void TrackPlayer()
     {
-        if(!_trackPlayer)
+        if (!_trackPlayer)
         {
             _trackPlayer = GameObject.FindGameObjectWithTag(Types.Tag.Player.ToString()).transform;
         }
@@ -76,7 +84,7 @@ public class Enemy_Move : MonoBehaviour
     private void Move()
     {
         float fixedTime = Time.fixedDeltaTime;
-        if(DistanceFromPlayer() )
+        if (DistanceFromPlayer())
         {
             transform.position = Vector3.MoveTowards(transform.position, _trackPlayer.position, _speed * fixedTime);
             return;
@@ -89,8 +97,9 @@ public class Enemy_Move : MonoBehaviour
             movePlayer.x = 0;
         }
         if (!_isShifting && _enemyType == Types.Enemy.Scifi_Drone_04 && !_isAggressive) movePlayer.y *= 0.01f;
-
+        if (_avoidShots) movePlayer = AvoidShots(movePlayer);
         movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
+
         if (movePlayer.y == 0) gameObject.SetActive(false);
         transform.position += movePlayer;
     }
@@ -107,6 +116,52 @@ public class Enemy_Move : MonoBehaviour
                 return false;
         } else
             return false;
+    }
+    private Vector2 AvoidShots(Vector2 movement)
+    {
+        Transform[] activelasers = _laserManager.GetComponentsInChildren<Transform>().Where(x => x.CompareTag(Types.LaserTag.PlayerLaser.ToString())).Where(x => x.gameObject.activeSelf).ToArray();
+        if (activelasers.Count() > 0)
+        {
+            Transform closestLaser = GetClosestLaser();
+            if (Mathf.Abs(closestLaser.position.y - transform.position.y) < 1)
+            {
+                movement.x = Mathf.Sign(closestLaser.position.x - transform.position.x) * -1;
+                movement.x *= _avoidSpeed * Time.fixedDeltaTime;
+            }
+            return movement;
+        }
+        else
+            return movement;
+    }
+
+    private Transform GetClosestLaser()
+    {
+        Transform closestLaser = null;
+        float closestDistance = 0;
+            foreach (Transform shot in _laserManager)
+            {
+                if (shot.gameObject.activeSelf)
+                {
+                    if (shot.CompareTag(Types.LaserTag.PlayerLaser.ToString()))
+                    {
+                        float distance = (transform.position - shot.position).sqrMagnitude;
+                        if (closestLaser == null)
+                        {
+                            closestLaser = shot;
+                            closestDistance = distance;
+                        }
+                        else
+                        {
+                            if (distance < closestDistance)
+                            {
+                                closestLaser = shot;
+                                closestDistance = distance;
+                            }
+                        }
+                    }
+                }
+            }
+        return closestLaser;
     }
     private Vector3 ShiftWithBPM(float fixedTime)
     {
@@ -138,6 +193,7 @@ public class Enemy_Move : MonoBehaviour
     }
     private void OnEnable()
     {
+        _avoidShots = Random.Range(0, 101) < 15;
         _shiftProbability = Random.Range(0.0f, 1.0f);
         _shiftSpeed = Random.Range(_shiftSpeedMin, _ShiftSpeedMax);
         //Todo: Add a zero probability. (straight)
