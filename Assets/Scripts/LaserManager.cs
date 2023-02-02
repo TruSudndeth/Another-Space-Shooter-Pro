@@ -12,6 +12,7 @@ public class LaserManager : MonoBehaviour
     [SerializeField] private Transform _bomb;
     [SerializeField] private Material _enemyLaser;
     [SerializeField] private Material _playerLaser;
+    [SerializeField] private Material _playerLaserHoming;
     [Space]
     [SerializeField] private Transform _laserAsset;
     [SerializeField] private int _maxPool = 15;
@@ -58,13 +59,13 @@ public class LaserManager : MonoBehaviour
             BombPool();
     }
 
-    public void LaserPool(Transform laserTransform)
+    public void LaserPool(Transform laserTransform, bool isHoming)
     {
         Vector3 position = laserTransform.position;
         if (_lasers.Count < _maxPool && !_isLaserPoolMaxed)
         {
             _lasers.Add(Instantiate(_laserAsset, position, laserTransform.rotation, transform));
-            SetAll(laserTransform, _lasers.LastOrDefault());
+            SetAll(laserTransform, _lasers.LastOrDefault(), isHoming);
 
             _iterateLaser++;
             if (_iterateLaser == _maxPool)
@@ -81,30 +82,32 @@ public class LaserManager : MonoBehaviour
             {
                 if (!_lasers[i].gameObject.activeSelf)
                 {
-                    SetAll(laserTransform, _lasers[i]);
+                    SetAll(laserTransform, _lasers[i], isHoming);
                     return;
                 }
             }
             _lasers.Add(Instantiate(_laserAsset, position, laserTransform.rotation, transform));
-            SetAll(laserTransform, _lasers.LastOrDefault());
+            SetAll(laserTransform, _lasers.LastOrDefault(), isHoming);
         }
     }
     
-    private void SetAll(Transform caller, Transform laserInPool)
+    private void SetAll(Transform caller, Transform laserInPool, bool isHoming)
     {
         laserInPool.gameObject.SetActive(true);
         if (laserInPool.TryGetComponent(out LaserBehavior laserBehavior))
         {
             laserBehavior.transform.position = caller.position;
             laserBehavior.transform.rotation = caller.rotation;
-            laserBehavior.SetMaterial(SetMaterial(caller));
+            laserBehavior.SetMaterial(SetMaterial(caller, isHoming));
             laserBehavior.SetTag(SetTag(caller));
+            laserBehavior.SetHoming(isHoming);
         }
     }
 
-    private Material SetMaterial(Transform laserMaterial)
+    private Material SetMaterial(Transform laserMaterial, bool isHoming)
     {
         Material material = _playerLaser;
+        if (isHoming) material = _playerLaserHoming;
         if (laserMaterial.CompareTag(Types.Tag.Enemies.ToString()))
             material = _enemyLaser;
         return material;

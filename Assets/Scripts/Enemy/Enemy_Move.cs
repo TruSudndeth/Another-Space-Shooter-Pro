@@ -38,6 +38,8 @@ public class Enemy_Move : MonoBehaviour
     [SerializeField] private Transform _laserManager;
     private bool _aggressiveTracking = false;
     private bool _avoidShots = false;
+    private bool _homingTagged = false;
+    public bool HomingTagged { get { return _homingTagged; } private set {} }
     //Todo: Eplayer behaviour to move towards player
     //Todo: Eplayers All move Right all move left
     //Todo: Eplayers all move towards player
@@ -191,6 +193,11 @@ public class Enemy_Move : MonoBehaviour
             _aggressiveTracking = false;
         }
     }
+    public void HasBeenTaggedByLaser()
+    {
+        _homingTagged = true;
+    }
+    
     private void OnEnable()
     {
         _avoidShots = Random.Range(0, 101) < 15;
@@ -209,5 +216,6 @@ public class Enemy_Move : MonoBehaviour
         BackGroundMusic_Events.BGM_Events -= () => _isShifting = !_isShifting;
         transform.position = Vector3.zero;
         _move = false;
+        _homingTagged = false;
     }
 }

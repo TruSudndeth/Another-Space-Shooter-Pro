@@ -210,8 +210,11 @@ public class UI : MonoBehaviour
 
     private void UpdateHealth(int health)
     {
-        if(!_isMainMenu)
-        _healthBar.style.backgroundImage = _healthStatusStyle[health];
+        if (!_isMainMenu)
+        {
+            if (health > 3) health = _healthStatusStyle.Count -1;
+            _healthBar.style.backgroundImage = _healthStatusStyle[health];
+        }
     }
     
     private void OnEnable()

@@ -591,7 +591,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5492742858331301199}
   - component: {fileID: 5608532274506772513}
-  - component: {fileID: 2180194327502368271}
   m_Layer: 10
   m_Name: Pickup_Ammo_BigCaliber Variant
   m_TagString: Untagged
@@ -626,27 +625,10 @@ SphereCollider:
   m_GameObject: {fileID: 5490631112475968477}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2180194327502368271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5490631112475968477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b925e1bfc9428b41aeaf04c852cf7b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _powerUpType: 3
-  _speed: 3
-  _antiProbablity: 80
-  _negativePowerupVisual: {fileID: 5469966911193012885}
-  _vfxType: 0
 --- !u!1 &6401357193769851435
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,6 +638,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4879673912583380412}
+  - component: {fileID: 1441246781261070816}
+  - component: {fileID: 491899585}
   m_Layer: 10
   m_Name: AmmoPickup
   m_TagString: Collectible
@@ -679,6 +663,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1441246781261070816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6401357193769851435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b925e1bfc9428b41aeaf04c852cf7b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _powerUpType: 3
+  _speed: 3
+  _antiProbablity: 80
+  _negativePowerupVisual: {fileID: 5469966911193012885}
+  _vfxType: 0
+--- !u!135 &491899585
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6401357193769851435}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6426887713252794274
 GameObject:
   m_ObjectHideFlags: 0

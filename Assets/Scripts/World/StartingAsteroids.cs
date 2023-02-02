@@ -21,7 +21,7 @@ public class StartingAsteroids : MonoBehaviour
         }
         else if (other.CompareTag(Types.LaserTag.PlayerLaser.ToString()))
         {
-            other.gameObject.SetActive(false);
+            other.transform.parent.gameObject.SetActive(false);
             Destroy(gameObject);
         }
     }

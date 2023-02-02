@@ -6,6 +6,7 @@ public class PowerUpBehavior : MonoBehaviour
 {
     //Todo: PowerUp Shield energy depleating Timmer warning. Sound (OutOfTimeShield)
     [SerializeField] private Types.PowerUps _powerUpType;
+    public Types.PowerUps PowerUpType { get { return _powerUpType; } private set { } }
     [Space]
     [SerializeField] private float _speed = 3.0f;
     [Space]
@@ -79,6 +80,10 @@ public class PowerUpBehavior : MonoBehaviour
                         playerPowerups.UseBomb();
                         gameObject.SetActive(false);
                         break;
+                    case Types.PowerUps.HomingMissle:
+                        playerPowerups.HomingMissleActive(_antiPowerups);
+                        gameObject.SetActive(false);
+                        break;
                     default:
                         Debug.Log(transform + "Power Up type not set");
                         break;
@@ -93,7 +98,7 @@ public class PowerUpBehavior : MonoBehaviour
         {
             ParticlesVFX.OneShotExplosion?.Invoke(transform, _vfxType);
             gameObject.SetActive(false);
-            other.gameObject.SetActive(false);
+            other.transform.parent.gameObject.SetActive(false);
         }
     }
 }

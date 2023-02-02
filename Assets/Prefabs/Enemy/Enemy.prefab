@@ -132,6 +132,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxType: 2
   _enemyPointValue: 20
+  _shield: {fileID: 0}
+  _shieldProbability: 25
 --- !u!114 &5177605654574377705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,9 +147,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
+  _avoidSpeed: 10
   _shiftSpeedMin: 0.5
   _ShiftSpeedMax: 2
   _enemyType: 1
+  _Eshoots: {fileID: 0}
+  _aggressiveCrash: 5
+  _isAggressive: 0
+  _aggressiveProbability: 0.25
+  _trackerSpeedReduction: 0.25
+  _laserManager: {fileID: 0}
 --- !u!114 &2686800014187623707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,6 +173,7 @@ MonoBehaviour:
   _laserSpawnPoints:
   - {fileID: 8067366382138916632}
   _shouldFire: 0.75
+  _inFrontRange: 0.1
 --- !u!1 &1199274491628529855
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,11 +197,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199274491628529855}
-  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0.85, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1995190552251999599}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}

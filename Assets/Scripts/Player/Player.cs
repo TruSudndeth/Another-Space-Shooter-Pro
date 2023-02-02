@@ -80,6 +80,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float _playerDamageShake = 0.5f;
     [Space]
     private bool _antiTrippleShot = false;
+    private bool _homingLasers = false;
+    private float _homingLasersTime = 0.0f;
+    private float _homingLasersTimeout = 5.0f;
 
     //Toto: Input bug holding Down and left doesn't allow to shoot
     private void Awake()
@@ -165,6 +168,8 @@ public class Player : MonoBehaviour
         }
         if (_shieldTime + _shieldTimeout <= Time.time && _isShieldActive)
             Damage(0);
+        if (_homingLasersTime + _homingLasersTimeout <= Time.time && _homingLasers)
+            _homingLasers = false;
     }
     public void AddHealth(bool Anti_Powerup)
     {
@@ -172,9 +177,9 @@ public class Player : MonoBehaviour
         //50% chance to remove a health else add a health. This can kill the player.
         //Todo: Add Health Sound FX
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
-        if (_health == 3 && !antiProbablility) return;
+        if (_health >= 3 && !antiProbablility) return;
         if (antiProbablility) Damage(1); else _health++;
-        if (_health == 3)
+        if (_health >= 3)
         {
             _damageLeftENG.SetActive(false);
             _damageRighENG.SetActive(false);
@@ -288,6 +293,12 @@ public class Player : MonoBehaviour
         }
         
     }
+    public void HomingMissleActive(bool antiHoming)
+    {
+        //Todo: add a negative override to Homing Missle
+        _homingLasers = true;
+        _homingLasersTime = Time.time;
+    }
     private float AddThrust()
     {
         return _thrustDistance;
@@ -319,7 +330,7 @@ public class Player : MonoBehaviour
         _canFire = Time.time;
         for (int i = 0; i < _tripleShot.Count; i++)
         {
-            LaserManager.Instance.LaserPool(_tripleShot[tripleShotIndex]);
+            LaserManager.Instance.LaserPool(_tripleShot[tripleShotIndex], _homingLasers);
             if (_isTrippleShot && tripleShotIndex == 0)
             {
                 AudioManager.Instance.PlayAudioOneShot(Types.SFX.Tripple);
