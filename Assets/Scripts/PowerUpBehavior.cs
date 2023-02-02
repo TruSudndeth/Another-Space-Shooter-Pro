@@ -97,8 +97,8 @@ public class PowerUpBehavior : MonoBehaviour
         if (other.CompareTag(Types.LaserTag.EnemyLaser.ToString()))
         {
             ParticlesVFX.OneShotExplosion?.Invoke(transform, _vfxType);
-            gameObject.transform.parent.gameObject.SetActive(false);
-            other.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+            other.transform.parent.gameObject.SetActive(false);
         }
     }
 }

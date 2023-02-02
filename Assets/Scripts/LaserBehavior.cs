@@ -73,11 +73,16 @@ public class LaserBehavior : MonoBehaviour
         if (_move)
         {
             Vector3 checkForBounds;
+            if (target != null && target.GetComponent<Enemy_Move>().gameObject.activeSelf == false)
+            {
+                target = null;
+                _homingLaser = false;
+                tagged = false;
+            }
             if(target == null)
             target = TargetClosestEnemy();
             if (_homingLaser && target != null)
             {
-                Debug.Break();
                 if (target)
                 {
                     if (!tagged && target.TryGetComponent(out Enemy_Move enemy))
@@ -86,8 +91,6 @@ public class LaserBehavior : MonoBehaviour
                         tagged = true;
                     }
                     transform.LookAt(target, transform.right);
-                    //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target.position - transform.position), 360 * _rotationSpeed * Time.fixedDeltaTime);
-                    Debug.Log("Rotation");
                 }
                 else
                 {

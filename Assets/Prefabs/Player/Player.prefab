@@ -9886,7 +9886,7 @@ MonoBehaviour:
   _damageLeftENG: {fileID: 8561259504665264764}
   _damageRighENG: {fileID: 3180163401601869307}
   _shield: {fileID: 5669655066000267629}
-  _health: 50
+  _health: 3
   _shieldTimeout: 120
   _updateScore: 0
   _bombTimeout: 5
