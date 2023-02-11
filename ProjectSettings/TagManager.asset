@@ -10,6 +10,7 @@ TagManager:
   - PlayerLaser
   - Laser
   - Collectible
+  - Boss
   layers:
   - Default
   - TransparentFX

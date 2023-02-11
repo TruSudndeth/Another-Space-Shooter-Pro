@@ -1,0 +1,147 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem.iOS;
+
+public class DamageMaterialFX : MonoBehaviour
+{
+    //Todo: VFX Boss Battle
+    //Disable colliders
+    //when destroied Trigger Explosion FX When done continue to the next task
+    //Disable Thruster VFX if any (check for script then disable)
+
+    /// <summary>
+    /// The material to use when the object is damaged.
+    /// And the Event When the object is fully destroid
+    /// 
+    /// </summary>
+    [Header("Setup material Paramerters")]
+    [SerializeField]
+    private AnimationCurve _damageCurve;
+    [SerializeField]
+    private float _damageDuration = 1.0f;
+    [SerializeField]
+    private float _damageAnimationSpeed = 1.0f;
+    [SerializeField]
+    private float _noiseScale = 1000.0f;
+    [SerializeField]
+    private Color _damageColor = Color.red;
+    [SerializeField]
+    private int _health = 10;
+
+    [Space(25)]
+    [Header("Damage Material FX")]
+    [SerializeField]
+    private float _destroySpeedScaler = 0.1f;
+    [SerializeField]
+    private float _disolveAmount = 0.25f;
+    [SerializeField]
+    private float _edgeWidth = 0.05f;
+
+    [Space]
+    [Header("Not Damaged Materials")]
+    [SerializeField]
+    private float _noDisolveAmount = 1f;
+    [SerializeField]
+    private float _noEdgeWidth = 1f;
+    
+    private Color _originalColor;
+    private bool _isDestroid = false;
+    private float _damageAnimationTimer = 0.0f;
+    private MeshRenderer _meshRenderer;
+    
+    public bool TakeDamage = false; //Delete Temp variable
+    private void Awake()
+    {
+        if (TryGetComponent(out MeshRenderer meshRend))
+            _meshRenderer = meshRend;
+        else
+            Debug.Log("MeshRender component Doesn't exist.", transform);
+    }
+    void Start()
+    {
+        SetupMaterialProperties();
+    }
+    private void DoDamage(int damage)
+    {
+        _health -= damage;
+        if (_health <= 0)
+        {
+            _health = 0;
+            _isDestroid = true;
+            SetupMaterialProperties();
+            return;
+        }
+        _damageAnimationTimer = Time.time;
+    }
+    private void SetupMaterialProperties()
+    {
+        if(_isDestroid)
+        {
+            //Setup on Destroied
+            if (_meshRenderer.material.HasProperty("_EdgeWidth"))
+                _meshRenderer.material.SetFloat("_EdgeWidth", _edgeWidth);
+            else
+                Debug.Log("Property Does not exist", transform);
+            if (_meshRenderer.material.HasProperty("_EdgeColor"))
+                _meshRenderer.material.color = _damageColor;
+            else
+                Debug.Log("Property Does not exist", transform);
+            if (_meshRenderer.material.HasProperty("_DisolveAmount"))
+                _meshRenderer.material.SetFloat("_DisolveAmount", _disolveAmount);
+            else
+                Debug.Log("Property Does not exist", transform);
+        }
+        else
+        {
+            //Setup On Start
+            if(_meshRenderer.material.HasProperty("_NoiseScale"))
+                _meshRenderer.material.SetFloat("_NoiseScale", _noiseScale);
+            else
+                Debug.Log("Property Does not exist", transform);
+            if (_meshRenderer.material.HasProperty("_EdgeColor"))
+                _meshRenderer.material.SetColor("_EdgeColor", _originalColor);
+            else
+                Debug.Log("Property Does not exist", transform);
+            if(_meshRenderer.material.HasProperty("_EdgeWidth"))
+                _meshRenderer.material.SetFloat("_EdgeWidth", _noEdgeWidth);
+            else
+                Debug.Log("Property Does not exist", transform);
+
+            _damageAnimationTimer -= _damageDuration;
+        }
+        
+    }
+    void FixedUpdate()
+    {
+        if(_health <= 0)//_isDestroid)
+        {
+            _isDestroid = true;
+        }
+        if (_damageAnimationTimer + _damageDuration >= Time.time && !_isDestroid)
+        {
+            float t = (Time.time - _damageAnimationTimer) / _damageDuration;
+            float curveValue = _damageCurve.Evaluate(t);
+            _meshRenderer.material.SetColor("_EdgeColor", Color.Lerp(_originalColor, _damageColor, curveValue));
+        }
+        if(_isDestroid)
+        {
+            //pulse material between _originalColor and _damageColor by Animation curve
+            //and repeat the animation for ever
+            float t = ((Time.time - _damageAnimationTimer) * _destroySpeedScaler) / _damageDuration;
+            float curveValue = _damageCurve.Evaluate(t);
+            if (t >= 1.0f)
+            {
+                _damageAnimationTimer = Time.time;
+            }
+            _meshRenderer.material.SetColor("_EdgeColor", Color.Lerp(_originalColor, _damageColor, curveValue));
+        }
+        //Delete: Test Block
+        if (TakeDamage)
+        {
+            TakeDamage = false;
+            DoDamage(1);
+        }
+    }
+    
+}
