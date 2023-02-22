@@ -40,6 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 536431570739085832}
+  - component: {fileID: 2396595007073498004}
   m_Layer: 0
   m_Name: Explosions
   m_TagString: Untagged
@@ -63,6 +64,23 @@ Transform:
   m_Father: {fileID: 818144143215832355}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2396595007073498004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711708305516605851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae8a0974f75e494a96e3af742337064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxType: 0
+  _motherShipPart: 1
+  _locations: []
+  _randomTimeDelay: 0.75
+  _randomTimeDelayRange: 0.5
 --- !u!1 &1810118155282809616
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7443823563666076914}
+  - component: {fileID: 372116001651317135}
   m_Layer: 0
   m_Name: Explosions
   m_TagString: Untagged
@@ -228,6 +247,23 @@ Transform:
   m_Father: {fileID: 8153024962646951005}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &372116001651317135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4896293892551670405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae8a0974f75e494a96e3af742337064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxType: 0
+  _motherShipPart: 2
+  _locations: []
+  _randomTimeDelay: 0.75
+  _randomTimeDelayRange: 0.5
 --- !u!1 &4984529973679982719
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +304,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3627164311948600124}
+  - component: {fileID: 230792707047411131}
   m_Layer: 7
   m_Name: Explosions
   m_TagString: Untagged
@@ -293,6 +330,23 @@ Transform:
   m_Father: {fileID: 5982476442765693549}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &230792707047411131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5155620895274784854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae8a0974f75e494a96e3af742337064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxType: 0
+  _motherShipPart: 8
+  _locations: []
+  _randomTimeDelay: 0.75
+  _randomTimeDelayRange: 0.5
 --- !u!1 &5250262608184792394
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,6 +836,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686474906349}
+  - component: {fileID: 2236485361358904432}
   m_Layer: 7
   m_Name: Explosions
   m_TagString: Boss
@@ -810,6 +865,23 @@ Transform:
   m_Father: {fileID: 2648589607121058318}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2236485361358904432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297972686474906348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae8a0974f75e494a96e3af742337064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxType: 0
+  _motherShipPart: 5
+  _locations: []
+  _randomTimeDelay: 0.75
+  _randomTimeDelayRange: 0.5
 --- !u!1 &6297972686707812256
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,6 +998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686727629174}
+  - component: {fileID: 5513536122623286552}
   m_Layer: 7
   m_Name: Explosions
   m_TagString: Boss
@@ -951,6 +1024,23 @@ Transform:
   m_Father: {fileID: 8143770431661458250}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5513536122623286552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297972686727629173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae8a0974f75e494a96e3af742337064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxType: 0
+  _motherShipPart: 7
+  _locations: []
+  _randomTimeDelay: 0.75
+  _randomTimeDelayRange: 0.5
 --- !u!1 &6297972686833665993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,6 +1463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3341617527905166800}
+  - component: {fileID: 6988417946580320937}
   m_Layer: 0
   m_Name: Explosions
   m_TagString: Untagged
@@ -1398,6 +1489,23 @@ Transform:
   m_Father: {fileID: 3427250909866924741}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6988417946580320937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777373789501635978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae8a0974f75e494a96e3af742337064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxType: 0
+  _motherShipPart: 3
+  _locations: []
+  _randomTimeDelay: 0.75
+  _randomTimeDelayRange: 0.5
 --- !u!1 &8811036524571265587
 GameObject:
   m_ObjectHideFlags: 0

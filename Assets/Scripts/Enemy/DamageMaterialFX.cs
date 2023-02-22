@@ -69,16 +69,20 @@ public class DamageMaterialFX : MonoBehaviour
     }
     private void DoDamage(int damage)
     {
-        _health -= damage;
-        if (_health <= 0 && !_isDestroid)
+        if (!_isDestroid)
         {
-            _health = 0;
-            _isDestroid = true;
-            onObjectDestroyed?.Invoke(_motherShipParts);
-            SetupMaterialProperties();
-            return;
+            _health -= damage;
+            if (_health <= 0)
+            {
+                _health = 0;
+                _isDestroid = true;
+                CheckObjectAssignment(_motherShipParts);
+                onObjectDestroyed?.Invoke(_motherShipParts);
+                SetupMaterialProperties();
+                return;
+            }
+            _damageAnimationTimer = Time.time;
         }
-        _damageAnimationTimer = Time.time;
     }
     private void SetupMaterialProperties()
     {
@@ -120,12 +124,6 @@ public class DamageMaterialFX : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if(_health <= 0 && !_isDestroid) //Delete: this Code block, might never run because of DoDamage meathod
-        {
-            _isDestroid = true;
-            CheckObjectAssignment(_motherShipParts);
-            onObjectDestroyed?.Invoke(_motherShipParts);
-        }
         if (_damageAnimationTimer + _damageDuration >= Time.time && !_isDestroid)
         {
             float t = (Time.time - _damageAnimationTimer) / _damageDuration;
@@ -158,6 +156,10 @@ public class DamageMaterialFX : MonoBehaviour
         if(part == MotherShipParts.None)
         {
             Debug.Log("Part was not set when called", transform);
+        }
+        else //Delete: else statement here
+        {
+            Debug.Log(part.ToString() + " was destoid.", transform);
         }
     }
     
