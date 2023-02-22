@@ -15,7 +15,7 @@ public class EnemySpawnManager : MonoBehaviour
     [Space]
     private float _boundsOffset = 0;
     [Space]
-    private Camera _camera; //DeleteLine: Not used ???
+    private Camera _camera; //Delete: Variable Not used ???
     private readonly float _cameraAspecRatio = 1.7777778f;
     private Vector2 _xyBounds = Vector2.zero;
     [Space]

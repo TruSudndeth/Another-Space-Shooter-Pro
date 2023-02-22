@@ -19,7 +19,7 @@ public class BombEplode : MonoBehaviour
     private bool _hasAnimator = false;
     private AudioSource _audioSource;
     [Space]
-    private bool _hasExploded = false; //DeleteLine: Not used???
+    private bool _hasExploded = false; //Delete: Varaiable Not used???
     private bool _oneShot = false;
 
     private void Start()

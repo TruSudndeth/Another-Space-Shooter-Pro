@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _fired = false;
     [Space]
     private Transform _myCamera;
-    [SerializeField] private Vector3 _offset = new Vector3(0, 0.8f, 0); //DeleteLine: Not used
+    [SerializeField] private Vector3 _offset = new Vector3(0, 0.8f, 0); //Delete: Variable Not used
     [SerializeField] private float _singeFireRate = 0.25f;
     [SerializeField] private float _trippleFireRate = 0.5f;
     [SerializeField] private bool _isTrippleShot = false;

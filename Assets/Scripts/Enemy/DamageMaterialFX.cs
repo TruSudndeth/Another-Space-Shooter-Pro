@@ -15,7 +15,12 @@ public class DamageMaterialFX : MonoBehaviour
     /// And the Event When the object is fully destroid
     /// 
     /// </summary>
+    public delegate void OnObjectDestroyed(MotherShipParts part);
+    public static event OnObjectDestroyed onObjectDestroyed;
+
     [Header("Setup material Paramerters")]
+    [SerializeField]
+    private MotherShipParts _motherShipParts;
     [SerializeField]
     private AnimationCurve _damageCurve;
     [SerializeField]
@@ -65,10 +70,11 @@ public class DamageMaterialFX : MonoBehaviour
     private void DoDamage(int damage)
     {
         _health -= damage;
-        if (_health <= 0)
+        if (_health <= 0 && !_isDestroid)
         {
             _health = 0;
             _isDestroid = true;
+            onObjectDestroyed?.Invoke(_motherShipParts);
             SetupMaterialProperties();
             return;
         }
@@ -114,9 +120,11 @@ public class DamageMaterialFX : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if(_health <= 0)//_isDestroid)
+        if(_health <= 0 && !_isDestroid) //Delete: this Code block, might never run because of DoDamage meathod
         {
             _isDestroid = true;
+            CheckObjectAssignment(_motherShipParts);
+            onObjectDestroyed?.Invoke(_motherShipParts);
         }
         if (_damageAnimationTimer + _damageDuration >= Time.time && !_isDestroid)
         {
@@ -135,6 +143,8 @@ public class DamageMaterialFX : MonoBehaviour
                 _damageAnimationTimer = Time.time;
             }
             _meshRenderer.material.SetColor("_EdgeColor", Color.Lerp(_originalColor, _damageColor, curveValue));
+            //Iterate threw the explosion list
+            //and send an event to BossFightManger of the part that was destroyed.
         }
         //Delete: Test Block
         if (TakeDamage)
@@ -143,5 +153,18 @@ public class DamageMaterialFX : MonoBehaviour
             DoDamage(1);
         }
     }
+    private void CheckObjectAssignment(MotherShipParts part)
+    {
+        if(part == MotherShipParts.None)
+        {
+            Debug.Log("Part was not set when called", transform);
+        }
+    }
     
+}
+public enum MotherShipParts
+{
+    //Note: Only the left of the ship is used
+    None = 0, Beacon = 1, Body = 2, LeftWing = 3, RightWing = 4, LeftEngine = 5, RightEngine = 6, SM_Thruster_01 = 7, SM_Thruster_02 = 8,
+    SM_Thruster_03 = 9, SM_Thruster_04 = 10
 }

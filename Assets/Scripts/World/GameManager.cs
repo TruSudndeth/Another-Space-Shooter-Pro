@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    private int _sceneIndex = 0; //DeleteLine: Not used
+    private int _sceneIndex = 0; //Delete: Variable Not used
     private void Start()
     {
         InputManager.Instance.Exit.started += _ => ExitGame();

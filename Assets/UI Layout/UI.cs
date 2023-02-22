@@ -46,7 +46,7 @@ public class UI : MonoBehaviour
     private Label _gameOver;
     private float _gameOverTime = 0.0f;
     private bool _isGameOver = false;
-    private bool _gameStarted = false; //DeleteLine: not Used ???
+    private bool _gameStarted = false; //Delete: Variable not Used ???
     private Label _restartText;
     
     [Space]
@@ -114,7 +114,7 @@ public class UI : MonoBehaviour
     }
     private void GameStarted()
     {
-        _gameStarted = true; //DeleteLine: Variable not used ??
+        _gameStarted = true; //Delete: Variable not used ??
         _scoreLabel.visible = true;
     }
     private void LoadLevelOne()
