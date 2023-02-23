@@ -10,6 +10,10 @@ public class BossExplosions : MonoBehaviour
     //only do one explosion of the small thrusters.
     public delegate void Explosion(Transform _transform, Types.VFX _vfx);
     public static Explosion OneShotExplosion;
+
+
+    [SerializeField]
+    private int _multiExplosion = 0;
     [SerializeField]
     private Types.VFX vfxType;
     [SerializeField]
@@ -53,6 +57,8 @@ public class BossExplosions : MonoBehaviour
         while (iterate < _locations.Length)
         {
             OneShotExplosion?.Invoke(_locations[iterate], vfxType);
+            _multiExplosion = _multiExplosion >= _locations.Length ? _locations.Length : _multiExplosion;
+            if (iterate < _locations.Length - _multiExplosion)
             yield return new WaitForSeconds(timeDelay);
             //play sound as well
             iterate++;
