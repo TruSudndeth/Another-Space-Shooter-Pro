@@ -31,7 +31,6 @@ public class BossColliderParts : MonoBehaviour
             OnBossColliderParts?.Invoke(_bossColliderParts);
         }
     }
-    
     private bool NonePartCheck()
     {
         if (_bossColliderParts == BossParts.None)
@@ -41,4 +40,8 @@ public class BossColliderParts : MonoBehaviour
         }
         return true;
     }
+}
+public enum BossStage
+{
+    None, Stage1, Stage2, Stage3
 }

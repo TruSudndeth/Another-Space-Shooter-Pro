@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class BossFightManager : MonoBehaviour
 {
+    //LeftOff: Get the instance and Start boss fight when wave 5 is complete.
+    public static BossFightManager Instance;
+
+    public delegate void BossFightStage();
+    public static event BossFightStage OnBossFightStage;
+
+    //LeftOff: Automate the MotherShip movement when stage 1 threw 3
     [Header("Prefab Setup")]
     [SerializeField]
     private Transform _MotherShip;
@@ -24,9 +31,21 @@ public class BossFightManager : MonoBehaviour
     //Delete: Test bool _nextStage
     public bool _nextStage = false;
 
+    private bool _hasStarted = true;
+    private bool _beacon = false;
+    private bool _body = false;
+    private bool _leftEngine = false;
+    private bool _leftWing = false;
+    private bool _sM_Thrust_01 = false;
+    private bool _sM_Thrust_02 = false;
+    private bool _stage01 = false;
+    private bool _stage02 = false;
+    private bool _stage03 = false;
+
     private void Awake()
     {
         _positionSequence = _positions.GetComponentsInChildren<Transform>(false).Skip(1).ToArray();
+        BossExplosions.OnDisablePart += RegisterPartDestroid;
     }
     void Start()
     {
@@ -45,14 +64,53 @@ public class BossFightManager : MonoBehaviour
     }
     private void StartBossFight()
     {
-        _positionIndex = 0;
-        if(!_MotherShip.gameObject.activeSelf)
+        if(!_hasStarted)
         {
-            _MotherShip.gameObject.SetActive(true);
+            _hasStarted = true;
+            _positionIndex = 0;
+            if(!_MotherShip.gameObject.activeSelf)
+            {
+                _MotherShip.gameObject.SetActive(true);
+            }
+            _nextPosition = _positionSequence[_positionIndex].position;
+            _MotherShip.position = _nextPosition;
+            MoveBossToNextPosition();
         }
-        _nextPosition = _positionSequence[_positionIndex].position;
-        _MotherShip.position = _nextPosition;
-        //MoveBossToNextPosition();
+    }
+    private void RegisterPartDestroid(BossParts parts)
+    {
+        if (parts == BossParts.Beacon)
+            _beacon = true;
+        if (parts == BossParts.Body)
+            _body = true;
+        if (parts == BossParts.LeftEngine)
+            _leftEngine = true;
+        if (parts == BossParts.LeftWing)
+            _leftWing = true;
+        if (parts == BossParts.SM_Thruster_01)
+            _sM_Thrust_01 = true;
+        if (parts == BossParts.SM_Thruster_02)
+            _sM_Thrust_02 = true;
+        DeterminStage();
+    }
+    private void DeterminStage()
+    {
+        if (_sM_Thrust_01 && _sM_Thrust_02 && _leftEngine && !_stage01)
+        {
+            _stage01 = true;
+            MoveBossToNextPosition();
+        }
+        if(_body && _leftWing && !_stage02)
+        {
+            _stage02 = true;
+            MoveBossToNextPosition();
+        }
+        if(_beacon && !_stage03)
+        {
+            _hasStarted = false;
+            _stage03 = true;
+            MoveBossToNextPosition();
+        }
     }
     private void MoveBossToNextPosition()
     {
@@ -72,6 +130,7 @@ public class BossFightManager : MonoBehaviour
             _MotherShip.position = Vector3.MoveTowards(_MotherShip.position, _nextPosition, _bossSpeed * Time.fixedDeltaTime);
         }
         
+        //Delete: if block for _nextStage
         if (_nextStage)
         {
             MoveBossToNextPosition();

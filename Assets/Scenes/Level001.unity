@@ -438,6 +438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MotherShip: {fileID: 976928033}
   _positions: {fileID: 1602884551}
+  _bossSpeed: 1
   _nextStage: 0
 --- !u!4 &647288233 stripped
 Transform:
@@ -1311,12 +1312,12 @@ PrefabInstance:
     - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.02
+      value: -11.31
       objectReference: {fileID: 0}
     - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.173408
+      value: 1.82
       objectReference: {fileID: 0}
     - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
         type: 3}
