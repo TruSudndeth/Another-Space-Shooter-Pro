@@ -11,13 +11,15 @@ public class BossExplosions : MonoBehaviour
     public delegate void Explosion(Transform _transform, Types.VFX _vfx);
     public static Explosion OneShotExplosion;
 
+    public delegate void DisablePartFunction(BossParts part);
+    public static event DisablePartFunction OnDisablePart;
 
     [SerializeField]
     private int _multiExplosion = 0;
     [SerializeField]
     private Types.VFX vfxType;
     [SerializeField]
-    private MotherShipParts _motherShipPart;
+    private BossParts _motherShipPart;
     [SerializeField]
     private Transform[] _locations;
     [SerializeField]
@@ -39,18 +41,16 @@ public class BossExplosions : MonoBehaviour
     {
         
     }
-    public void ExplodeObject(MotherShipParts part)
+    public void ExplodeObject(BossParts part)
     {
         if(!_hasExploded && part == _motherShipPart)
         {
-            Debug.Log(part.ToString() + " has exploded", transform);
             float timeDelay = 0;
             _hasExploded = true;
             timeDelay = TimeDelayRange();
             StartCoroutine(ExplodeIteration(timeDelay));
         }
     }
-    
     IEnumerator ExplodeIteration(float timeDelay)
     {
         int iterate = 0;
@@ -59,9 +59,15 @@ public class BossExplosions : MonoBehaviour
             OneShotExplosion?.Invoke(_locations[iterate], vfxType);
             _multiExplosion = _multiExplosion >= _locations.Length ? _locations.Length : _multiExplosion;
             if (iterate < _locations.Length - _multiExplosion)
-            yield return new WaitForSeconds(timeDelay);
+                yield return new WaitForSeconds(timeDelay);
             //play sound as well
             iterate++;
+            timeDelay = TimeDelayRange();
+            if (iterate >= _locations.Length)
+            {
+                OnDisablePart?.Invoke(_motherShipPart);
+                yield break;
+            }
         }
     }
 

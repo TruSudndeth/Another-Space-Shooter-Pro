@@ -19,9 +19,11 @@ public class LaserBehavior : MonoBehaviour
     [Space]
     [SerializeField] private float _speed = 10;
     private bool _move = false;
+    private GameObject _childLaser;
 
     private void Awake()
     {
+        _childLaser = transform.GetChild(0).gameObject;
         _renderer = GetComponentInChildren<Renderer>();
         _camera = Camera.main;
         _yBounds = _camera.orthographicSize;
@@ -31,6 +33,7 @@ public class LaserBehavior : MonoBehaviour
     private void OnEnable()
     {
         _move = true;
+        _childLaser.SetActive(true);
     }
     public void SetMaterial(Material material)
     {
@@ -111,9 +114,17 @@ public class LaserBehavior : MonoBehaviour
         {
             
         }
+        if (!CheckIfChildLaserIsAvtive())
+            transform.gameObject.SetActive(false);
         //Look at target and reset rotation On Disable.
         //Check if laser is already homing enemy
         //and Check if enemy is infront/above the players y position
+    }
+    private bool CheckIfChildLaserIsAvtive()
+    {
+        if (_childLaser.activeSelf)
+            return true;
+        return false;
     }
     private Transform TargetClosestEnemy()
     {

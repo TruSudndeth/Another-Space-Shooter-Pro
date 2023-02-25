@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8091017133985699263}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions01 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8769661025370519980}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions_Seq_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8958014159872066837}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions_Seq_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 536431570739085832}
   - component: {fileID: 2396595007073498004}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5581241399514017878}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: LaserPosition002
   m_TagString: Enemies
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5373867586402564403}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions_Seq_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 626159167120515535}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4194476527868777597}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1234225795566945870}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions_Seq_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6101145188510604735}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8491006161829849525}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint_Seq_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2175495606398633798}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: LaserPositions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -405,7 +405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8692452418346345312}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint_Seq_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7443823563666076914}
   - component: {fileID: 372116001651317135}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -496,7 +496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3870262356722100704}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6745511383078788123}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint_Seq_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3627164311948600124}
   - component: {fileID: 230792707047411131}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Explosions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,7 +610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7145764998703066075}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -641,7 +641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3977587171357325605}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions01 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,7 +672,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2319366731324769150}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2891759250078095593}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion_seq_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -734,7 +734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972685179216531}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplosionPoint_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +765,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972685251900452}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplosionPoint_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -797,9 +797,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972685358780265}
   - component: {fileID: 6297972685358780266}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -841,7 +841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972685793668993}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -872,7 +872,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686003514436}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: VFX_Shield
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -904,7 +904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686025278148}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -935,7 +935,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686077798519}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -966,7 +966,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686093100456}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: LaserPosition003
   m_TagString: Enemies
   m_Icon: {fileID: 0}
@@ -997,7 +997,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686237922196}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: LaserPosition004
   m_TagString: Enemies
   m_Icon: {fileID: 0}
@@ -1028,7 +1028,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686360386512}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplosionPoint_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1060,7 +1060,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972686474906349}
   - component: {fileID: 2236485361358904432}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Explosions
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -1120,9 +1120,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972686707812257}
   - component: {fileID: 6297972686707812258}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Collider (2)
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1135,7 +1135,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6297972686707812256}
   m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: -0.70710677}
-  m_LocalPosition: {x: 1.6333338, y: 0, z: 0.050000113}
+  m_LocalPosition: {x: 1.63, y: 4.22, z: 0.05}
   m_LocalScale: {x: 14.720654, y: 1.0770178, z: 36.363632}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1164,7 +1164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686715666736}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1195,7 +1195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686717541511}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1227,7 +1227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972686727629174}
   - component: {fileID: 5513536122623286552}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Explosions
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -1279,9 +1279,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972686833665994}
   - component: {fileID: 6297972686833665995}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1294,7 +1294,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6297972686833665993}
   m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: -0.70710677}
-  m_LocalPosition: {x: 3.633336, y: 0, z: 3.1716692}
+  m_LocalPosition: {x: 3.633336, y: 4.46, z: 3.17}
   m_LocalScale: {x: 2.4999995, y: 0.833333, z: 36.363632}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1323,7 +1323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972686858863429}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplosionPoint_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1355,9 +1355,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972686877187424}
   - component: {fileID: 6297972686877187425}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1370,7 +1370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6297972686877187439}
   m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: -0.70710677}
-  m_LocalPosition: {x: -1.3499999, y: 0, z: -0.86666715}
+  m_LocalPosition: {x: -1.3499999, y: 6.15, z: -0.87}
   m_LocalScale: {x: 18.247456, y: 1.2187333, z: 36.363632}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1400,9 +1400,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972686942332502}
   - component: {fileID: 6297972686942332503}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Collider (1)
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1415,7 +1415,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6297972686942332501}
   m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: -0.70710677}
-  m_LocalPosition: {x: -0.76666665, y: 0, z: 1.436667}
+  m_LocalPosition: {x: -0.76666665, y: 4.22, z: 1.44}
   m_LocalScale: {x: 19.427275, y: 1.588601, z: 36.363632}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1445,7 +1445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972687068578191}
   - component: {fileID: 6297972687068578176}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Collider
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -1460,7 +1460,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6297972687068578190}
   m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: -0.70710677}
-  m_LocalPosition: {x: 10.420423, y: 5.9454546, z: -1.8141675}
+  m_LocalPosition: {x: 10.420423, y: 10.47, z: -1.81}
   m_LocalScale: {x: 0.72916657, y: 1.458333, z: 23.545454}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1490,7 +1490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6297972687137772429}
   - component: {fileID: 6297972687137772430}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Collider
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -1505,7 +1505,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6297972687137772428}
   m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: -0.70710677}
-  m_LocalPosition: {x: 9.135004, y: 5.9454556, z: -1.8141675}
+  m_LocalPosition: {x: 9.135004, y: 10.77, z: -1.81}
   m_LocalScale: {x: 0.72916657, y: 1.4583329, z: 23.545452}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1534,7 +1534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297972687298064106}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1565,7 +1565,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 74867590010136309}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion_seq_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1596,7 +1596,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 90003972391422192}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1627,7 +1627,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 724863293973406566}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: ExplostionPoint_Seq_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1658,7 +1658,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5254417116382421623}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: MotherShip_Boss
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -1691,7 +1691,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8928592369981470043}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions01 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1722,7 +1722,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675706864016174946}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: LaserPosition001
   m_TagString: Enemies
   m_Icon: {fileID: 0}
@@ -1753,7 +1753,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1648588438719538068}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion_seq_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1785,7 +1785,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3341617527905166800}
   - component: {fileID: 6988417946580320937}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1841,7 +1841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5739186588744585525}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Explosion01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1952,18 +1952,48 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 2ce88dd614850e04092e1aa609a17226, type: 2}
     - target: {fileID: -6332380212036297532, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -6332380212036297532, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5899752944603605424, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: -5868336160355990335, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e78fe7063dfc86e4daef7557128db394, type: 2}
+    - target: {fileID: -1006228468343236364, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -1006228468343236364, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_TagString
+      value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: -887453703368776525, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -887453703368776525, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 635547659545568360, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 635547659545568360, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
@@ -1975,11 +2005,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: MotherShipBossFight
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_TagString
+      value: Boss
+      objectReference: {fileID: 0}
     - target: {fileID: 5661118932972965147, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9cc30baf0eec7f84498d7a4bb20861bd, type: 2}
+    - target: {fileID: 6111780972197690985, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174273136775892466, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 6174273136775892466, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
       propertyPath: m_IsActive
@@ -1987,8 +2037,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6262041035160446578, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262041035160446578, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6365562654645196280, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6365562654645196280, guid: 7d9130ae48de1ce44997750c94deaf76,
         type: 3}
@@ -2010,6 +2070,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 61d31d62e4e0ead448463d6b30a3cbab, type: 2}
+    - target: {fileID: 8908805629055465760, guid: 7d9130ae48de1ce44997750c94deaf76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d9130ae48de1ce44997750c94deaf76, type: 3}
 --- !u!4 &818144143215832355 stripped
@@ -2024,6 +2089,22 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5255835730229939815}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &2082925846
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026921827086692366}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
 --- !u!114 &1797495160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2147,12 +2228,40 @@ MonoBehaviour:
   _noiseScale: 1000
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
   _health: 10
+  _bossPartFunctions: {fileID: 0}
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
   _noDisolveAmount: 1
   _noEdgeWidth: 1
   TakeDamage: 0
+--- !u!114 &2082925845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026921827086692366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossColliderParts: 7
+--- !u!114 &2081622754302119267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026921827086692366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749b44115072eb04ba01301dc49875aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particleGameObject: {fileID: 1923650548341297669}
+  _timeLapsIsPlaying: 5
 --- !u!4 &2648589607121058318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7796246587311961193, guid: 7d9130ae48de1ce44997750c94deaf76,
@@ -2171,6 +2280,22 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5255835730229939815}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &2073511325
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698041629298440007}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
 --- !u!114 &1845120214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2294,18 +2419,48 @@ MonoBehaviour:
   _noiseScale: 1000
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
   _health: 10
+  _bossPartFunctions: {fileID: 0}
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
   _noDisolveAmount: 1
   _noEdgeWidth: 1
   TakeDamage: 0
+--- !u!114 &2073511324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698041629298440007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossColliderParts: 3
 --- !u!1 &4249518201444849299 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1006228468343236364, guid: 7d9130ae48de1ce44997750c94deaf76,
     type: 3}
   m_PrefabInstance: {fileID: 5255835730229939815}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &1019731786
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4249518201444849299}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
 --- !u!114 &771432901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2429,18 +2584,48 @@ MonoBehaviour:
   _noiseScale: 1000
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
   _health: 10
+  _bossPartFunctions: {fileID: 0}
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
   _noDisolveAmount: 1
   _noEdgeWidth: 1
   TakeDamage: 0
+--- !u!114 &1019731785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4249518201444849299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossColliderParts: 1
 --- !u!1 &4278238566056733396 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -887453703368776525, guid: 7d9130ae48de1ce44997750c94deaf76,
     type: 3}
   m_PrefabInstance: {fileID: 5255835730229939815}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &1806954611
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4278238566056733396}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
 --- !u!114 &451252260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2564,18 +2749,62 @@ MonoBehaviour:
   _noiseScale: 1000
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
   _health: 10
+  _bossPartFunctions: {fileID: 0}
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
   _noDisolveAmount: 1
   _noEdgeWidth: 1
   TakeDamage: 0
+--- !u!114 &1806954610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4278238566056733396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossColliderParts: 5
+--- !u!114 &8408979755175867701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4278238566056733396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749b44115072eb04ba01301dc49875aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particleGameObject: {fileID: 1923650548809489123}
+  _timeLapsIsPlaying: 5
 --- !u!1 &4621135198390725135 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 635547659545568360, guid: 7d9130ae48de1ce44997750c94deaf76,
     type: 3}
   m_PrefabInstance: {fileID: 5255835730229939815}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &1746808803
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4621135198390725135}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
 --- !u!114 &631200796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2699,12 +2928,26 @@ MonoBehaviour:
   _noiseScale: 1000
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
   _health: 10
+  _bossPartFunctions: {fileID: 0}
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
   _noDisolveAmount: 1
   _noEdgeWidth: 1
   TakeDamage: 0
+--- !u!114 &1746808802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4621135198390725135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossColliderParts: 2
 --- !u!4 &5727105094761326988 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d9130ae48de1ce44997750c94deaf76,
@@ -2723,6 +2966,35 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5255835730229939815}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &632684082
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417330955238447159}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
+--- !u!114 &632684081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417330955238447159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossColliderParts: 8
 --- !u!114 &2036399341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,12 +3118,27 @@ MonoBehaviour:
   _noiseScale: 1000
   _damageColor: {r: 1, g: 0, b: 0, a: 1}
   _health: 10
+  _bossPartFunctions: {fileID: 0}
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
   _noDisolveAmount: 1
   _noEdgeWidth: 1
   TakeDamage: 0
+--- !u!114 &6578508121367528649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417330955238447159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749b44115072eb04ba01301dc49875aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particleGameObject: {fileID: 1923650547217505470}
+  _timeLapsIsPlaying: 5
 --- !u!4 &8143770431661458250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4175970242178813229, guid: 7d9130ae48de1ce44997750c94deaf76,
@@ -3043,13 +3330,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649457870292, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870292, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870294, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649457870302, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
       propertyPath: m_Name
       value: Engines_Thrusters
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870302, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649477110966, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
@@ -3068,6 +3370,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 834f7aa4335755c4fa16364b51d03b71, type: 3}
+--- !u!1 &1923650548341297669 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5608328649457870294, guid: 834f7aa4335755c4fa16364b51d03b71,
+    type: 3}
+  m_PrefabInstance: {fileID: 6297972685482457043}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6297972686086962997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3217,13 +3525,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649457870292, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870292, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870294, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649457870302, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
       propertyPath: m_Name
       value: Engines_Thrusters
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870302, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649477110966, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649477110966, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
@@ -3242,6 +3570,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 834f7aa4335755c4fa16364b51d03b71, type: 3}
+--- !u!1 &1923650548809489123 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5608328649457870294, guid: 834f7aa4335755c4fa16364b51d03b71,
+    type: 3}
+  m_PrefabInstance: {fileID: 6297972686086962997}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6297972686575876456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3421,13 +3755,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649457870292, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870292, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870294, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649457870302, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
       propertyPath: m_Name
       value: Engines_Thrusters
+      objectReference: {fileID: 0}
+    - target: {fileID: 5608328649457870302, guid: 834f7aa4335755c4fa16364b51d03b71,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5608328649477110966, guid: 834f7aa4335755c4fa16364b51d03b71,
         type: 3}
@@ -3446,6 +3795,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 834f7aa4335755c4fa16364b51d03b71, type: 3}
+--- !u!1 &1923650547217505470 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5608328649457870294, guid: 834f7aa4335755c4fa16364b51d03b71,
+    type: 3}
+  m_PrefabInstance: {fileID: 6297972686575876456}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8378404707570581296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3567,6 +3922,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VFX_Shield_Loop
+      objectReference: {fileID: 0}
+    - target: {fileID: 8507963566941883622, guid: 861ffc598312b824fb169654ce49edb6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8507963566941883622, guid: 861ffc598312b824fb169654ce49edb6,
         type: 3}

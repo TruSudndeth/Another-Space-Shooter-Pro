@@ -6,21 +6,22 @@ using UnityEngine.InputSystem.iOS;
 public class DamageMaterialFX : MonoBehaviour
 {
     //Todo: VFX Boss Battle
-    //Disable colliders
-    //when destroied Trigger Explosion FX When done continue to the next task
-    //Disable Thruster VFX if any (check for script then disable)
+    //Disable colliders when part is destroyed
+    //SetMaterial to damaged after multi expolosion
+    //- when destroied Trigger Explosion FX When done continue to the next task
+    //- Disable Thruster VFX if any (check for script then disable)
 
     /// <summary>
     /// The material to use when the object is damaged.
     /// And the Event When the object is fully destroid
     /// 
     /// </summary>
-    public delegate void OnObjectDestroyed(MotherShipParts part);
+    public delegate void OnObjectDestroyed(BossParts part);
     public static event OnObjectDestroyed onObjectDestroyed;
 
     [Header("Setup material Paramerters")]
     [SerializeField]
-    private MotherShipParts _motherShipParts;
+    private BossParts _motherShipParts;
     [SerializeField]
     private AnimationCurve _damageCurve;
     [SerializeField]
@@ -33,6 +34,10 @@ public class DamageMaterialFX : MonoBehaviour
     private Color _damageColor = Color.red;
     [SerializeField]
     private int _health = 10;
+
+    [Header("Part Functions")]
+    [SerializeField]
+    private BossPartFunction _bossPartFunctions;
 
     [Space(25)]
     [Header("Damage Material FX")]
@@ -58,6 +63,7 @@ public class DamageMaterialFX : MonoBehaviour
     public bool TakeDamage = false; //Delete Temp variable
     private void Awake()
     {
+        _bossPartFunctions = GetComponentInChildren<BossPartFunction>(true);
         if (TryGetComponent(out MeshRenderer meshRend))
             _meshRenderer = meshRend;
         else
@@ -66,6 +72,15 @@ public class DamageMaterialFX : MonoBehaviour
     void Start()
     {
         SetupMaterialProperties();
+        BossExplosions.OnDisablePart += DisablePartFunction;
+        BossColliderParts.OnBossColliderParts += DamagePart;
+    }
+    private void DamagePart(BossParts part)
+    {
+        if (part == _motherShipParts)
+        {
+            DoDamage(1);
+        }
     }
     private void DoDamage(int damage)
     {
@@ -78,15 +93,22 @@ public class DamageMaterialFX : MonoBehaviour
                 _isDestroid = true;
                 CheckObjectAssignment(_motherShipParts);
                 onObjectDestroyed?.Invoke(_motherShipParts);
-                SetupMaterialProperties();
                 return;
             }
             _damageAnimationTimer = Time.time;
         }
     }
-    private void SetupMaterialProperties()
+    private void DisableAllCollidersInChildren()
+    {            
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = false;
+        }
+    }
+    private void SetupMaterialProperties(bool isDamaged = false)
     {
-        if(_isDestroid)
+        if(isDamaged)
         {
             //Setup on Destroied
             if (_meshRenderer.material.HasProperty("_EdgeWidth"))
@@ -151,20 +173,31 @@ public class DamageMaterialFX : MonoBehaviour
             DoDamage(1);
         }
     }
-    private void CheckObjectAssignment(MotherShipParts part)
+    private void CheckObjectAssignment(BossParts part)
     {
-        if(part == MotherShipParts.None)
+        if(part == BossParts.None)
         {
             Debug.Log("Part was not set when called", transform);
         }
-        else //Delete: else statement here
+    }
+    private void DisablePartFunction(BossParts part)
+    {
+        if (part == _motherShipParts)
         {
-            Debug.Log(part.ToString() + " was destoid.", transform);
+            if(_bossPartFunctions)
+            _bossPartFunctions.DisablePartFunction();
+            SetupMaterialProperties(true);
+            DisableAllCollidersInChildren();
         }
     }
-    
+    //Todo: Reset All for MotherShip When restarting
+    private void OnDisable()
+    {
+        BossExplosions.OnDisablePart -= DisablePartFunction;
+        BossColliderParts.OnBossColliderParts -= DamagePart;
+    }
 }
-public enum MotherShipParts
+public enum BossParts
 {
     //Note: Only the left of the ship is used
     None = 0, Beacon = 1, Body = 2, LeftWing = 3, RightWing = 4, LeftEngine = 5, RightEngine = 6, SM_Thruster_01 = 7, SM_Thruster_02 = 8,
