@@ -828,7 +828,7 @@ BoxCollider:
   m_GameObject: {fileID: 6297972685358780264}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1151,7 +1151,7 @@ BoxCollider:
   m_GameObject: {fileID: 6297972686707812256}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1310,7 +1310,7 @@ BoxCollider:
   m_GameObject: {fileID: 6297972686833665993}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1386,7 +1386,7 @@ BoxCollider:
   m_GameObject: {fileID: 6297972686877187439}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1431,7 +1431,7 @@ BoxCollider:
   m_GameObject: {fileID: 6297972686942332501}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1476,7 +1476,7 @@ BoxCollider:
   m_GameObject: {fileID: 6297972687068578190}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1521,7 +1521,7 @@ BoxCollider:
   m_GameObject: {fileID: 6297972687137772428}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2117,7 +2117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281a8c058372904488fe0752c9371e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherShipParts: 7
+  _motherShipPart: 7
   _damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -2232,7 +2232,7 @@ MonoBehaviour:
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
-  _noDisolveAmount: 1
+  _noDisolveAmount: 0
   _noEdgeWidth: 1
   TakeDamage: 0
 --- !u!114 &2082925845
@@ -2247,6 +2247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage1Parts: 
+  _Stage2Parts: 
+  _Stage3Parts: 
   _bossColliderParts: 7
 --- !u!114 &2081622754302119267
 MonoBehaviour:
@@ -2308,7 +2311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281a8c058372904488fe0752c9371e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherShipParts: 3
+  _motherShipPart: 3
   _damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -2423,7 +2426,7 @@ MonoBehaviour:
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
-  _noDisolveAmount: 1
+  _noDisolveAmount: 0
   _noEdgeWidth: 1
   TakeDamage: 0
 --- !u!114 &2073511324
@@ -2438,6 +2441,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage1Parts: 
+  _Stage2Parts: 
+  _Stage3Parts: 
   _bossColliderParts: 3
 --- !u!1 &4249518201444849299 stripped
 GameObject:
@@ -2473,7 +2479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281a8c058372904488fe0752c9371e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherShipParts: 1
+  _motherShipPart: 1
   _damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -2588,7 +2594,7 @@ MonoBehaviour:
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
-  _noDisolveAmount: 1
+  _noDisolveAmount: 0
   _noEdgeWidth: 1
   TakeDamage: 0
 --- !u!114 &1019731785
@@ -2603,6 +2609,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage1Parts: 
+  _Stage2Parts: 
+  _Stage3Parts: 
   _bossColliderParts: 1
 --- !u!1 &4278238566056733396 stripped
 GameObject:
@@ -2638,7 +2647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281a8c058372904488fe0752c9371e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherShipParts: 5
+  _motherShipPart: 5
   _damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -2753,7 +2762,7 @@ MonoBehaviour:
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
-  _noDisolveAmount: 1
+  _noDisolveAmount: 0
   _noEdgeWidth: 1
   TakeDamage: 0
 --- !u!114 &1806954610
@@ -2768,6 +2777,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage1Parts: 
+  _Stage2Parts: 
+  _Stage3Parts: 
   _bossColliderParts: 5
 --- !u!114 &8408979755175867701
 MonoBehaviour:
@@ -2817,7 +2829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281a8c058372904488fe0752c9371e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherShipParts: 2
+  _motherShipPart: 2
   _damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -2932,7 +2944,7 @@ MonoBehaviour:
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
-  _noDisolveAmount: 1
+  _noDisolveAmount: 0
   _noEdgeWidth: 1
   TakeDamage: 0
 --- !u!114 &1746808802
@@ -2947,6 +2959,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage1Parts: 
+  _Stage2Parts: 
+  _Stage3Parts: 
   _bossColliderParts: 2
 --- !u!4 &5727105094761326988 stripped
 Transform:
@@ -2994,6 +3009,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34f74375fbe9dc488d51996eb034ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage1Parts: 
+  _Stage2Parts: 
+  _Stage3Parts: 
   _bossColliderParts: 8
 --- !u!114 &2036399341
 MonoBehaviour:
@@ -3007,7 +3025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281a8c058372904488fe0752c9371e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherShipParts: 8
+  _motherShipPart: 8
   _damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -3122,7 +3140,7 @@ MonoBehaviour:
   _destroySpeedScaler: 0.1
   _disolveAmount: 0.25
   _edgeWidth: 0.05
-  _noDisolveAmount: 1
+  _noDisolveAmount: 0
   _noEdgeWidth: 1
   TakeDamage: 0
 --- !u!114 &6578508121367528649

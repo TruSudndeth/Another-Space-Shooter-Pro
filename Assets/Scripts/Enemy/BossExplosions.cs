@@ -28,6 +28,7 @@ public class BossExplosions : MonoBehaviour
     private float _randomTimeDelayRange = 0.5f;
 
     private bool _hasExploded = false;
+
     private void Awake()
     {
         _locations = transform.GetComponentsInChildren<Transform>(false).Skip(1).ToArray();
@@ -36,10 +37,12 @@ public class BossExplosions : MonoBehaviour
     private void Start()
     {
         DamageMaterialFX.onObjectDestroyed += ExplodeObject;
+        BossFightManager.ResetBossEvent += ResetAll;
     }
-    void Update()
+
+    private void ResetAll()
     {
-        
+        _hasExploded = false;
     }
     public void ExplodeObject(BossParts part)
     {

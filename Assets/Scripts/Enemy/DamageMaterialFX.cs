@@ -21,7 +21,7 @@ public class DamageMaterialFX : MonoBehaviour
 
     [Header("Setup material Paramerters")]
     [SerializeField]
-    private BossParts _motherShipParts;
+    private BossParts _motherShipPart;
     [SerializeField]
     private AnimationCurve _damageCurve;
     [SerializeField]
@@ -34,6 +34,7 @@ public class DamageMaterialFX : MonoBehaviour
     private Color _damageColor = Color.red;
     [SerializeField]
     private int _health = 10;
+    private int _currentHealth;
 
     [Header("Part Functions")]
     [SerializeField]
@@ -51,7 +52,7 @@ public class DamageMaterialFX : MonoBehaviour
     [Space]
     [Header("Not Damaged Materials")]
     [SerializeField]
-    private float _noDisolveAmount = 1f;
+    private float _noDisolveAmount = 0f;
     [SerializeField]
     private float _noEdgeWidth = 1f;
     
@@ -63,6 +64,7 @@ public class DamageMaterialFX : MonoBehaviour
     public bool TakeDamage = false; //Delete Temp variable
     private void Awake()
     {
+        _currentHealth = _health;
         _bossPartFunctions = GetComponentInChildren<BossPartFunction>(true);
         if (TryGetComponent(out MeshRenderer meshRend))
             _meshRenderer = meshRend;
@@ -72,12 +74,14 @@ public class DamageMaterialFX : MonoBehaviour
     void Start()
     {
         SetupMaterialProperties();
+        BossFightManager.EnableStageColliderPart += EnableAllCollidersInChildren;
         BossExplosions.OnDisablePart += DisablePartFunction;
         BossColliderParts.OnBossColliderParts += DamagePart;
+        BossFightManager.ResetBossEvent += ResetAll;
     }
     private void DamagePart(BossParts part)
     {
-        if (part == _motherShipParts)
+        if (part == _motherShipPart)
         {
             DoDamage(1);
         }
@@ -86,25 +90,49 @@ public class DamageMaterialFX : MonoBehaviour
     {
         if (!_isDestroid)
         {
-            _health -= damage;
-            if (_health <= 0)
+            _currentHealth -= damage;
+            if (_currentHealth <= 0)
             {
-                _health = 0;
+                _currentHealth = 0;
                 _isDestroid = true;
-                CheckObjectAssignment(_motherShipParts);
-                onObjectDestroyed?.Invoke(_motherShipParts);
+                CheckObjectAssignment(_motherShipPart);
+                onObjectDestroyed?.Invoke(_motherShipPart);
                 return;
             }
             _damageAnimationTimer = Time.time;
         }
     }
-    private void DisableAllCollidersInChildren()
-    {            
-        Collider[] colliders = GetComponentsInChildren<Collider>();
-        foreach (Collider collider in colliders)
+    private void DisableAllCollidersInChildren(BossParts thisPart)
+    {
+        //Todo: Move this code to BossColliderParts
+        CheckObjectAssignment(thisPart);
+        if (thisPart == _motherShipPart)
         {
-            collider.enabled = false;
+            Collider[] colliders = GetComponentsInChildren<Collider>(true);
+            foreach (Collider collider in colliders)
+            {
+                collider.enabled = false;
+            }
         }
+    }
+    private void EnableAllCollidersInChildren(BossParts thisPart)
+    {
+        //Todo: Move this code to BossColliderParts
+        CheckObjectAssignment(thisPart);
+        if (thisPart == _motherShipPart)
+        {
+            Collider[] colliders = GetComponentsInChildren<Collider>(true);
+            foreach (Collider collider in colliders)
+            {
+                collider.enabled = true;
+            }
+        }
+    }
+    private void ResetAll()
+    {
+        _currentHealth = _health;
+        _isDestroid = false;
+        SetupMaterialProperties(false);
     }
     private void SetupMaterialProperties(bool isDamaged = false)
     {
@@ -127,16 +155,20 @@ public class DamageMaterialFX : MonoBehaviour
         else
         {
             //Setup On Start
-            if(_meshRenderer.material.HasProperty("_NoiseScale"))
-                _meshRenderer.material.SetFloat("_NoiseScale", _noiseScale);
+            if(_meshRenderer.material.HasProperty("_EdgeWidth"))
+                _meshRenderer.material.SetFloat("_EdgeWidth", _noEdgeWidth);
             else
                 Debug.Log("Property Does not exist", transform);
-            if (_meshRenderer.material.HasProperty("_EdgeColor"))
+            if(_meshRenderer.material.HasProperty("_EdgeColor"))
                 _meshRenderer.material.SetColor("_EdgeColor", _originalColor);
             else
                 Debug.Log("Property Does not exist", transform);
-            if(_meshRenderer.material.HasProperty("_EdgeWidth"))
-                _meshRenderer.material.SetFloat("_EdgeWidth", _noEdgeWidth);
+            if (_meshRenderer.material.HasProperty("_DisolveAmount"))
+                _meshRenderer.material.SetFloat("_DisolveAmount", _noDisolveAmount);
+            else
+                Debug.Log("Property Does not exist", transform);
+            if(_meshRenderer.material.HasProperty("_NoiseScale"))
+                _meshRenderer.material.SetFloat("_NoiseScale", _noiseScale);
             else
                 Debug.Log("Property Does not exist", transform);
 
@@ -182,19 +214,21 @@ public class DamageMaterialFX : MonoBehaviour
     }
     private void DisablePartFunction(BossParts part)
     {
-        if (part == _motherShipParts)
+        if (part == _motherShipPart)
         {
             if(_bossPartFunctions)
             _bossPartFunctions.DisablePartFunction();
             SetupMaterialProperties(true);
-            DisableAllCollidersInChildren();
+            DisableAllCollidersInChildren(_motherShipPart);
         }
     }
     //Todo: Reset All for MotherShip When restarting
     private void OnDisable()
     {
+        BossFightManager.EnableStageColliderPart -= EnableAllCollidersInChildren;
         BossExplosions.OnDisablePart -= DisablePartFunction;
         BossColliderParts.OnBossColliderParts -= DamagePart;
+        BossFightManager.ResetBossEvent -= ResetAll;
     }
 }
 public enum BossParts

@@ -436,10 +436,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a9c49db38be9c4393f74d56050039e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage1Parts: 070000000800000005000000
+  _stage2Parts: 0300000002000000
+  _stage3Parts: 01000000
   _MotherShip: {fileID: 976928033}
   _positions: {fileID: 1602884551}
   _bossSpeed: 1
-  _nextStage: 0
+  RestartBossFight: 0
 --- !u!4 &647288233 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2376958593796464421, guid: 7f17616dc22bbce488af151923724ade,
@@ -1296,21 +1299,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.31
       objectReference: {fileID: 0}
@@ -1363,11 +1351,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MotherShip_Boss
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440792430810691784, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10e1c49735e0bdb479a5e7fdaf35a531, type: 3}
