@@ -6,7 +6,8 @@ using Melanchall.DryWetMidi.Core;
 
 public class LaserBehavior : MonoBehaviour
 {
-    [SerializeField] private float _rotationSpeed = 10;
+    //Delete: _rotationSpeed is never used
+    //[SerializeField] private float _rotationSpeed = 10;
     private Renderer _renderer;
     private Camera _camera;
     private float _cameraAspecRatio = 1.7777778f;

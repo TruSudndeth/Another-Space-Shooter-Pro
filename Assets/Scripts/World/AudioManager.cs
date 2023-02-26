@@ -4,13 +4,15 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : DontDestroyHelper<AudioManager>
 {
     //Todo: Add a negative sound Effect for negative powerups.
-    public static AudioManager Instance { get; private set; }
+    public delegate void MusicVolume(float musicVolume);
+    public static event MusicVolume UpdateMusicVolumeEvent;
     
     [Space]
     [SerializeField] private Transform _audioSourcePrefab;
+    
     [Tooltip ("Default = 0, PlayerDeath = 1, EnemyDeath = 2, AstroidDeath = 3, MiniBossDeath = 4," +
         "BossDeath = 5, Laser = 6, Tripple = 7, ShieldOn = 8, ShieldOff = 9, SpeedBoost = 10, PickUp = 11" +
         "LaserDamage01 = 12, LaserDamage02 = 13, LaserDamage03 = 14, LaserDamage04 = 15")]
@@ -21,20 +23,13 @@ public class AudioManager : MonoBehaviour
     [Space]
     private Types.SFX _sfx;
     private float _clipDuplicates = 0.1f;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         PopulateClipPool();
-        if(Instance)
-        {
-            Destroy(gameObject);
-        }else
-        {
-            DontDestroyOnLoad(gameObject);
-            Instance = this;
-        }
     }
-
-    private void PopulateClipPool()
+    public void PopulateClipPool()
     {
         _clipPool = new(10);
         for (int i = 0; i < _poolMax; i++)
@@ -60,6 +55,17 @@ public class AudioManager : MonoBehaviour
             }
             _clipPool.Add(Instantiate(_audioSourcePrefab, transform).GetComponent<DisableOnComplete>());
             _clipPool.LastOrDefault().PlayAudioOneShot(AssignAudioClip(sfx));
+        }
+    }
+    public void UpdateMusicVolume(float musicVolume)
+    {
+        UpdateMusicVolumeEvent?.Invoke(musicVolume);
+    }
+    public void UpdateSFXVolume(float soundVolume)
+    {
+        for (int i = 0; i < _clipPool.Count; i++)
+        {
+            _clipPool[i].AudioSource.volume = soundVolume;
         }
     }
     private AudioClip AssignAudioClip(Types.SFX sfx)

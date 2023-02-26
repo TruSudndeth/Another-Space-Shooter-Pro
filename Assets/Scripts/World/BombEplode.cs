@@ -13,13 +13,12 @@ public class BombEplode : MonoBehaviour
     [SerializeField] private float _explosionRadius = 5f;
     [SerializeField] private float _explosionForce = 700f;
     [SerializeField] private float _explosionUpward = 0.4f;
-    [SerializeField] private float _explosionDamage = 100f;
-    [SerializeField] private float _explosionDelay = 0.25f; //Todo: delet line
+    //Delete _ExplosionDamage && _explosionDelay is never used ??
+    //[SerializeField] private float _explosionDamage = 100f; 
+    //[SerializeField] private float _explosionDelay = 0.25f;
     private Animator _animator;
     private bool _hasAnimator = false;
     private AudioSource _audioSource;
-    [Space]
-    private bool _hasExploded = false; //Delete: Varaiable Not used???
     private bool _oneShot = false;
 
     private void Start()
@@ -39,7 +38,6 @@ public class BombEplode : MonoBehaviour
     private void OnEnable()
     {
         _oneShot = true;
-        _hasExploded = false;
     }
     private void Update()
     {

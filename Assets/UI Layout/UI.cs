@@ -10,13 +10,18 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 
-public class UI : MonoBehaviour
+public class UI : DontDestroyHelper<UI>
 {
+    //LeftOff: _mainMenue is fucking things up. when in the main menu starting game we need to unsubscribe from UIDocument
+    //When in game space we need to subscribe to UIDocument
+    //when space is hit in game the game restarts.
+    //Player inputs might be working but must double check.
     public delegate void Reset();
-    public static Reset ResetLevel;
+    public static event Reset ResetLevel;
     public delegate void LoadScene(Types.GameState index);
-    public static LoadScene Load_Scene;
+    public static event LoadScene Load_Scene;
         
     [Space]
     private UIDocument _docUI;
@@ -31,8 +36,10 @@ public class UI : MonoBehaviour
     private Button _quitBTN;
     private Slider _musicSlider;
     private Slider _soundSlider;
-    private float _musicVolume = 0;
-    private float _soundVolume = 0;
+    private float _musicVolume = 0.5f;
+    private float _currentMusicVolume = 0;
+    private float _soundVolume = 0.5f;
+    private float _currentSoundVolume = 0;
 
     [Space]
     private VisualElement root;
@@ -46,7 +53,6 @@ public class UI : MonoBehaviour
     private Label _gameOver;
     private float _gameOverTime = 0.0f;
     private bool _isGameOver = false;
-    private bool _gameStarted = false; //Delete: Variable not Used ???
     private Label _restartText;
     
     [Space]
@@ -65,12 +71,17 @@ public class UI : MonoBehaviour
     private VisualElement _thrusterColor;
     private bool _thrustBPM = false;
     //Todo: Listen for player thruster event
-
     private void Start()
     {
-        if(!_isMainMenu)
+        UpdateUI();
+        LoadedNewScene();
+    }
+    private void LoadedNewScene()
+    {
+        if (!_isMainMenu)
         {
             InputManager.Instance.Restart.started += _ => _hasRestarted = true;
+            
             InputManager.Instance.EnablePlayerIO(true);
 
             BackGroundMusic_Events.BGM_Events += () => _thrustBPM = true;
@@ -81,45 +92,71 @@ public class UI : MonoBehaviour
             Player.Game_Over += GameOver;
             StartGameAsteroids.GameStarted += GameStarted;
 
+            UpdateDisabled();
+            UnregisterAllCallBacks();
             UpdateScore(0);
-        }else if (_isMainMenu)
+        }
+        else if (_isMainMenu)
         {
             //Do Basic Setup here.
+            InputManager.Instance.UIDisabled(false);
             _startBTN = root.Q<Button>("Start");
             _optionsBTN = root.Q<Button>("Options");
             _quitBTN = root.Q<Button>("Quit");
             _musicSlider = root.Q<Slider>("Music");
             _soundSlider = root.Q<Slider>("Sound");
-
-            _quitBTN.clicked += Application.Quit;
-            _optionsBTN.clicked += AudioEnableDisable;
-            _startBTN.clicked += LoadLevelOne;
-
-            _startBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
-            _optionsBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
-            _quitBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
             
-            _startBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
-            _optionsBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
-            _quitBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
-            
-            //Todo: Add Audio Settings
-            //_musicSlider.RegisterValueChangedCallback((evt) => _musicVolume = evt.newValue);
-            //_soundSlider.RegisterValueChangedCallback((evt) => _soundVolume = evt.newValue);
+            RegisterAllCallbacks();
         }
         else
         {
             Debug.Log("Fix UI Settings");
         }
     }
+    private void RegisterAllCallbacks()
+    {
+        _quitBTN.clicked += Application.Quit;
+        _optionsBTN.clicked += AudioEnableDisable;
+        _startBTN.clicked += LoadLevelOne; 
+
+        _startBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+        _optionsBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+        _quitBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+
+        _startBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+        _optionsBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+        _quitBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+
+        //Todo: Add Audio Settings
+        _musicSlider.RegisterValueChangedCallback((evt) => _musicVolume = evt.newValue * 0.01f);
+        _soundSlider.RegisterValueChangedCallback((evt) => _soundVolume = evt.newValue * 0.01f);
+    }
+    private void UnregisterAllCallBacks()
+    {
+        _startBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+        _optionsBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+        _quitBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
+
+        _startBTN.UnregisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+        _optionsBTN.UnregisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+        _quitBTN.UnregisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
+
+        //Todo: Add Audio Settings
+        _musicSlider.UnregisterValueChangedCallback((evt) => _musicVolume = evt.newValue * 0.01f);
+        _soundSlider.UnregisterValueChangedCallback((evt) => _soundVolume = evt.newValue * 0.01f);
+    }
     private void GameStarted()
     {
-        _gameStarted = true; //Delete: Variable not used ??
         _scoreLabel.visible = true;
     }
     private void LoadLevelOne()
     {
         //Play start button Audio
+        //set source Asset to UI Domument to MainMenue
+        _docUI.visualTreeAsset = _gamePlay_UI;
+        UpdateUI();
+        LoadedNewScene();
+
         InputManager.Instance.EnablePlayerIO(true);
         _gameState = Types.GameState.Level1;
         Load_Scene?.Invoke(_gameState);
@@ -149,6 +186,21 @@ public class UI : MonoBehaviour
         if(!_canThrust)
         {
             UpdateThrusters(_thrusterCoolDownTime);
+        }
+        VolumeSetup();
+    }
+    private void VolumeSetup()
+    {
+        //update Volume if different then current volume
+        if (_musicVolume != _currentMusicVolume)
+        {
+            _currentMusicVolume = _musicVolume;
+            AudioManager.Instance.UpdateMusicVolume(_musicVolume);
+        }
+        if (_soundVolume != _currentSoundVolume)
+        {
+            _currentSoundVolume = _soundVolume;
+            AudioManager.Instance.UpdateSFXVolume(_soundVolume);
         }
     }
     private void ThrusterCoolDown(float time)
@@ -206,8 +258,6 @@ public class UI : MonoBehaviour
             InputManager.Instance.EnableRestart(true);
         }
     }
-
-
     private void UpdateHealth(int health)
     {
         if (!_isMainMenu)
@@ -216,18 +266,16 @@ public class UI : MonoBehaviour
             _healthBar.style.backgroundImage = _healthStatusStyle[health];
         }
     }
-    
-    private void OnEnable()
+    private void UpdateUI()
     {
         if (TryGetComponent(out UIDocument uiDoc))
         {
             _docUI = uiDoc;
         }
         else Debug.Log("No UI Document Component" + transform);
-        
-        _isMainMenu = _docUI.visualTreeAsset == _mainMenu_UI ? true : false;
+
+        _isMainMenu = _docUI.visualTreeAsset == _mainMenu_UI;
         root = _docUI.rootVisualElement;
-        
 
         if (!_isMainMenu)
         {
@@ -239,9 +287,7 @@ public class UI : MonoBehaviour
             {
                 _healthStatusStyle.Add(new StyleBackground(_healthStatus[i]));
             }
-        }
-        if (!_isMainMenu)
-        {
+        
             //Reff
             _docUI.visualTreeAsset = _gamePlay_UI;
             root = _docUI.rootVisualElement;
@@ -264,17 +310,17 @@ public class UI : MonoBehaviour
             _thrusterCoolDown.value = 0;
             _thrusterColor = root.Q(className: "unity-progress-bar__progress");
 
-
             //unity-progress-bar__progress
             //unity-progress-bar__container
             //unity-progress-bar__background
             //unity-progress-bar__title-container
-
-
-            
         }
     }
     private void OnDisable()
+    {
+        UpdateDisabled();
+    }
+    private void UpdateDisabled()
     {
         if (!_isMainMenu)
         {
@@ -287,7 +333,7 @@ public class UI : MonoBehaviour
             Player.Game_Over -= GameOver;
             Player.UpdateAmmo -= UpdateAmmo;
         }
-        else if(_isMainMenu)
+        else if (_isMainMenu)
         {
             StartGameAsteroids.GameStarted -= GameStarted;
             _optionsBTN.clicked -= AudioEnableDisable;

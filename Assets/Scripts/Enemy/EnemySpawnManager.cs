@@ -14,16 +14,15 @@ public class EnemySpawnManager : MonoBehaviour
     private int _enemyCount = 0;
     [Space]
     private float _boundsOffset = 0;
-    [Space]
-    private Camera _camera; //Delete: Variable Not used ???
     private readonly float _cameraAspecRatio = 1.7777778f;
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private int _maxPool = 10;
     private int _maxPoolTemp = 0;
-    [SerializeField] private float _spawnRate = 0.5f; //Temp: Timmer might delete variable timmer
+    //Delete: Timmer might delete variable timmer && _iterateEnemy
+    //[SerializeField] private float _spawnRate = 0.5f; 
+    //private int _iterateEnemy = 0;
     private bool _isPoolMaxed = false;
-    private int _iterateEnemy = 0;
     private bool _gameOver = false;
     private bool _gameStarted = false;
     [Space]
@@ -119,6 +118,7 @@ public class EnemySpawnManager : MonoBehaviour
         if (enemyName == Types.Enemy.Alien_Ship_001.ToString()) _enemyMiniBossKilled++;
         if (_enemiesKilled >= _waveSize)
         {
+            if (_waveSize > int.MaxValue) _waveSize = int.MaxValue;
             _enemiesKilled = 0;
             _waveSize += Random.Range(1,3);
             _canSpawnTime = Time.time;
@@ -127,6 +127,7 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void SpawnRandomEnemiesWave()
     {
+        
         NewWaveEvent?.Invoke();
         _enemyDroneCount = 0;
         _enemyMiniBossCount = 0;

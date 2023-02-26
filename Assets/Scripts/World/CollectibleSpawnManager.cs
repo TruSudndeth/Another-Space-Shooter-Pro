@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class CollectibleSpawnManager : MonoBehaviour
 {
-    //LeftOff: 1. Create an instance to this class
     public static CollectibleSpawnManager Instance;
 
     [SerializeField] private List<Transform> _powerupAssets;
@@ -77,7 +76,6 @@ public class CollectibleSpawnManager : MonoBehaviour
     }
     private int RandomInt()
     {
-        //LeftOff: SpeedPowerup and Tripple shot are rerturn -1 MustFix
         //working: health, homing, Ammo, bomb, 
         //GDHQ: New Projectile RareSpawn
         //Fix: This has Dependancies to the powerupAssets list in the inspector (must have all)

@@ -7,16 +7,16 @@ public class BossFightManager : MonoBehaviour
 {
     public static BossFightManager Instance;
 
-    public delegate void BossFightStage();
-    public static event BossFightStage OnBossFightStage;
+    //Delete: event this is not used ????
+    //public delegate void BossFightStage();
+    //public static event BossFightStage OnBossFightStage;
 
     public delegate void EnableStageCollider(BossParts part);
     public static event EnableStageCollider EnableStageColliderPart;
 
     public delegate void ResetBoss();
     public static event ResetBoss ResetBossEvent;
-
-    //LeftOff: Automate the MotherShip movement when stage 1 threw 3
+    
     [Space(20)]
     [Header("Boss Stage Collider Setup")]
     [SerializeField]
@@ -55,31 +55,25 @@ public class BossFightManager : MonoBehaviour
     private bool _stage02 = false;
     private bool _stage03 = false;
 
-    //Delete: this is for testing
-    public bool RestartBossFight = false;
+    [Header("Boss Fight Intervals")]
+    [Space (20)]
+    [SerializeField]
+    private int _bossFightInterval = 5;
+    private int _waveCount = 0;
+    private int _maxIntValue;
 
     private void Awake()
     {
+        _maxIntValue = int.MaxValue;
         _stages = new List<List<BossParts>> { _stage1Parts, _stage2Parts, _stage3Parts };
         _positionSequence = _positions.GetComponentsInChildren<Transform>(false).Skip(1).ToArray();
-        BossExplosions.OnDisablePart += RegisterPartDestroid;
+        BossSetup();
     }
     void Start()
     {
-        //LeftOff: Setup the event for others to listen when the stage is ready. iterate threw the parts.
-        
-        //Delete: TestCode for StartingBossFight
-        StartBossFight();
-        
-        //ToDo: Listen for an event to start the boss fight.
-        //Enable colliders for stage 1
-        //enable the boss and position him from position 0 to position 1.
-        //Listen for events that will trigger the boss to move to the next position. (thruster damage)
-        //Enable colliders for stage 2
-        //Listen for events that will trigger the boss to move to the next position. (thruster damage)
-        //Enable colliders for stage 3
-        //listen for events that will trigger the boss to die and display game over.
-        //roll the credits. is any.
+        BossExplosions.OnDisablePart += RegisterPartDestroid;
+        EnemySpawnManager.NewWaveEvent += BossFightIntervals;
+        UI.ResetLevel += ResetGame;
     }
     public void StartBossFight()
     {
@@ -97,6 +91,23 @@ public class BossFightManager : MonoBehaviour
             MoveBossToNextPosition();
         }
     }
+    private void BossSetup()
+    {
+        _nextPosition = _positionSequence[_positionIndex].position;
+        _MotherShip.position = _nextPosition;
+    }
+    private void BossFightIntervals()
+    {
+        _waveCount++;
+        if (_waveCount % _bossFightInterval == 0)
+        {
+            if (_waveCount >= _maxIntValue)
+            {
+                _waveCount = 0;
+            }
+            StartBossFight();
+        }
+    }
     private void EnableStageColliders(List<BossParts> parts)
     {
         foreach (BossParts part in parts)
@@ -104,8 +115,14 @@ public class BossFightManager : MonoBehaviour
             EnableStageColliderPart?.Invoke(part);
         }
     }
+    private void ResetGame()
+    {
+        _waveCount = 0;
+        ResetBossFight();
+    }
     private void ResetBossFight()
     {
+        _positionIndex = 0;
         _hasStarted = false;
         _beacon = false;
         _body = false;
@@ -116,8 +133,9 @@ public class BossFightManager : MonoBehaviour
         _stage01 = false;
         _stage02 = false;
         _stage03 = false;
-        StartBossFight();
+        //StartBossFight();
         ResetBossEvent?.Invoke();
+        BossSetup();
     }
     private void RegisterPartDestroid(BossParts parts)
     {
@@ -173,11 +191,11 @@ public class BossFightManager : MonoBehaviour
         {
             _MotherShip.position = Vector3.MoveTowards(_MotherShip.position, _nextPosition, _bossSpeed * Time.fixedDeltaTime);
         }
-        //Delete: TestCode for StartingBossFight
-        if (RestartBossFight)
-        {
-            ResetBossFight();
-            RestartBossFight = false;
-        }
+    }
+    private void OnDisable()
+    {
+        BossExplosions.OnDisablePart -= RegisterPartDestroid;
+        EnemySpawnManager.NewWaveEvent -= BossFightIntervals;
+        UI.ResetLevel -= ResetBossFight;
     }
 }

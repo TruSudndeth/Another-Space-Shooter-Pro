@@ -26,8 +26,9 @@ public class DamageMaterialFX : MonoBehaviour
     private AnimationCurve _damageCurve;
     [SerializeField]
     private float _damageDuration = 1.0f;
-    [SerializeField]
-    private float _damageAnimationSpeed = 1.0f;
+    //Delete: _damageAnimationSpeed is never used ??
+    //[SerializeField]
+    //private float _damageAnimationSpeed = 1.0f;
     [SerializeField]
     private float _noiseScale = 1000.0f;
     [SerializeField]
@@ -197,12 +198,6 @@ public class DamageMaterialFX : MonoBehaviour
             _meshRenderer.material.SetColor("_EdgeColor", Color.Lerp(_originalColor, _damageColor, curveValue));
             //Iterate threw the explosion list
             //and send an event to BossFightManger of the part that was destroyed.
-        }
-        //Delete: Test Block
-        if (TakeDamage)
-        {
-            TakeDamage = false;
-            DoDamage(1);
         }
     }
     private void CheckObjectAssignment(BossParts part)
