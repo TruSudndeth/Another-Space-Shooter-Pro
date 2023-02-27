@@ -5,9 +5,9 @@ using UnityEngine;
 public class StartGameAsteroids : MonoBehaviour
 {
     public delegate void StartGame();
-    public static StartGame GameStarted;
+    public static event StartGame GameStarted;
     public delegate void Dificulty();
-    public static Dificulty SetDifficulty;
+    public static event Dificulty SetDifficulty;
 
     [SerializeField] private float _rotationSpeedMax = 1.5f;
     private Rigidbody _rb;

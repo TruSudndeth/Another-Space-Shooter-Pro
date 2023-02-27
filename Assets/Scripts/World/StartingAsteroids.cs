@@ -30,6 +30,7 @@ public class StartingAsteroids : MonoBehaviour
     {
         if (TryGetComponent(out ParticlesVFX _vfx))
         {
+            //Debug: StartingAstroids OnDestroy on editor Stop
             _vfx.PlayVFX();
             AudioManager.Instance.PlayAudioOneShot(_sfxType);
         }

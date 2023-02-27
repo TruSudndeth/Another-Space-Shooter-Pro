@@ -11,8 +11,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using NUnit.Framework.Internal.Filters;
+using System.Diagnostics.CodeAnalysis;
 
-public class UI : DontDestroyHelper<UI>
+public class UIManager : DontDestroyHelper<UIManager>
 {
     //LeftOff: _mainMenue is fucking things up. when in the main menu starting game we need to unsubscribe from UIDocument
     //When in game space we need to subscribe to UIDocument
@@ -24,11 +26,15 @@ public class UI : DontDestroyHelper<UI>
     public static event LoadScene Load_Scene;
         
     [Space]
-    private UIDocument _docUI;
-    [SerializeField] private VisualTreeAsset _mainMenu_UI;
-    [SerializeField] private VisualTreeAsset _gamePlay_UI;
+    private UIDocument _UIDocGame;
+    private UIDocument _UIDocMenu;
+
+    [Space(20)]
+    [SerializeField] private Transform _mainMenuUI;
+    [SerializeField] private Transform _gamePlayUI;
+    
     private Types.GameState _gameState; 
-    private bool _isMainMenu = false;
+    private bool _isMainMenu = true;
 
     [Space]
     private Button _startBTN;
@@ -42,7 +48,8 @@ public class UI : DontDestroyHelper<UI>
     private float _currentSoundVolume = 0;
 
     [Space]
-    private VisualElement root;
+    private VisualElement _rootMenu;
+    private VisualElement _rootGame;
     private VisualElement _healthBar;
     private int _score = 0;
     private Label _scoreLabel;
@@ -70,55 +77,72 @@ public class UI : DontDestroyHelper<UI>
     private ProgressBar _thrusterCoolDown;
     private VisualElement _thrusterColor;
     private bool _thrustBPM = false;
+
+    //Delete: ResetUIVisualss bool test code
+    public bool ResetUIVisualss = false;
     //Todo: Listen for player thruster event
+    protected override void Awake()
+    {
+        base.Awake();
+        if (Instance != this) return;
+        if (!_mainMenuUI.gameObject.activeSelf || !_gamePlayUI.gameObject.activeSelf)
+        {
+            _isMainMenu = !_gamePlayUI.gameObject.activeSelf;
+            _mainMenuUI.gameObject.SetActive(true);
+            _gamePlayUI.gameObject.SetActive(true);
+        }
+    }
     private void Start()
     {
-        UpdateUI();
-        LoadedNewScene();
+        SetUIRef();
+        SubscribeToEvents();
+        
+        UpdateUIVisuals();
+        SetSceneInputs(); //Delete: Unknown if needed here
     }
-    private void LoadedNewScene()
+    private void SubscribeToEvents()
+    {
+        // Main Menu events
+        _quitBTN.clicked += Application.Quit;
+        _optionsBTN.clicked += AudioEnableDisable;
+        _startBTN.clicked += LoadLevelOne;
+
+        // Game Play Events
+        InputManager.Instance.Restart.performed += _ => _hasRestarted = true;
+        BackGroundMusic_Events.BGM_Events += () => _thrustBPM = true; 
+        Player.Thruster += ThrusterCoolDown;
+        Player.UpdateAmmo += UpdateAmmo;
+        Player.Score += UpdateScore; 
+        Player.UpdateHealth += UpdateHealth;
+        Player.Game_Over += GameOver;
+        StartGameAsteroids.GameStarted += GameStarted;
+    }
+    private void SetSceneInputs()
     {
         if (!_isMainMenu)
         {
-            InputManager.Instance.Restart.started += _ => _hasRestarted = true;
-            
-            InputManager.Instance.EnablePlayerIO(true);
-
-            BackGroundMusic_Events.BGM_Events += () => _thrustBPM = true;
-            Player.Thruster += ThrusterCoolDown;
-            Player.UpdateAmmo += UpdateAmmo;
-            Player.Score += UpdateScore;
-            Player.UpdateHealth += UpdateHealth;
-            Player.Game_Over += GameOver;
-            StartGameAsteroids.GameStarted += GameStarted;
-
-            UpdateDisabled();
-            UnregisterAllCallBacks();
             UpdateScore(0);
+            //InputManager.Instance.EnableRestart(false);
+            InputManager.Instance.EnablePlayerIO(true);
+            //Delete: Debuglog (GamePlay Inputs Eneabled)
+            Debug.Log("Game Play Inputs enabled");
+            RegisterAllCallbacks();
+            UnregisterAllCallBacks();
         }
         else if (_isMainMenu)
         {
+            //Delete: Debug.Log("Main Menu Inputs enabled");
+            Debug.Log("Main Menu Inputs enabled");
             //Do Basic Setup here.
             InputManager.Instance.UIDisabled(false);
-            _startBTN = root.Q<Button>("Start");
-            _optionsBTN = root.Q<Button>("Options");
-            _quitBTN = root.Q<Button>("Quit");
-            _musicSlider = root.Q<Slider>("Music");
-            _soundSlider = root.Q<Slider>("Sound");
             
             RegisterAllCallbacks();
-        }
-        else
-        {
-            Debug.Log("Fix UI Settings");
         }
     }
     private void RegisterAllCallbacks()
     {
-        _quitBTN.clicked += Application.Quit;
-        _optionsBTN.clicked += AudioEnableDisable;
-        _startBTN.clicked += LoadLevelOne; 
-
+        //Delete: Debug Log, testing only
+        Debug.Log("Registering all callbacks");
         _startBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _optionsBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _quitBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
@@ -133,6 +157,8 @@ public class UI : DontDestroyHelper<UI>
     }
     private void UnregisterAllCallBacks()
     {
+        //Delete: Debug Log, testing only
+        Debug.Log("Unregistering all callbacks");
         _startBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _optionsBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _quitBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
@@ -150,12 +176,9 @@ public class UI : DontDestroyHelper<UI>
         _scoreLabel.visible = true;
     }
     private void LoadLevelOne()
-    {
-        //Play start button Audio
-        //set source Asset to UI Domument to MainMenue
-        _docUI.visualTreeAsset = _gamePlay_UI;
-        UpdateUI();
-        LoadedNewScene();
+    {        
+        _isMainMenu = false;
+        ResetGame();
 
         InputManager.Instance.EnablePlayerIO(true);
         _gameState = Types.GameState.Level1;
@@ -171,8 +194,8 @@ public class UI : DontDestroyHelper<UI>
     {
         if(_hasRestarted)
         {
-            ResetLevel?.Invoke();
             _hasRestarted = false;
+            ResetGame();
             InputManager.Instance.EnableRestart(false);
         }
     }
@@ -266,79 +289,200 @@ public class UI : DontDestroyHelper<UI>
             _healthBar.style.backgroundImage = _healthStatusStyle[health];
         }
     }
-    private void UpdateUI()
-    {
-        if (TryGetComponent(out UIDocument uiDoc))
+    private void UpdateUIVisuals()
+    {        
+        if(_isMainMenu)
         {
-            _docUI = uiDoc;
+            //Delete: Debug Log, testing only
+            Debug.Log("Updating UI Visuals");
+            //Update Visual UI Setup for Main Menu
+            _gamePlayUI.gameObject.SetActive(false);
+            _mainMenuUI.gameObject.SetActive(true);
         }
-        else Debug.Log("No UI Document Component" + transform);
-
-        _isMainMenu = _docUI.visualTreeAsset == _mainMenu_UI;
-        root = _docUI.rootVisualElement;
-
         if (!_isMainMenu)
         {
-            //Debug: Delete 2 comments
-            //_UIbaseInputs = new();
-            //_restartInput = _UIbaseInputs.UI.Restart;
-            _healthStatusStyle = new(4);
-            for (int i = 0; i < _healthStatus.Count; i++)
-            {
-                _healthStatusStyle.Add(new StyleBackground(_healthStatus[i]));
-            }
-        
-            //Reff
-            _docUI.visualTreeAsset = _gamePlay_UI;
-            root = _docUI.rootVisualElement;
-
-            _thrusterCoolDown = root.Q<ProgressBar>("ThrusterCoolDown");
-            _healthBar = root.Q<VisualElement>("HealthBar");
-            _scoreLabel = root.Q<Label>("Score");
-            _gameOver = root.Q<Label>("GameOver");
-            _restartText = root.Q<Label>("Restart_Text");
-            _ammo = root.Q<Label>("Ammo");
-
-            //SetUp
+            _gamePlayUI.gameObject.SetActive(true);
+            _mainMenuUI.gameObject.SetActive(false);
+            //Delete: Debug Log, testing only
+            Debug.Log("ResetUIVisuals for GamePlay");
+            //Visual UI SetUp Game Play
             _healthBar.style.backgroundImage = _healthStatusStyle[_healthStatus.Count - 1];
             _gameOver.visible = false;
             _restartText.visible = false;
             _scoreLabel.visible = false;
-
-            _thrusterCoolDown.highValue = 1;
-            _thrusterCoolDown.lowValue = 0;
-            _thrusterCoolDown.value = 0;
-            _thrusterColor = root.Q(className: "unity-progress-bar__progress");
-
-            //unity-progress-bar__progress
-            //unity-progress-bar__container
-            //unity-progress-bar__background
-            //unity-progress-bar__title-container
         }
+    }
+    private void SetUIRef()
+    {
+        if (_gamePlayUI.TryGetComponent(out UIDocument uiGame))
+        {
+            _UIDocGame = uiGame;
+            _rootGame = _UIDocGame.rootVisualElement;
+        }
+        else Debug.Log("No UI Document Component" + transform);
+        if (_mainMenuUI.TryGetComponent(out UIDocument uiMenu))
+        {
+            _UIDocMenu = uiMenu;
+            _rootMenu = _UIDocMenu.rootVisualElement;
+        }
+        else Debug.Log("No UI Document Component" + transform);
+        
+        if (!_UIDocMenu || !_UIDocGame)
+        {
+            Debug.Log("_rootmenu or _rootGame lost reference or not set", transform);
+            return;
+        }
+        
+        // Game Play Reff Setup
+        _thrusterColor = _rootGame.Q(className: "unity-progress-bar__progress");
+        _thrusterCoolDown = _rootGame.Q<ProgressBar>("ThrusterCoolDown");
+        _healthBar = _rootGame.Q<VisualElement>("HealthBar");
+        _restartText = _rootGame.Q<Label>("Restart_Text");
+        _gameOver = _rootGame.Q<Label>("GameOver");
+        _scoreLabel = _rootGame.Q<Label>("Score");
+        _ammo = _rootGame.Q<Label>("Ammo");
+        _thrusterCoolDown.highValue = 1;
+        _thrusterCoolDown.lowValue = 0;
+        _thrusterCoolDown.value = 0;
+        _healthStatusStyle = new(4);
+        for (int i = 0; i < _healthStatus.Count; i++)
+        {
+            _healthStatusStyle.Add(new StyleBackground(_healthStatus[i]));
+        }
+        //unity-progress-bar__title-container
+        //unity-progress-bar__background
+        //unity-progress-bar__container
+        //unity-progress-bar__progress
+
+        // Main menu Reff Setup
+        _startBTN = _rootMenu.Q<Button>("Start");
+        _optionsBTN = _rootMenu.Q<Button>("Options");
+        _quitBTN = _rootMenu.Q<Button>("Quit");
+        _musicSlider = _rootMenu.Q<Slider>("Music");
+        _soundSlider = _rootMenu.Q<Slider>("Sound");
+    }
+    private void ResetGame()
+    {
+        _isGameOver = false;
+        UpdateUIVisuals();
+        //_isGameOver = false;
+        //_restartText.visible = false;
+        InputManager.Instance.EnableRestart(false);
+        _score = 0;
+        SetSceneInputs();
+        ResetLevel?.Invoke();
+        //Enable player inputs on restart
+        //disable UI inputs
     }
     private void OnDisable()
     {
-        UpdateDisabled();
+        if (Instance != this) return;
+        if (_UIDocGame || _UIDocMenu)
+        {
+            UpdateDisabled();
+            UnregisterAllCallBacks();
+        }
     }
     private void UpdateDisabled()
     {
-        if (!_isMainMenu)
+        BackGroundMusic_Events.BGM_Events -= () => _thrustBPM = true;
+        Player.Thruster -= ThrusterCoolDown;
+        InputManager.Instance.Restart.started -= _ => _hasRestarted = true;
+
+        Player.Score -= UpdateScore;
+        Player.UpdateHealth -= UpdateHealth;
+        Player.Game_Over -= GameOver;
+        Player.UpdateAmmo -= UpdateAmmo;
+        StartGameAsteroids.GameStarted -= GameStarted;
+        _optionsBTN.clicked -= AudioEnableDisable;
+        _startBTN.clicked -= LoadLevelOne;
+        _quitBTN.clicked -= Application.Quit;
+    }
+    
+}
+
+public class EventManager
+{
+    private static readonly Dictionary<string, Delegate> eventTable = new Dictionary<string, Delegate>();
+
+    public static void AddListener(string eventName, Delegate handler)
+    {
+        if (!eventTable.ContainsKey(eventName))
         {
-            BackGroundMusic_Events.BGM_Events -= () => _thrustBPM = true;
-            Player.Thruster -= ThrusterCoolDown;
-            InputManager.Instance.Restart.started -= _ => _hasRestarted = true;
-            InputManager.Instance.EnableRestart(false);
-            Player.Score -= UpdateScore;
-            Player.UpdateHealth -= UpdateHealth;
-            Player.Game_Over -= GameOver;
-            Player.UpdateAmmo -= UpdateAmmo;
+            eventTable[eventName] = null;
         }
-        else if (_isMainMenu)
+
+        eventTable[eventName] = Delegate.Combine(eventTable[eventName], handler);
+    }
+
+    public static void RemoveListener(string eventName, Delegate handler)
+    {
+        if (eventTable.TryGetValue(eventName, out var existingHandler))
         {
-            StartGameAsteroids.GameStarted -= GameStarted;
-            _optionsBTN.clicked -= AudioEnableDisable;
-            _startBTN.clicked -= LoadLevelOne;
-            _quitBTN.clicked -= Application.Quit;
+            var newHandler = Delegate.Remove(existingHandler, handler);
+
+            if (newHandler == null)
+            {
+                eventTable.Remove(eventName);
+            }
+            else
+            {
+                eventTable[eventName] = newHandler;
+            }
+        }
+    }
+
+    public static void RaiseEvent(string eventName, params object[] args)
+    {
+        if (eventTable.TryGetValue(eventName, out var handler))
+        {
+            handler?.DynamicInvoke(args);
         }
     }
 }
+
+public class EventManager2<T>
+{
+    private event Action<T> handlers;
+
+    private HashSet<Action<T>> handlerSet = new HashSet<Action<T>>();
+
+    public void AddHandler(Action<T> handler)
+    {
+        if (handler == null)
+        {
+            return;
+        }
+
+        if (handlerSet.Contains(handler))
+        {
+            return;
+        }
+
+        handlers += handler;
+        handlerSet.Add(handler);
+    }
+
+    public void RemoveHandler(Action<T> handler)
+    {
+        if (handler == null)
+        {
+            return;
+        }
+
+        if (!handlerSet.Contains(handler))
+        {
+            return;
+        }
+
+        handlers -= handler;
+        handlerSet.Remove(handler);
+    }
+
+    public void Invoke(T arg)
+    {
+        handlers?.Invoke(arg);
+    }
+}
+
+

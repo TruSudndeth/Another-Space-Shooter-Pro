@@ -15,6 +15,7 @@ public class InputManager : DontDestroyHelper<InputManager>
 
     protected override void Awake()
     {
+        //Base inharetance has an instance This class
         base.Awake();
         
         _playerInputs = new();

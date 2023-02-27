@@ -25,7 +25,6 @@ public class DontDestroyHelper<T> : MonoBehaviour where T : Component
                 // Don't destroy the object when loading a new scene
                 DontDestroyOnLoad(_instance.gameObject);
             }
-
             return _instance;
         }
     }

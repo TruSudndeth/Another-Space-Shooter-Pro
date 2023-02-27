@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BossFightManager : MonoBehaviour
+public class BossFightManager : DontDestroyHelper<BossFightManager>
 {
-    public static BossFightManager Instance;
+    //public static BossFightManager Instance;
 
     //Delete: event this is not used ????
     //public delegate void BossFightStage();
@@ -62,8 +62,11 @@ public class BossFightManager : MonoBehaviour
     private int _waveCount = 0;
     private int _maxIntValue;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        if (Instance != this) return;
+        
         _maxIntValue = int.MaxValue;
         _stages = new List<List<BossParts>> { _stage1Parts, _stage2Parts, _stage3Parts };
         _positionSequence = _positions.GetComponentsInChildren<Transform>(false).Skip(1).ToArray();
@@ -73,7 +76,7 @@ public class BossFightManager : MonoBehaviour
     {
         BossExplosions.OnDisablePart += RegisterPartDestroid;
         EnemySpawnManager.NewWaveEvent += BossFightIntervals;
-        UI.ResetLevel += ResetGame;
+        UIManager.ResetLevel += ResetGame;
     }
     public void StartBossFight()
     {
@@ -194,8 +197,9 @@ public class BossFightManager : MonoBehaviour
     }
     private void OnDisable()
     {
+        if (Instance != this) return;
         BossExplosions.OnDisablePart -= RegisterPartDestroid;
         EnemySpawnManager.NewWaveEvent -= BossFightIntervals;
-        UI.ResetLevel -= ResetBossFight;
+        UIManager.ResetLevel -= ResetBossFight;
     }
 }

@@ -3,17 +3,17 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public delegate void GameOver();
-    public static GameOver Game_Over;
+    public static event GameOver Game_Over;
     public delegate void Points(int points);
-    public static Points Score;
+    public static event Points Score;
     public delegate void PlayerHealth(int health);
-    public static PlayerHealth UpdateHealth;
+    public static event PlayerHealth UpdateHealth;
     public delegate void PlayerAmmo(int ammo, int maxAmmo);
-    public static PlayerAmmo UpdateAmmo;
+    public static event PlayerAmmo UpdateAmmo;
     public delegate void PlayerThruster(float Duration);
-    public static PlayerThruster Thruster;
+    public static event PlayerThruster Thruster;
     public delegate void PlayerDamage(float Duration);
-    public static PlayerDamage OnPlayerDamage;
+    public static event PlayerDamage OnPlayerDamage;
     public int Health { get { return _health; } set { Damage(value); } }
 
     [Space]
