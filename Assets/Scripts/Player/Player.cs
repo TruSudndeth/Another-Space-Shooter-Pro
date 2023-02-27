@@ -289,6 +289,8 @@ public class Player : MonoBehaviour
                 AudioManager.Instance.PlayAudioOneShot(Types.SFX.PlayerDeath);
                 _explode.PlayVFX();
             }
+            Game_Over?.Invoke();
+            InputManager.Instance.EnablePlayerIO(false);
             gameObject.SetActive(false);
         }
         
@@ -371,8 +373,6 @@ public class Player : MonoBehaviour
         InputManager.Instance.Thrust.started -= _ => _actuateThrust = true;
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;
         InputManager.Instance.Fire.performed -= _ => _fired = true; //??? Look into this unsubscribe
-        Game_Over?.Invoke();
-        InputManager.Instance.EnablePlayerIO(false);
     }
     
 }

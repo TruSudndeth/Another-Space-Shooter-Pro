@@ -126,7 +126,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             InputManager.Instance.EnablePlayerIO(true);
             //Delete: Debuglog (GamePlay Inputs Eneabled)
             Debug.Log("Game Play Inputs enabled");
-            RegisterAllCallbacks();
+            //RegisterAllCallbacks();
             UnregisterAllCallBacks();
         }
         else if (_isMainMenu)
@@ -175,14 +175,25 @@ public class UIManager : DontDestroyHelper<UIManager>
     {
         _scoreLabel.visible = true;
     }
+    //when LoadLevelOne ran for some reason the level properly
     private void LoadLevelOne()
-    {        
-        _isMainMenu = false;
+    {
         ResetGame();
-
-        InputManager.Instance.EnablePlayerIO(true);
         _gameState = Types.GameState.Level1;
         Load_Scene?.Invoke(_gameState);
+    }
+    private void ResetGame()
+    {
+        _isGameOver = false;
+        _score = 0;
+        //Debug: ResetLevel should only be called when already in game
+        _isMainMenu = false;
+        InputManager.Instance.EnablePlayerIO(true);
+        InputManager.Instance.EnableRestart(false);
+        UpdateUIVisuals();
+        SetSceneInputs();
+        if (!_isMainMenu)
+        ResetLevel?.Invoke();
     }
     private void AudioEnableDisable()
     {
@@ -195,8 +206,14 @@ public class UIManager : DontDestroyHelper<UIManager>
         if(_hasRestarted)
         {
             _hasRestarted = false;
+            //Debug: RestartGame() might be calling double Loads scenes.
             ResetGame();
             InputManager.Instance.EnableRestart(false);
+        }
+        if(ResetUIVisualss)
+        {
+            ResetUIVisualss = false;
+            LoadLevelOne();
         }
     }
     private void FixedUpdate()
@@ -276,6 +293,7 @@ public class UIManager : DontDestroyHelper<UIManager>
         if(!_isMainMenu)
         {
             //create a on off logic over time
+            Debug.Log("GameOver");
             _isGameOver = true;
             _restartText.visible = true;
             InputManager.Instance.EnableRestart(true);
@@ -289,6 +307,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             _healthBar.style.backgroundImage = _healthStatusStyle[health];
         }
     }
+    //The invokes are good, the same thing is heppening here is UpdateUIVisuals when this is called when LoadLevel is called and runs if !_isMainMenu condition.
     private void UpdateUIVisuals()
     {        
         if(_isMainMenu)
@@ -299,7 +318,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             _gamePlayUI.gameObject.SetActive(false);
             _mainMenuUI.gameObject.SetActive(true);
         }
-        if (!_isMainMenu)
+        else if (!_isMainMenu)
         {
             _gamePlayUI.gameObject.SetActive(true);
             _mainMenuUI.gameObject.SetActive(false);
@@ -361,19 +380,6 @@ public class UIManager : DontDestroyHelper<UIManager>
         _musicSlider = _rootMenu.Q<Slider>("Music");
         _soundSlider = _rootMenu.Q<Slider>("Sound");
     }
-    private void ResetGame()
-    {
-        _isGameOver = false;
-        UpdateUIVisuals();
-        //_isGameOver = false;
-        //_restartText.visible = false;
-        InputManager.Instance.EnableRestart(false);
-        _score = 0;
-        SetSceneInputs();
-        ResetLevel?.Invoke();
-        //Enable player inputs on restart
-        //disable UI inputs
-    }
     private void OnDisable()
     {
         if (Instance != this) return;
@@ -400,89 +406,3 @@ public class UIManager : DontDestroyHelper<UIManager>
     }
     
 }
-
-public class EventManager
-{
-    private static readonly Dictionary<string, Delegate> eventTable = new Dictionary<string, Delegate>();
-
-    public static void AddListener(string eventName, Delegate handler)
-    {
-        if (!eventTable.ContainsKey(eventName))
-        {
-            eventTable[eventName] = null;
-        }
-
-        eventTable[eventName] = Delegate.Combine(eventTable[eventName], handler);
-    }
-
-    public static void RemoveListener(string eventName, Delegate handler)
-    {
-        if (eventTable.TryGetValue(eventName, out var existingHandler))
-        {
-            var newHandler = Delegate.Remove(existingHandler, handler);
-
-            if (newHandler == null)
-            {
-                eventTable.Remove(eventName);
-            }
-            else
-            {
-                eventTable[eventName] = newHandler;
-            }
-        }
-    }
-
-    public static void RaiseEvent(string eventName, params object[] args)
-    {
-        if (eventTable.TryGetValue(eventName, out var handler))
-        {
-            handler?.DynamicInvoke(args);
-        }
-    }
-}
-
-public class EventManager2<T>
-{
-    private event Action<T> handlers;
-
-    private HashSet<Action<T>> handlerSet = new HashSet<Action<T>>();
-
-    public void AddHandler(Action<T> handler)
-    {
-        if (handler == null)
-        {
-            return;
-        }
-
-        if (handlerSet.Contains(handler))
-        {
-            return;
-        }
-
-        handlers += handler;
-        handlerSet.Add(handler);
-    }
-
-    public void RemoveHandler(Action<T> handler)
-    {
-        if (handler == null)
-        {
-            return;
-        }
-
-        if (!handlerSet.Contains(handler))
-        {
-            return;
-        }
-
-        handlers -= handler;
-        handlerSet.Remove(handler);
-    }
-
-    public void Invoke(T arg)
-    {
-        handlers?.Invoke(arg);
-    }
-}
-
-

@@ -22,10 +22,15 @@ public class GameManager : DontDestroyHelper<GameManager>
     }
     void LoadScene(Types.GameState gameState)
     {
+        //Delete: Debug.Log("Load Scene: " + gameState);
+        Debug.Log("Load scene " + gameState);
         SceneManager.LoadScene((int) gameState);
     }
     void RestartCurrentLevel()
     {
+        //Delete: Debug.Log
+        //Debug: GamemanagerDesabled this should behave similar to LoadScene(stage level one)
+        Debug.Log("Current Scene reloaded");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     private void ExitGame()

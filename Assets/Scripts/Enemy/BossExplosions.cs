@@ -81,5 +81,7 @@ public class BossExplosions : MonoBehaviour
     private void OnDisable()
     {
         DamageMaterialFX.onObjectDestroyed -= ExplodeObject;
+        BossFightManager.ResetBossEvent -= ResetAll;
+        
     }
 }

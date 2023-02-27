@@ -200,6 +200,6 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
         if (Instance != this) return;
         BossExplosions.OnDisablePart -= RegisterPartDestroid;
         EnemySpawnManager.NewWaveEvent -= BossFightIntervals;
-        UIManager.ResetLevel -= ResetBossFight;
+        UIManager.ResetLevel -= ResetGame;
     }
 }

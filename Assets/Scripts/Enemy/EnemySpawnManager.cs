@@ -187,6 +187,7 @@ public class EnemySpawnManager : MonoBehaviour
         BombEplode.BombExplosionEvent -= () => PauseSpawning();
         Player.Game_Over -= PlayerIsDead;
         StartGameAsteroids.GameStarted -= GameStarted;
+        StartGameAsteroids.SetDifficulty -= () => GameDificulty();
         BackGroundMusic_Events.BGM_Events -= () => { _beatEnemySpawner = true; };
     }
 }

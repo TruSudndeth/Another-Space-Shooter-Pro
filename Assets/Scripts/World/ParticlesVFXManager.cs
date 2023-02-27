@@ -72,5 +72,6 @@ public class ParticlesVFXManager : MonoBehaviour
     private void OnDisable()
     {
         ParticlesVFX.OneShotExplosion -= PlayOneShotExplosion;
+        BossExplosions.OneShotExplosion -= PlayOneShotExplosion;
     }
 }
