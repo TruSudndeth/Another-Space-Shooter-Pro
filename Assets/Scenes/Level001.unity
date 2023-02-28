@@ -252,10 +252,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 654910804354274954, guid: 770fefc49e931e140b7e2845c4f7304b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2369191446195782649, guid: 770fefc49e931e140b7e2845c4f7304b,
         type: 3}
       propertyPath: m_Name
       value: UIManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369191446195782654, guid: 770fefc49e931e140b7e2845c4f7304b,
+        type: 3}
+      propertyPath: SubscribeMainMenu
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369191446195782654, guid: 770fefc49e931e140b7e2845c4f7304b,
+        type: 3}
+      propertyPath: UnsubcribeMainMenu
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2369191446195782655, guid: 770fefc49e931e140b7e2845c4f7304b,
         type: 3}

@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using UnityEngine.EventSystems;
 using NUnit.Framework.Internal.Filters;
 using System.Diagnostics.CodeAnalysis;
 
@@ -24,7 +25,7 @@ public class UIManager : DontDestroyHelper<UIManager>
     public static event Reset ResetLevel;
     public delegate void LoadScene(Types.GameState index);
     public static event LoadScene Load_Scene;
-        
+
     [Space]
     private UIDocument _UIDocGame;
     private UIDocument _UIDocMenu;
@@ -32,8 +33,8 @@ public class UIManager : DontDestroyHelper<UIManager>
     [Space(20)]
     [SerializeField] private Transform _mainMenuUI;
     [SerializeField] private Transform _gamePlayUI;
-    
-    private Types.GameState _gameState; 
+
+    private Types.GameState _gameState;
     private bool _isMainMenu = true;
 
     [Space]
@@ -54,18 +55,19 @@ public class UIManager : DontDestroyHelper<UIManager>
     private int _score = 0;
     private Label _scoreLabel;
     private Label _ammo;
-    
+    private Label _title;
+
     [Space]
     [SerializeField] private float _gameOverFlashTime = 1.0f;
     private Label _gameOver;
     private float _gameOverTime = 0.0f;
     private bool _isGameOver = false;
     private Label _restartText;
-    
+
     [Space]
     [SerializeField] private List<Sprite> _healthStatus;
     private List<StyleBackground> _healthStatusStyle;
-    
+
     [Space]
     private bool _hasRestarted = false;
 
@@ -73,13 +75,18 @@ public class UIManager : DontDestroyHelper<UIManager>
     [SerializeField] private float _thrusterCoolDownTime = 1.0f;
     private float _thrusterTime = 0.0f;
     private bool _canThrust = false;
-    
+
     private ProgressBar _thrusterCoolDown;
     private VisualElement _thrusterColor;
     private bool _thrustBPM = false;
 
-    //Delete: ResetUIVisualss bool test code
+    //Delete: ResetUIVisualss public bools, test code
     public bool ResetUIVisualss = false;
+    [Space(15)]
+    public bool RegisterCallbacks = false;
+    public bool UnregisterCallbacks = false;
+    public bool SubscribeMainMenu = false;
+    public bool UnsubcribeMainMenu = false;
     //Todo: Listen for player thruster event
     protected override void Awake()
     {
@@ -95,6 +102,7 @@ public class UIManager : DontDestroyHelper<UIManager>
     private void Start()
     {
         SetUIRef();
+        //Debug: UIManager sub to events for Menu
         SubscribeToEvents();
         
         UpdateUIVisuals();
@@ -103,9 +111,6 @@ public class UIManager : DontDestroyHelper<UIManager>
     private void SubscribeToEvents()
     {
         // Main Menu events
-        _quitBTN.clicked += Application.Quit;
-        _optionsBTN.clicked += AudioEnableDisable;
-        _startBTN.clicked += LoadLevelOne;
 
         // Game Play Events
         InputManager.Instance.Restart.performed += _ => _hasRestarted = true;
@@ -126,6 +131,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             InputManager.Instance.EnablePlayerIO(true);
             //Delete: Debuglog (GamePlay Inputs Eneabled)
             Debug.Log("Game Play Inputs enabled");
+            //Debug: UIManager uncomment code bellow
             //RegisterAllCallbacks();
             UnregisterAllCallBacks();
         }
@@ -136,13 +142,18 @@ public class UIManager : DontDestroyHelper<UIManager>
             //Do Basic Setup here.
             InputManager.Instance.UIDisabled(false);
             
+            //Debug: UIManager Uncoment code bellow
             RegisterAllCallbacks();
         }
     }
     private void RegisterAllCallbacks()
     {
+        _quitBTN.clicked += Application.Quit;
+        _optionsBTN.clicked += AudioEnableDisable;
+        _startBTN.clicked += LoadLevelOne;
         //Delete: Debug Log, testing only
         Debug.Log("Registering all callbacks");
+        _title.RegisterCallback<ClickEvent>(LoadLevelZero);
         _startBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _optionsBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _quitBTN.RegisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
@@ -157,6 +168,9 @@ public class UIManager : DontDestroyHelper<UIManager>
     }
     private void UnregisterAllCallBacks()
     {
+        _quitBTN.clicked -= Application.Quit;
+        _optionsBTN.clicked -= AudioEnableDisable;
+        _startBTN.clicked -= LoadLevelOne;
         //Delete: Debug Log, testing only
         Debug.Log("Unregistering all callbacks");
         _startBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
@@ -180,6 +194,13 @@ public class UIManager : DontDestroyHelper<UIManager>
     {
         ResetGame();
         _gameState = Types.GameState.Level1;
+        Load_Scene?.Invoke(_gameState);
+    }
+    private void LoadLevelZero(ClickEvent evt)
+    {
+        Debug.Log("Loaded Level zero");
+        ResetGame();
+        _gameState = Types.GameState.Level0;
         Load_Scene?.Invoke(_gameState);
     }
     private void ResetGame()
@@ -210,12 +231,37 @@ public class UIManager : DontDestroyHelper<UIManager>
             ResetGame();
             InputManager.Instance.EnableRestart(false);
         }
+        //Delete: These Iff Condition testing bools are true bellow
         if(ResetUIVisualss)
         {
             ResetUIVisualss = false;
-            LoadLevelOne();
+            _gamePlayUI.gameObject.SetActive(true);
         }
-    }
+        if(SubscribeMainMenu)
+        {
+            SubscribeMainMenu = false;
+            _quitBTN.clicked += Application.Quit;
+            _optionsBTN.clicked += AudioEnableDisable;
+            _startBTN.clicked += LoadLevelOne;
+        }
+        if (UnsubcribeMainMenu)
+        {
+            UnsubcribeMainMenu = false;
+            _quitBTN.clicked -= Application.Quit;
+            _optionsBTN.clicked -= AudioEnableDisable;
+            _startBTN.clicked -= LoadLevelOne;
+        }
+        if(RegisterCallbacks)
+        {
+            RegisterCallbacks = false;
+            RegisterAllCallbacks();
+        }
+        if(UnregisterCallbacks)
+        {
+            UnregisterCallbacks = false;
+            UnregisterAllCallBacks();
+        }
+}
     private void FixedUpdate()
     {
         if (_gameOverTime + _gameOverFlashTime < Time.time && _isGameOver && !_isMainMenu)
@@ -315,13 +361,16 @@ public class UIManager : DontDestroyHelper<UIManager>
             //Delete: Debug Log, testing only
             Debug.Log("Updating UI Visuals");
             //Update Visual UI Setup for Main Menu
-            _gamePlayUI.gameObject.SetActive(false);
-            _mainMenuUI.gameObject.SetActive(true);
+            _rootMenu.visible = true;
+            _rootGame.visible = false;
+            //_gamePlayUI.gameObject.SetActive(false);
+            //_mainMenuUI.gameObject.SetActive(true);
+            //RegisterAllCallbacks();
         }
         else if (!_isMainMenu)
         {
-            _gamePlayUI.gameObject.SetActive(true);
-            _mainMenuUI.gameObject.SetActive(false);
+            _rootMenu.visible = false;
+            _rootGame.visible = true;
             //Delete: Debug Log, testing only
             Debug.Log("ResetUIVisuals for GamePlay");
             //Visual UI SetUp Game Play
@@ -329,6 +378,9 @@ public class UIManager : DontDestroyHelper<UIManager>
             _gameOver.visible = false;
             _restartText.visible = false;
             _scoreLabel.visible = false;
+
+            //_gamePlayUI.gameObject.SetActive(true);
+            //_mainMenuUI.gameObject.SetActive(false);
         }
     }
     private void SetUIRef()
@@ -351,7 +403,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             Debug.Log("_rootmenu or _rootGame lost reference or not set", transform);
             return;
         }
-        
+
         // Game Play Reff Setup
         _thrusterColor = _rootGame.Q(className: "unity-progress-bar__progress");
         _thrusterCoolDown = _rootGame.Q<ProgressBar>("ThrusterCoolDown");
@@ -374,6 +426,7 @@ public class UIManager : DontDestroyHelper<UIManager>
         //unity-progress-bar__progress
 
         // Main menu Reff Setup
+        _title = _rootMenu.Q<Label>("GameTitle");
         _startBTN = _rootMenu.Q<Button>("Start");
         _optionsBTN = _rootMenu.Q<Button>("Options");
         _quitBTN = _rootMenu.Q<Button>("Quit");
@@ -383,11 +436,9 @@ public class UIManager : DontDestroyHelper<UIManager>
     private void OnDisable()
     {
         if (Instance != this) return;
-        if (_UIDocGame || _UIDocMenu)
-        {
-            UpdateDisabled();
-            UnregisterAllCallBacks();
-        }
+        //Debug: redundant event un-subscription during gameplay mode
+        UpdateDisabled();
+        UnregisterAllCallBacks();
     }
     private void UpdateDisabled()
     {
@@ -400,9 +451,5 @@ public class UIManager : DontDestroyHelper<UIManager>
         Player.Game_Over -= GameOver;
         Player.UpdateAmmo -= UpdateAmmo;
         StartGameAsteroids.GameStarted -= GameStarted;
-        _optionsBTN.clicked -= AudioEnableDisable;
-        _startBTN.clicked -= LoadLevelOne;
-        _quitBTN.clicked -= Application.Quit;
     }
-    
 }

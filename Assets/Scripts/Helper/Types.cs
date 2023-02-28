@@ -11,7 +11,7 @@ public static class Types
     
     public enum Enemy
     {
-        Default, Enemy, Scifi_Drone_04, Alien_Ship_001, Boss
+        Default, Enemy000, Scifi_Drone_04, Alien_Ship_001, Boss
     }
 
     public enum PowerUps

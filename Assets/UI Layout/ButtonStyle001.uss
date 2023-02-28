@@ -112,3 +112,6 @@
 
 .unity-progress-bar {
 }
+
+.gameTitle:active {
+}
