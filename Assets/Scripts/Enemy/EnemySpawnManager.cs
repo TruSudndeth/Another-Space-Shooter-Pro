@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -14,16 +15,15 @@ public class EnemySpawnManager : MonoBehaviour
     private int _enemyCount = 0;
     [Space]
     private float _boundsOffset = 0;
-    [Space]
-    private Camera _camera; //DeleteLine: Not used ???
     private readonly float _cameraAspecRatio = 1.7777778f;
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private int _maxPool = 10;
     private int _maxPoolTemp = 0;
-    [SerializeField] private float _spawnRate = 0.5f; //Temp: Timmer might delete variable timmer
+    //Delete: Timmer might delete variable timmer && _iterateEnemy
+    //[SerializeField] private float _spawnRate = 0.5f; 
+    //private int _iterateEnemy = 0;
     private bool _isPoolMaxed = false;
-    private int _iterateEnemy = 0;
     private bool _gameOver = false;
     private bool _gameStarted = false;
     [Space]
@@ -40,6 +40,8 @@ public class EnemySpawnManager : MonoBehaviour
     private int _enemyDroneKilled = 0;
     private int _enemyMiniBossCount = 0;
     private int _enemyMiniBossKilled = 0;
+    private int _proEnemyCount = 0;
+    private int _proEnemyKilled = 0;
 
     private void Awake()
     {
@@ -117,8 +119,10 @@ public class EnemySpawnManager : MonoBehaviour
         _enemiesKilled++;
         if (enemyName == Types.Enemy.Scifi_Drone_04.ToString()) _enemyDroneKilled++;
         if (enemyName == Types.Enemy.Alien_Ship_001.ToString()) _enemyMiniBossKilled++;
+        if (enemyName == Types.Enemy.Enemy000.ToString()) _proEnemyKilled++;
         if (_enemiesKilled >= _waveSize)
         {
+            if (_waveSize > int.MaxValue) _waveSize = int.MaxValue;
             _enemiesKilled = 0;
             _waveSize += Random.Range(1,3);
             _canSpawnTime = Time.time;
@@ -127,39 +131,60 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void SpawnRandomEnemiesWave()
     {
+        
         NewWaveEvent?.Invoke();
         _enemyDroneCount = 0;
         _enemyMiniBossCount = 0;
         _enemyDroneKilled = 0;
         _enemyMiniBossKilled = 0;
+        _proEnemyCount = 0;
+        _proEnemyKilled = 0;
         for (int i = 0; i < _waveSize; i++)
         {
             if (Random.Range(0, 101) <= 25) _enemyMiniBossCount++;
             else _enemyDroneCount++;
+            _proEnemyCount++;
         }
     }
     private void SpawnSystem()
     {
         if (_isPoolMaxed)
-        {            
-            if (_enemies.FindAll(x => x.name == Types.Enemy.Scifi_Drone_04.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyDroneCount - _enemyDroneKilled)
+        {
+            Debug.Log("BPM " + _enemies[0].name + " CheckLoop");
+            int sifiDroneCount = _enemies.FindAll(x => x.name == Types.Enemy.Scifi_Drone_04.ToString() + "(Clone)" && x.gameObject.activeSelf).Count;
+            bool hasSifiDrons = _enemies.FindIndex(x => x.name == Types.Enemy.Scifi_Drone_04.ToString() + "(Clone)" && !x.gameObject.activeSelf) != -1;
+            int alienShipCount = _enemies.FindAll(x => x.name == Types.Enemy.Alien_Ship_001.ToString() + "(Clone)" && x.gameObject.activeSelf).Count;
+            bool hasAlienShip = _enemies.FindIndex(x => x.name == Types.Enemy.Alien_Ship_001.ToString() + "(Clone)" && !x.gameObject.activeSelf) != -1;
+            int defaultESCount = _enemies.FindAll(x => x.name == Types.Enemy.Enemy000.ToString() + "(Clone)" && x.gameObject.activeSelf).Count;
+            bool HasdefaultES = _enemies.FindIndex(x => x.name == Types.Enemy.Enemy000.ToString() + "(Clone)" && !x.gameObject.activeSelf) != -1;
+            
+            if (sifiDroneCount < _enemyDroneCount - _enemyDroneKilled && hasSifiDrons)
                 SpawnEnemyType(Types.Enemy.Scifi_Drone_04);
-            else if (_enemies.FindAll(x => x.name == Types.Enemy.Alien_Ship_001.ToString()+"(Clone)" && x.gameObject.activeSelf).Count < _enemyMiniBossCount - _enemyMiniBossKilled)
+            else if (alienShipCount < _enemyMiniBossCount - _enemyMiniBossKilled && hasAlienShip)
                 SpawnEnemyType(Types.Enemy.Alien_Ship_001);
+            else if (defaultESCount < _proEnemyCount - _proEnemyKilled && HasdefaultES)
+            {
+                Debug.Log("BPM " + _enemies[0].name);
+                SpawnEnemyType(Types.Enemy.Enemy000);
+            }
+            else
+                Debug.Log("Could not find Enemy of type XXX", transform);
         }
     }
     
     private void SpawnEnemyType(Types.Enemy enemyType)
     {
-        if (_enemies.FindAll(x => x.name == enemyType.ToString()+"(Clone)").Count <= _enemies.Count / _enemyAsset.Count)
+        if (_enemies.FindAll(x => x.name == enemyType.ToString() + "(Clone)").Count <= _enemies.Count / _enemyAsset.Count)
         {
-            int tempEnemy = _enemies.FindIndex(x => !x.gameObject.activeSelf && x.name == enemyType.ToString()+"(Clone)");
-            if(tempEnemy != -1)
+            int tempEnemy = _enemies.FindIndex(x => !x.gameObject.activeSelf && x.name == enemyType.ToString() + "(Clone)");
+            if (tempEnemy != -1)
             {
                 _enemies[tempEnemy].gameObject.SetActive(true);
                 _enemies[tempEnemy].position = RandomEnemySpawn() + CalcOffset(_enemies[tempEnemy]);
             }
         }
+        else
+            Debug.Log("Could not find Enemy of type XXX", transform);
     }
 
     private Vector3 CalcOffset(Transform enemyAsset)
@@ -186,6 +211,7 @@ public class EnemySpawnManager : MonoBehaviour
         BombEplode.BombExplosionEvent -= () => PauseSpawning();
         Player.Game_Over -= PlayerIsDead;
         StartGameAsteroids.GameStarted -= GameStarted;
+        StartGameAsteroids.SetDifficulty -= () => GameDificulty();
         BackGroundMusic_Events.BGM_Events -= () => { _beatEnemySpawner = true; };
     }
 }

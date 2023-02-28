@@ -14,13 +14,14 @@ public class EnemyShoots : MonoBehaviour
     public bool Fired { get => _fired; }
 
     private Transform _player;
-    private bool _reverseFire = false;
+    //Delete: _reverseFire is never used ??
+    //private bool _reverseFire = false;
     private Vector3 _fireRotation = new(90, 0 , 0);
     private Vector3 _reverseFireRotation = new(-90, 0, 0);
     private float _inFront = 0;
-    private float _powerupInfront = 0;
     [SerializeField][Range(0.0f, 1.0f)] float _inFrontRange = 0.1f;
-    private Transform _powerupTransfrom;
+    //Delete: _powerupTransform is never used ??
+    //private Transform _powerupTransfrom;
 
     private void Start()
     {

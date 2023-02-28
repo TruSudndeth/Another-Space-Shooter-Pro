@@ -13,6 +13,7 @@ public class ParticlesVFXManager : MonoBehaviour
     {
         _particleExplode = new();
         ParticlesVFX.OneShotExplosion += PlayOneShotExplosion;
+        BossExplosions.OneShotExplosion += PlayOneShotExplosion;
     }
 
     private void PlayOneShotExplosion(Transform unitsTransform, Types.VFX unitVFXType)
@@ -71,5 +72,6 @@ public class ParticlesVFXManager : MonoBehaviour
     private void OnDisable()
     {
         ParticlesVFX.OneShotExplosion -= PlayOneShotExplosion;
+        BossExplosions.OneShotExplosion -= PlayOneShotExplosion;
     }
 }

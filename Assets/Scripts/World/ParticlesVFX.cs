@@ -12,4 +12,8 @@ public class ParticlesVFX : MonoBehaviour
     {
         OneShotExplosion?.Invoke(transform, vfxType);
     }
+    public void PlayAllVFX(Transform location, Types.VFX explosionType)
+    {
+        OneShotExplosion?.Invoke(location, explosionType);
+    }
 }

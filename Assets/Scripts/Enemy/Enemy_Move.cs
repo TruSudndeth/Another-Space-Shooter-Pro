@@ -119,6 +119,7 @@ public class Enemy_Move : MonoBehaviour
         } else
             return false;
     }
+    //Todo: Combine AvoidShots with AvoidShots2 Logic
     private Vector2 AvoidShots(Vector2 movement)
     {
         Transform[] activelasers = _laserManager.GetComponentsInChildren<Transform>().Where(x => x.CompareTag(Types.LaserTag.PlayerLaser.ToString())).Where(x => x.gameObject.activeSelf).ToArray();
@@ -134,6 +135,30 @@ public class Enemy_Move : MonoBehaviour
         }
         else
             return movement;
+    }
+    private Vector2 AvoidShots2(Vector2 movement)
+    {
+        var activelasers = new List<Transform>();
+        var laserTag = Types.LaserTag.PlayerLaser.ToString();
+        var playerPosition = transform.position;
+
+        for (int i = 0; i < _laserManager.transform.childCount; i++)
+        {
+            var laser = _laserManager.transform.GetChild(i);
+            if (laser.gameObject.activeSelf && laser.CompareTag(laserTag))
+            {
+                activelasers.Add(laser);
+
+                var distance = Mathf.Abs(laser.position.y - playerPosition.y);
+                if (distance < 1)
+                {
+                    movement.x = Mathf.Sign(laser.position.x - playerPosition.x) * -_avoidSpeed * Time.fixedDeltaTime;
+                    break;
+                }
+            }
+        }
+
+        return movement;
     }
 
     private Transform GetClosestLaser()

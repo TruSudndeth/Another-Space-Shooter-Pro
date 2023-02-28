@@ -1,11 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class BackGroundMusic_Events : RhythmListener
 {
     public delegate void BGMEvents();
-    public static BGMEvents BGM_Events;
+    public static event BGMEvents BGM_Events;
+
+    private AudioSource _audioSource;
+
+    private void Awake()
+    {
+        if (TryGetComponent(out AudioSource audioSource))
+        {
+            _audioSource = audioSource;
+        }
+        else
+            Debug.LogError("No AudioSource found on " + gameObject.name + transform);
+    }
+    private void Start()
+    {
+        //listen for Audio Update.
+        AudioManager.UpdateMusicVolumeEvent += UpdateMusicVolume;
+    }
+    private void UpdateMusicVolume(float musicVolume)
+    {
+        _audioSource.volume = musicVolume;
+    }
     public override void BPMEvent(RhythmEventData data)
     {
         throw new System.NotImplementedException();
@@ -22,5 +44,9 @@ public class BackGroundMusic_Events : RhythmListener
         {
             BGM_Events?.Invoke();
         }
+    }
+    private void OnDisable()
+    {
+        AudioManager.UpdateMusicVolumeEvent -= UpdateMusicVolume;
     }
 }

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
+public class InputManager : DontDestroyHelper<InputManager>
 { //Debug: Fix Access to this script to be more secure
-    public static InputManager Instance;
     private MyBaseInputs _playerInputs;
     
     [HideInInspector] public InputAction WSAD { get; private set; }
@@ -14,8 +13,11 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public InputAction Exit { get; private set; }
     [HideInInspector] public InputAction Thrust { get; private set; }
 
-    private void Awake()
+    protected override void Awake()
     {
+        //Base inharetance has an instance This class
+        base.Awake();
+        
         _playerInputs = new();
 
         Thrust = _playerInputs.Player.Thrust;
@@ -25,14 +27,6 @@ public class InputManager : MonoBehaviour
         Restart = _playerInputs.UI.Restart;
 
         Exit.Enable();
-        
-        if (Instance)
-            Destroy(gameObject);
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
     }
     public void EnableExit(bool enable)
     {
@@ -50,6 +44,17 @@ public class InputManager : MonoBehaviour
         }
         else
             Restart.Disable();
+    }
+    public void UIDisabled(bool enabled = false)
+    {
+        if (enabled)
+        {
+            EnablePlayerIO(true);
+        }
+        else
+        {
+            DisableAllPlayerInputs();
+        }
     }
     public void EnablePlayerIO(bool enable)
     {
@@ -69,8 +74,12 @@ public class InputManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Thrust.Disable();
+        DisableAllPlayerInputs();
         Exit.Disable();
+    }
+    private void DisableAllPlayerInputs()
+    {
+        Thrust.Disable();
         Restart.Disable();
         WSAD.Disable();
         Fire.Disable();

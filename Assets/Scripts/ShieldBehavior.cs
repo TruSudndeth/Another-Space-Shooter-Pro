@@ -38,7 +38,6 @@ public class ShieldBehavior : MonoBehaviour
 
     public void ResetShield()
     {
-        Debug.Log("ResetShield"); //DeleteLine: Debug.Log
         _renderer.material.color = _defaultColor;
         _health = _shieldHealth;
         _currentDamage = 0;

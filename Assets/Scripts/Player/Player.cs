@@ -3,17 +3,17 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public delegate void GameOver();
-    public static GameOver Game_Over;
+    public static event GameOver Game_Over;
     public delegate void Points(int points);
-    public static Points Score;
+    public static event Points Score;
     public delegate void PlayerHealth(int health);
-    public static PlayerHealth UpdateHealth;
+    public static event PlayerHealth UpdateHealth;
     public delegate void PlayerAmmo(int ammo, int maxAmmo);
-    public static PlayerAmmo UpdateAmmo;
+    public static event PlayerAmmo UpdateAmmo;
     public delegate void PlayerThruster(float Duration);
-    public static PlayerThruster Thruster;
+    public static event PlayerThruster Thruster;
     public delegate void PlayerDamage(float Duration);
-    public static PlayerDamage OnPlayerDamage;
+    public static event PlayerDamage OnPlayerDamage;
     public int Health { get { return _health; } set { Damage(value); } }
 
     [Space]
@@ -39,9 +39,9 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _fired = false;
     [Space]
     private Transform _myCamera;
-    [SerializeField] private Vector3 _offset = new Vector3(0, 0.8f, 0); //DeleteLine: Not used
     [SerializeField] private float _singeFireRate = 0.25f;
-    [SerializeField] private float _trippleFireRate = 0.5f;
+    //Delete: _trippleFireRate is never used
+    //[SerializeField] private float _trippleFireRate = 0.5f;
     [SerializeField] private bool _isTrippleShot = false;
     [SerializeField] private float _powerUpTimeout = 5.0f;
     [SerializeField] private int _ammoBank = 15;
@@ -289,6 +289,8 @@ public class Player : MonoBehaviour
                 AudioManager.Instance.PlayAudioOneShot(Types.SFX.PlayerDeath);
                 _explode.PlayVFX();
             }
+            Game_Over?.Invoke();
+            InputManager.Instance.EnablePlayerIO(false);
             gameObject.SetActive(false);
         }
         
@@ -371,8 +373,6 @@ public class Player : MonoBehaviour
         InputManager.Instance.Thrust.started -= _ => _actuateThrust = true;
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;
         InputManager.Instance.Fire.performed -= _ => _fired = true; //??? Look into this unsubscribe
-        Game_Over?.Invoke();
-        InputManager.Instance.EnablePlayerIO(false);
     }
     
 }

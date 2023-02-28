@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DisableOnComplete : MonoBehaviour
@@ -14,7 +13,6 @@ public class DisableOnComplete : MonoBehaviour
         else
             Debug.LogError("No AudioSource found on " + gameObject.name + transform);
     }
-
     public void PlayAudioOneShot(AudioClip clip)
     {
         if (AudioSource != null)
