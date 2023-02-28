@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+
 using UnityEngine.EventSystems;
 using NUnit.Framework.Internal.Filters;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +25,8 @@ public class UIManager : DontDestroyHelper<UIManager>
     public static event Reset ResetLevel;
     public delegate void LoadScene(Types.GameState index);
     public static event LoadScene Load_Scene;
+    public delegate void ExitApp();
+    public static event ExitApp ExitApplication;
 
     [Space]
     private UIDocument _UIDocGame;
@@ -81,12 +83,7 @@ public class UIManager : DontDestroyHelper<UIManager>
     private bool _thrustBPM = false;
 
     //Delete: ResetUIVisualss public bools, test code
-    public bool ResetUIVisualss = false;
-    [Space(15)]
-    public bool RegisterCallbacks = false;
-    public bool UnregisterCallbacks = false;
-    public bool SubscribeMainMenu = false;
-    public bool UnsubcribeMainMenu = false;
+    public bool LoadMainMenu = false;
     //Todo: Listen for player thruster event
     protected override void Awake()
     {
@@ -111,7 +108,7 @@ public class UIManager : DontDestroyHelper<UIManager>
     private void SubscribeToEvents()
     {
         // Main Menu events
-
+        InputManager.Instance.Exit.performed += _ => ExitGame();
         // Game Play Events
         InputManager.Instance.Restart.performed += _ => _hasRestarted = true;
         BackGroundMusic_Events.BGM_Events += () => _thrustBPM = true; 
@@ -121,6 +118,21 @@ public class UIManager : DontDestroyHelper<UIManager>
         Player.UpdateHealth += UpdateHealth;
         Player.Game_Over += GameOver;
         StartGameAsteroids.GameStarted += GameStarted;
+    }
+    private void ExitGame()
+    {
+        if (_isMainMenu)
+        {
+            Debug.Log("Application closed in Main Menu");
+            ExitApplication?.Invoke();
+        }
+        if(!_isMainMenu)
+        {
+            _isMainMenu = true;
+            ResetGame();
+            _gameState = Types.GameState.MainNenu;
+            Load_Scene?.Invoke(_gameState);
+        }
     }
     private void SetSceneInputs()
     {
@@ -192,12 +204,14 @@ public class UIManager : DontDestroyHelper<UIManager>
     //when LoadLevelOne ran for some reason the level properly
     private void LoadLevelOne()
     {
+        _isMainMenu = false;
         ResetGame();
         _gameState = Types.GameState.Level1;
         Load_Scene?.Invoke(_gameState);
     }
     private void LoadLevelZero(ClickEvent evt)
     {
+        _isMainMenu = false;
         Debug.Log("Loaded Level zero");
         ResetGame();
         _gameState = Types.GameState.Level0;
@@ -208,7 +222,6 @@ public class UIManager : DontDestroyHelper<UIManager>
         _isGameOver = false;
         _score = 0;
         //Debug: ResetLevel should only be called when already in game
-        _isMainMenu = false;
         InputManager.Instance.EnablePlayerIO(true);
         InputManager.Instance.EnableRestart(false);
         UpdateUIVisuals();
@@ -232,34 +245,10 @@ public class UIManager : DontDestroyHelper<UIManager>
             InputManager.Instance.EnableRestart(false);
         }
         //Delete: These Iff Condition testing bools are true bellow
-        if(ResetUIVisualss)
+        if(LoadMainMenu)
         {
-            ResetUIVisualss = false;
-            _gamePlayUI.gameObject.SetActive(true);
-        }
-        if(SubscribeMainMenu)
-        {
-            SubscribeMainMenu = false;
-            _quitBTN.clicked += Application.Quit;
-            _optionsBTN.clicked += AudioEnableDisable;
-            _startBTN.clicked += LoadLevelOne;
-        }
-        if (UnsubcribeMainMenu)
-        {
-            UnsubcribeMainMenu = false;
-            _quitBTN.clicked -= Application.Quit;
-            _optionsBTN.clicked -= AudioEnableDisable;
-            _startBTN.clicked -= LoadLevelOne;
-        }
-        if(RegisterCallbacks)
-        {
-            RegisterCallbacks = false;
-            RegisterAllCallbacks();
-        }
-        if(UnregisterCallbacks)
-        {
-            UnregisterCallbacks = false;
-            UnregisterAllCallBacks();
+            LoadMainMenu = false;
+            ExitGame();
         }
 }
     private void FixedUpdate()

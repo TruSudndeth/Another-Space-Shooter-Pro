@@ -7,7 +7,7 @@ public class GameManager : DontDestroyHelper<GameManager>
 {
     private void Start()
     {
-        InputManager.Instance.Exit.performed += _ => ExitGame();
+        UIManager.ExitApplication += ExitGame;
         UIManager.Load_Scene += LoadScene;
         UIManager.ResetLevel += RestartCurrentLevel;
     }
@@ -15,9 +15,9 @@ public class GameManager : DontDestroyHelper<GameManager>
     {
         if(Instance == this)
         {
-            InputManager.Instance.Exit.started -= _ => ExitGame();
             UIManager.Load_Scene -= LoadScene;
             UIManager.ResetLevel -= RestartCurrentLevel;
+            UIManager.ExitApplication -= ExitGame;
         }
     }
     void LoadScene(Types.GameState gameState)
