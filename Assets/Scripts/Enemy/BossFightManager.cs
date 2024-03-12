@@ -10,6 +10,9 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     //Delete: event this is not used ????
     //public delegate void BossFightStage();
     //public static event BossFightStage OnBossFightStage;
+    public delegate void SpawnWaves();
+    public static event SpawnWaves PauseWaves;
+    public static event SpawnWaves ContinueWaves;
 
     public delegate void EnableStageCollider(BossParts part);
     public static event EnableStageCollider EnableStageColliderPart;
@@ -59,7 +62,7 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     [Space (20)]
     [SerializeField]
     private int _bossFightInterval = 5;
-    private int _waveCount = 0;
+    private int _waveCount = 1;
     private int _maxIntValue;
 
     protected override void Awake()
@@ -82,6 +85,9 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     {
         if(!_hasStarted)
         {
+            //Pause Waves when ship rolls in
+            PauseWaves?.Invoke();
+            //Other stuff
             EnableStageColliders(_stage1Parts);
             _hasStarted = true;
             _positionIndex = 0;
@@ -101,15 +107,18 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     }
     private void BossFightIntervals()
     {
-        _waveCount++;
+        _bossFightInterval = _bossFightInterval == 0 ? 1 : _bossFightInterval;
+        Debug.Log("Somehow entered here at reset " + _waveCount + " INTERVAL " + _bossFightInterval + " " + _waveCount % _bossFightInterval);
         if (_waveCount % _bossFightInterval == 0)
         {
+            Debug.Log("inside remainder " + _waveCount + " INTERVAL " + _bossFightInterval + " " + _waveCount % _bossFightInterval);
             if (_waveCount >= _maxIntValue)
             {
-                _waveCount = 0;
+                _waveCount = 1;
             }
             StartBossFight();
         }
+        _waveCount++;
     }
     private void EnableStageColliders(List<BossParts> parts)
     {
@@ -120,7 +129,7 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     }
     private void ResetGame()
     {
-        _waveCount = 0;
+        _waveCount = 1;
         ResetBossFight();
     }
     private void ResetBossFight()
@@ -185,6 +194,7 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
         {
             //do something
             _nextPosition = _positionSequence[_positionIndex].position;
+            if (_positionIndex > 1) ContinueWaves?.Invoke();
         }
     }
     void FixedUpdate()

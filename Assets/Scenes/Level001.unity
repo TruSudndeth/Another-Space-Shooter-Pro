@@ -186,7 +186,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 18.72, y: 17.8}
+  m_Size: {x: 20.2, y: 22.7}
   m_AdaptiveModeThreshold: 0.533
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -527,7 +527,7 @@ MonoBehaviour:
   _MotherShip: {fileID: 976928033}
   _positions: {fileID: 1602884551}
   _bossSpeed: 1
-  _bossFightInterval: 5
+  _bossFightInterval: 3
 --- !u!1001 &779279318
 PrefabInstance:
   m_ObjectHideFlags: 0

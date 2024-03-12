@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PowerUpBehavior : MonoBehaviour
 {
+    //Todo: Add Quantity amount when a numeric collectable is picked up. Ammo, health.
     //Todo: PowerUp Shield energy depleating Timmer warning. Sound (OutOfTimeShield)
     [SerializeField] private Types.PowerUps _powerUpType;
     public Types.PowerUps PowerUpType { get { return _powerUpType; } private set { } }

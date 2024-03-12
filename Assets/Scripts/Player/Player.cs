@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     //[SerializeField] private float _trippleFireRate = 0.5f;
     [SerializeField] private bool _isTrippleShot = false;
     [SerializeField] private float _powerUpTimeout = 5.0f;
-    [SerializeField] private int _ammoBank = 15;
+    [SerializeField] private int _ammoBank = 50;
     private int _ammoBankMax;
     private float _powerUpTime = 0.0f;
     private List<Transform> _tripleShot;
@@ -198,9 +198,9 @@ public class Player : MonoBehaviour
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
         if (_ammoBank == _ammoBankMax && antiProbablility) return;
         if(Anti_Powerup)
-        _ammoBank = antiProbablility ? _ammoBankMax : Mathf.Clamp(_ammoBank + 3, 0, _ammoBankMax);
+        _ammoBank = antiProbablility ? _ammoBankMax : Mathf.Clamp(_ammoBank + Mathf.RoundToInt(_ammoBankMax / 4), 0, _ammoBankMax);
         else
-            _ammoBank = Mathf.Clamp(_ammoBank + 15, 0, _ammoBankMax);
+            _ammoBank = _ammoBankMax;
         UpdateAmmo(_ammoBank, _ammoBankMax);
     }
     public void SpeedBoost(bool Anti_Powerup)

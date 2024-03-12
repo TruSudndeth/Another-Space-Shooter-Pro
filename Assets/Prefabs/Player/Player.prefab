@@ -241,12 +241,10 @@ MonoBehaviour:
   _thrustDistance: 3
   _thrustCoolDown: 10
   _fired: 0
-  _offset: {x: 0, y: 0.8, z: 0}
   _singeFireRate: 0.25
-  _trippleFireRate: 0.5
   _isTrippleShot: 0
   _powerUpTimeout: 5
-  _ammoBank: 15
+  _ammoBank: 50
   _primaryLaserSpawn: {fileID: 8536037456945010754}
   _dualLaser_LSpawn: {fileID: 8536037456945010756}
   _dualLaser_RSpawn: {fileID: 8536037456945010764}
