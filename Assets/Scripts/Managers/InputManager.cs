@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class InputManager : DontDestroyHelper<InputManager>
-{ //Debug: Fix Access to this script to be more secure
+{   //Debug: Fix Access to this script to be more secure
+    //Found a bug that doesn't let me shoot when i move diagnal (-1, 1) (-1, -1) (1, -1)
     private MyBaseInputs _playerInputs;
     
     [HideInInspector] public InputAction WSAD { get; private set; }
@@ -21,9 +22,10 @@ public class InputManager : DontDestroyHelper<InputManager>
         _playerInputs = new();
 
         Thrust = _playerInputs.Player.Thrust;
-        Exit = _playerInputs.UI.Exit;
         WSAD = _playerInputs.Player.Move;
-        Fire = _playerInputs.Player.Fire;
+        Fire = _playerInputs.Player.Fire; 
+
+        Exit = _playerInputs.UI.Exit;
         Restart = _playerInputs.UI.Restart;
 
         Exit.Enable();
@@ -79,9 +81,9 @@ public class InputManager : DontDestroyHelper<InputManager>
     }
     private void DisableAllPlayerInputs()
     {
-        Thrust.Disable();
-        Restart.Disable();
-        WSAD.Disable();
-        Fire.Disable();
+        if(Thrust != null) Thrust.Disable();
+        if(Restart != null) Restart.Disable();
+        if(WSAD != null) WSAD.Disable();
+        if(Fire != null) Fire.Disable();
     }
 }
