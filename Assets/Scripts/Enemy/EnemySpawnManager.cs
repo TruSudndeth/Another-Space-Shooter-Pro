@@ -44,6 +44,8 @@ public class EnemySpawnManager : MonoBehaviour
     private int _proEnemyKilled = 0;
     [SerializeField]
     private bool _isWaveComplete = false;
+    [SerializeField]
+    private bool _isMotherShipActive = false;
 
     private void Awake()
     {
@@ -70,8 +72,9 @@ public class EnemySpawnManager : MonoBehaviour
 
     void Start()
     {
-        BossFightManager.ContinueWaves += () => SpawnWaveState(false);
-        BossFightManager.PauseWaves += () => SpawnWaveState(true);
+        BossFightManager.ActiveMother += (x) => { _isMotherShipActive = x; };
+        BossFightManager.ContinueWaves += (x) => SpawnWaveState(false);
+        BossFightManager.PauseWaves += (x) => SpawnWaveState(true);
 
         EnemyCollisons.EnemyPointsEvent += EnemiesKilled;
         BombEplode.BombExplosionEvent += () => BPMPauseSpawn();
@@ -87,10 +90,6 @@ public class EnemySpawnManager : MonoBehaviour
     private void SpawnWaveState(bool isWavesPaused = false)
     {
         _gameStarted = !isWavesPaused;
-        _isWaveComplete = isWavesPaused;
-    }
-    public void ContinueWaves(bool isWavesPaused)
-    {
         _isWaveComplete = isWavesPaused;
     }
     private void BPMPauseSpawn()
@@ -109,7 +108,7 @@ public class EnemySpawnManager : MonoBehaviour
         _maxPool = _maxPoolTemp;
         _gameStarted = true;
     }
-
+    private bool _canSpawn = false;
     void FixedUpdate()
     {
         if (_gameOver || !_gameStarted) return;
@@ -117,8 +116,9 @@ public class EnemySpawnManager : MonoBehaviour
         //Temp: Timmer might not have to spawn enemies with time 
         //Temp: Timmer if (_canSpawn + _spawnRate > Time.time) return;
         //Note: Spawn manager was stopped during game play for a brif moment
-        if (_beatEnemySpawner && _spawnDelay + _canSpawnTime < Time.time && !_isWaveComplete)
-        {
+
+        if (!_isWaveComplete && _beatEnemySpawner && _spawnDelay + _canSpawnTime < Time.time)
+        { 
             //return all active enemies int the list in hierarchy
             int activeEnemies = _enemies.FindAll(x => x.gameObject.activeSelf).Count;
             if (activeEnemies >= _waveSize - _enemiesKilled) return;
@@ -142,6 +142,7 @@ public class EnemySpawnManager : MonoBehaviour
             _waveSize += Random.Range(1,3);
             _canSpawnTime = Time.time;
             SpawnRandomEnemiesWave();
+            if(_isMotherShipActive)
             _isWaveComplete = true;
         }
     }
@@ -223,8 +224,9 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        BossFightManager.ContinueWaves += () => SpawnWaveState(false);
-        BossFightManager.PauseWaves += () => SpawnWaveState(true);
+        BossFightManager.ActiveMother += (x) => { _isMotherShipActive = x; };
+        BossFightManager.ContinueWaves += (x) => SpawnWaveState(false);
+        BossFightManager.PauseWaves += (x) => SpawnWaveState(true);
 
         EnemyCollisons.EnemyPointsEvent -= EnemiesKilled;
         BombEplode.BombExplosionEvent -= () => BPMPauseSpawn();

@@ -41,7 +41,11 @@ public class AudioManager : DontDestroyHelper<AudioManager>
 
     public void PlayAudioOneShot(Types.SFX sfx)
     { //Todo: Volume Controll when instance is called
-        if (_clipPool.Any(x => x.gameObject.activeSelf && x.AudioSource.clip == _clipAssets[(int)sfx] && x.AudioSource.time <= _clipDuplicates)) return;
+        // if (_clipPool.Any(x => x.gameObject.activeSelf && x.AudioSource.clip == _clipAssets[(int)sfx] && x.AudioSource.time <= _clipDuplicates)) return;
+        if (_clipAssets.Count > (int)sfx && _clipPool.Any(x => x.gameObject.activeSelf && x.AudioSource.clip == _clipAssets[(int)sfx] && x.AudioSource.time <= _clipDuplicates))
+        {
+            return;
+        }
         _sfx = sfx;
         if (_clipAssets.Count > 0)
         {

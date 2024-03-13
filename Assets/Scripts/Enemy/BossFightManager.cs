@@ -5,21 +5,23 @@ using UnityEngine;
 
 public class BossFightManager : DontDestroyHelper<BossFightManager>
 {
+    //Bug: Boss moves to next wave before the wave is even complete. move boss when wave is complete only. 
     //public static BossFightManager Instance;
 
     //Delete: event this is not used ????
     //public delegate void BossFightStage();
     //public static event BossFightStage OnBossFightStage;
-    public delegate void SpawnWaves();
+    public delegate void SpawnWaves(bool states);
     public static event SpawnWaves PauseWaves;
     public static event SpawnWaves ContinueWaves;
+    public static event SpawnWaves ActiveMother;
 
     public delegate void EnableStageCollider(BossParts part);
     public static event EnableStageCollider EnableStageColliderPart;
 
     public delegate void ResetBoss();
     public static event ResetBoss ResetBossEvent;
-    
+
     [Space(20)]
     [Header("Boss Stage Collider Setup")]
     [SerializeField]
@@ -59,17 +61,19 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     private bool _stage03 = false;
 
     [Header("Boss Fight Intervals")]
-    [Space (20)]
+    [Space(20)]
     [SerializeField]
     private int _bossFightInterval = 5;
     private int _waveCount = 1;
     private int _maxIntValue;
+    private bool _moveComplete = false;
+    private bool _BossDestroyed = false;
 
     protected override void Awake()
     {
         base.Awake();
         if (Instance != this) return;
-        
+
         _maxIntValue = int.MaxValue;
         _stages = new List<List<BossParts>> { _stage1Parts, _stage2Parts, _stage3Parts };
         _positionSequence = _positions.GetComponentsInChildren<Transform>(false).Skip(1).ToArray();
@@ -83,15 +87,16 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     }
     public void StartBossFight()
     {
-        if(!_hasStarted)
+        if (!_hasStarted)
         {
             //Pause Waves when ship rolls in
-            PauseWaves?.Invoke();
+            PauseWaves?.Invoke(true);
             //Other stuff
             EnableStageColliders(_stage1Parts);
             _hasStarted = true;
+            ActiveMother?.Invoke(true);
             _positionIndex = 0;
-            if(!_MotherShip.gameObject.activeSelf)
+            if (!_MotherShip.gameObject.activeSelf)
             {
                 _MotherShip.gameObject.SetActive(true);
             }
@@ -135,7 +140,9 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     private void ResetBossFight()
     {
         _positionIndex = 0;
+        _BossDestroyed = false;
         _hasStarted = false;
+        ActiveMother?.Invoke(false);
         _beacon = false;
         _body = false;
         _leftEngine = false;
@@ -148,6 +155,7 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
         //StartBossFight();
         ResetBossEvent?.Invoke();
         BossSetup();
+        Debug.Log("Boss was reset and invoked");
     }
     private void RegisterPartDestroid(BossParts parts)
     {
@@ -167,22 +175,25 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     }
     private void DeterminStage()
     {
+        //Note: Any missed ID will glitch this out and skip stages
         if (_sM_Thrust_01 && _sM_Thrust_02 && _leftEngine && !_stage01)
         {
             _stage01 = true;
             EnableStageColliders(_stage2Parts);
             MoveBossToNextPosition();
         }
-        if(_body && _leftWing && !_stage02)
+        if (_body && _leftWing && !_stage02)
         {
             _stage02 = true;
             EnableStageColliders(_stage3Parts);
             MoveBossToNextPosition();
         }
-        if(_beacon && !_stage03)
+        if (_beacon && !_stage03)
         {
+            ActiveMother?.Invoke(false);
             _hasStarted = false;
             _stage03 = true;
+            _BossDestroyed = true;
             MoveBossToNextPosition();
         }
     }
@@ -194,15 +205,26 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
         {
             //do something
             _nextPosition = _positionSequence[_positionIndex].position;
-            if (_positionIndex > 1) ContinueWaves?.Invoke();
+            if (_positionIndex > 1) ContinueWaves?.Invoke(false);
         }
     }
+    private float _sqrDistanceThreshold = 0.01f;
+    private float _squareDistanceToNextPosition = 0;
     void FixedUpdate()
     {
+        _squareDistanceToNextPosition = (_MotherShip.position - _nextPosition).sqrMagnitude;
         //move the boss to the next position smoothly
-        if (_MotherShip.position != _nextPosition)
+        if (_MotherShip.position != _nextPosition || _squareDistanceToNextPosition > _sqrDistanceThreshold)
         {
             _MotherShip.position = Vector3.MoveTowards(_MotherShip.position, _nextPosition, _bossSpeed * Time.fixedDeltaTime);
+        }
+        else
+        {
+            
+            if(_BossDestroyed && _squareDistanceToNextPosition < _sqrDistanceThreshold)
+            {
+                ResetBossFight();
+            }
         }
     }
     private void OnDisable()
