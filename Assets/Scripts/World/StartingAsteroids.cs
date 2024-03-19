@@ -5,6 +5,7 @@ using UnityEngine;
 public class StartingAsteroids : MonoBehaviour
 {    
     [SerializeField] private Types.SFX _sfxType;
+    [SerializeField] private Types.Tag _tag = Types.Tag.Astroids;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(Types.Tag.Player.ToString()))
@@ -15,7 +16,9 @@ public class StartingAsteroids : MonoBehaviour
                 {
                     startingGameAsteroids.SetDificulty();
                 }
-                playerInput.Health = 1;
+                //playerInput.DamagedByType = _tag;
+                //playerInput.Health = 1;
+                playerInput.Damage(_tag, 1);
             }
             Destroy(gameObject);
         }

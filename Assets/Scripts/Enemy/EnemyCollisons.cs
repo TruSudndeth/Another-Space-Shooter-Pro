@@ -7,7 +7,8 @@ public class EnemyCollisons : MonoBehaviour
     //create a delegate for the event of enemyPoints
     public delegate void EnemyPoints(int points, string enemyName);
     public static event EnemyPoints EnemyPointsEvent;
-    
+
+    [SerializeField] private Types.Tag _enemyType = Types.Tag.Enemies;
     [SerializeField] private Types.SFX _sfxType;
     [SerializeField] private Types.Points _enemyPointValue;
     [SerializeField] private Transform _shield;
@@ -40,7 +41,9 @@ public class EnemyCollisons : MonoBehaviour
         {
             if(other.TryGetComponent(out Player _input))
             {
-                _input.Health = 1;
+                //_input.DamagedByType = _enemyType;
+                //_input.Health = 1;
+                _input.Damage(_enemyType, 1);
                 if (_life > 1)
                 {
                     DisableShield();

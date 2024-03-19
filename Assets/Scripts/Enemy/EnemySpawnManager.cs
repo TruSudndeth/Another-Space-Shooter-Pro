@@ -4,11 +4,16 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class EnemySpawnManager : MonoBehaviour
 {
     public delegate void NewWave();
     public static event NewWave NewWaveEvent;
+
+    public delegate void FeedBack(int maxCount);
+    public static event FeedBack SpawnFeedbackCount;
+    public static event FeedBack EnemiesKilledFeedBack;
 
     [SerializeField] private List<Transform> _enemyAsset;
     private List<Transform> _enemies;
@@ -19,7 +24,6 @@ public class EnemySpawnManager : MonoBehaviour
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private int _maxPool = 10;
-    private int _maxPoolTemp = 0;
     //Delete: Timmer might delete variable timmer && _iterateEnemy
     //[SerializeField] private float _spawnRate = 0.5f; 
     //private int _iterateEnemy = 0;
@@ -28,7 +32,7 @@ public class EnemySpawnManager : MonoBehaviour
     private bool _gameStarted = false;
     [Space]
     private bool _beatEnemySpawner = false;
-    private int _difficulty = 1;
+    private float _difficulty = 1.0f;
     [Space]
     [SerializeField] private float _spawnDelay = 5.0f; //Temp: Timmer might delete variable Timmer
     private float _canSpawnTime = 0.0f;
@@ -51,7 +55,6 @@ public class EnemySpawnManager : MonoBehaviour
     {
         //_waveIsPaused = false;
         _maxPool = _enemyAsset.Count * 10; //Note: EnemySpawnManager Enemy count hard coded to 10*Count
-        _maxPoolTemp = _maxPool;
         _enemies = new(_maxPool);
         _enemyCount = _enemyAsset.Count;
         PopulatePool();
@@ -70,17 +73,46 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
+    private void SetDifficulty(float setDifficulty)
+    {
+        //Master difficulty at game start
+        _multiSpawnProbability = MathFunctionsHelper.Map(_difficulty, 0, 4, 0, 100);
+        Debug.Log("Difficulty was set to " + setDifficulty);
+        _maxPool = Mathf.RoundToInt(_maxPool * _difficulty);
+    }
+    private int _multiSpawnProbability = 0;
+    private void SetNewDifficulty(float newDifficulty)
+    {
+        Debug.Log("SetDifficulty was called");
+        _difficulty = newDifficulty;
+        _multiSpawnProbability = MathFunctionsHelper.Map(_difficulty, 0, 4, 0, 100);
+        Debug.Log("percentage " + _multiSpawnProbability);
+        //must make equations to set a spawn difficulty using a float where hard (3) is 1 spawn per beat
+        //Adjust spawns per measure here _spawnsPerMeasure spawn rate where hard is equal to 4.
+        //Sputter some groups here adjust fixed update line 129
+        //current difficulty and test if we should increase dificulty. if so by how mucho
+        //Level 0 is 1 spawn per 8 beats and level 4 is 1 spawn each beat.
+        // only adjust selected diffictulty +- 1
+        //Eq. 8 - (newDifficulty * 2) When zero spawn more groups at the same time.
+        //Eq. 
+        
+    }
     void Start()
     {
+        GameManager.NewDifficulty += (x) => SetNewDifficulty(x);
+
+        GameManager.MasterDifficulty += (x) => SetDifficulty(x);
+
         BossFightManager.ActiveMother += (x) => { _isMotherShipActive = x; };
         BossFightManager.ContinueWaves += (x) => SpawnWaveState(false);
         BossFightManager.PauseWaves += (x) => SpawnWaveState(true);
 
         EnemyCollisons.EnemyPointsEvent += EnemiesKilled;
         BombEplode.BombExplosionEvent += () => BPMPauseSpawn();
-        StartGameAsteroids.SetDifficulty += () => GameDificulty();
         BackGroundMusic_Events.BGM_Events += () => { _beatEnemySpawner = true; };
         StartGameAsteroids.GameStarted += GameStarted;
+
+
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
 
@@ -96,19 +128,14 @@ public class EnemySpawnManager : MonoBehaviour
     {
         _canSpawnTime = Time.time;
     }
-
-    private void GameDificulty()
-    {
-        _difficulty++;
-        _maxPoolTemp = _maxPool * _difficulty;
-    }
-
     private void GameStarted()
     {
-        _maxPool = _maxPoolTemp;
         _gameStarted = true;
     }
     private bool _canSpawn = false;
+    private int _BPMeasure = 0;
+    [SerializeField]
+    private int _spawnsPerMeasure = 4;
     void FixedUpdate()
     {
         if (_gameOver || !_gameStarted) return;
@@ -116,21 +143,29 @@ public class EnemySpawnManager : MonoBehaviour
         //Temp: Timmer might not have to spawn enemies with time 
         //Temp: Timmer if (_canSpawn + _spawnRate > Time.time) return;
         //Note: Spawn manager was stopped during game play for a brif moment
-
-        if (!_isWaveComplete && _beatEnemySpawner && _spawnDelay + _canSpawnTime < Time.time)
-        { 
+        if(_beatEnemySpawner)
+        {
+            _beatEnemySpawner = false;
+            _BPMeasure++;
+        }
+        if (!_isWaveComplete && _BPMeasure >= _spawnsPerMeasure && _spawnDelay + _canSpawnTime < Time.time)
+        {
             //return all active enemies int the list in hierarchy
+            _spawnRateFeedback++;
+            _BPMeasure = 0;
             int activeEnemies = _enemies.FindAll(x => x.gameObject.activeSelf).Count;
             if (activeEnemies >= _waveSize - _enemiesKilled) return;
             SpawnSystem();
-            _beatEnemySpawner = false;
-            if (_difficulty <= 1) return;
-            if (_difficulty > 1 && Random.Range(0, 100) < 50) SpawnSystem(); //Note: Hard coded Randoms 001
-            if (_difficulty > 2 && Random.Range(0, 100) < 80) SpawnSystem(); //Note: Hard coded Randoms 002
+            if (_difficulty <= 1.0f) return;
+            if (_difficulty > 1.0f && Random.Range(0, 100) <= _multiSpawnProbability) SpawnSystem();
+            if (_difficulty > 2.0f && Random.Range(0, 100) <= (float) _multiSpawnProbability / 2) SpawnSystem();
         }
     }
+    //Feedback for caclulating spawn rate as you progress threw the game.
+    private int _spawnRateFeedback = 0;
     private void EnemiesKilled(int notUsed, string enemyName)
     {
+        EnemiesKilledFeedBack?.Invoke(_waveSize);
         _enemiesKilled++;
         if (enemyName == Types.Enemy.Scifi_Drone_04.ToString()) _enemyDroneKilled++;
         if (enemyName == Types.Enemy.Alien_Ship_001.ToString()) _enemyMiniBossKilled++;
@@ -165,6 +200,8 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void SpawnSystem()
     {
+        //Send GameManager the count of Enemy spawns Difficulty curve.
+        SpawnFeedbackCount?.Invoke(_waveSize);
         if (_isPoolMaxed)
         {
             Debug.Log("BPM " + _enemies[0].name + " CheckLoop");
@@ -224,15 +261,17 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        BossFightManager.ActiveMother += (x) => { _isMotherShipActive = x; };
-        BossFightManager.ContinueWaves += (x) => SpawnWaveState(false);
-        BossFightManager.PauseWaves += (x) => SpawnWaveState(true);
+        GameManager.NewDifficulty -= (x) => SetNewDifficulty(x);
+        GameManager.MasterDifficulty -= (x) => SetDifficulty(x);
+
+        BossFightManager.ActiveMother -= (x) => { _isMotherShipActive = x; };
+        BossFightManager.ContinueWaves -= (x) => SpawnWaveState(false);
+        BossFightManager.PauseWaves -= (x) => SpawnWaveState(true);
 
         EnemyCollisons.EnemyPointsEvent -= EnemiesKilled;
         BombEplode.BombExplosionEvent -= () => BPMPauseSpawn();
         Player.Game_Over -= PlayerIsDead;
         StartGameAsteroids.GameStarted -= GameStarted;
-        StartGameAsteroids.SetDifficulty -= () => GameDificulty();
         BackGroundMusic_Events.BGM_Events -= () => { _beatEnemySpawner = true; };
     }
 }

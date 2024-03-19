@@ -2,6 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Player : MonoBehaviour
 {
+    //Player Feedback to game manager
+    public delegate void Feedback();
+    public static event Feedback PlayerDamagedFeedback;
+    public static event Feedback PlayerOutOfAmmoFeedback;
+
+    //Todo: Fix Thrusters and Visual FX
     public delegate void GameOver();
     public static event GameOver Game_Over;
     public delegate void Points(int points);
@@ -13,8 +19,7 @@ public class Player : MonoBehaviour
     public delegate void PlayerThruster(float Duration);
     public static event PlayerThruster Thruster;
     public delegate void PlayerDamage(float Duration);
-    public static event PlayerDamage OnPlayerDamage;
-    public int Health { get { return _health; } set { Damage(value); } }
+    public static event PlayerDamage OnPlayerDamage; // duplicate code
 
     [Space]
     [SerializeField] private Types.SFX _playerDeath;
@@ -167,7 +172,7 @@ public class Player : MonoBehaviour
             _isSpeedBoostActive = false;
         }
         if (_shieldTime + _shieldTimeout <= Time.time && _isShieldActive)
-            Damage(0);
+            Damage(Types.Tag.Player, 0);
         if (_homingLasersTime + _homingLasersTimeout <= Time.time && _homingLasers)
             _homingLasers = false;
     }
@@ -178,7 +183,7 @@ public class Player : MonoBehaviour
         //Todo: Add Health Sound FX
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
         if (_health >= 3 && !antiProbablility) return;
-        if (antiProbablility) Damage(1); else _health++;
+        if (antiProbablility) Damage(Types.Tag.Player, 1); else _health++; //Glitch found Damaged caused by Collectable not damaged by player
         if (_health >= 3)
         {
             _damageLeftENG.SetActive(false);
@@ -195,6 +200,8 @@ public class Player : MonoBehaviour
         //Todo: Add a negative overide to Ammo
         //Override will ony have a 50% change to give full ammo else give 3
         //Todo: Ammo Reload Sound effect
+        if(_ammoBank == 0)
+        PlayerOutOfAmmoFeedback?.Invoke(); // feedback to gamemanager out of ammo and collectected powerup.
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
         if (_ammoBank == _ammoBankMax && antiProbablility) return;
         if(Anti_Powerup)
@@ -228,7 +235,7 @@ public class Player : MonoBehaviour
         {
             _defectiveShield = Anti_Powerup;
             _resetShield = true;
-            Damage(0);
+            Damage(Types.Tag.Player, 0);
         }
         AudioManager.Instance.PlayAudioOneShot(Types.SFX.ShieldOn);
         _shieldTime = Time.time;
@@ -241,10 +248,10 @@ public class Player : MonoBehaviour
         _useBomb = true;
         _bombTime = Time.time;
     }
-    private void Damage(int damage)
+    public void Damage(Types.Tag damagedBy, int damageBy)
     {
         //Todo: Make Shield Camera shake Damage less than player damage
-        if(damage > 0)
+        if(damageBy > 0)
         OnPlayerDamage?.Invoke(_playerDamageShake);
         bool defectiveShield = _defectiveShield && Random.Range(1, 100) > 50;
         if (_isShieldActive && !defectiveShield) //Shield Damage
@@ -256,7 +263,7 @@ public class Player : MonoBehaviour
                     _resetShield = false;
                     shieldB.ResetShield();
                 }
-                shieldB.Damage(damage);
+                shieldB.Damage(damageBy);
                 if (!shieldB.isActiveAndEnabled) _isShieldActive = false;
                 return;
             }
@@ -270,8 +277,9 @@ public class Player : MonoBehaviour
         }
         //Player Damage
         
-        _health -= damage;
+        _health -= damageBy;
         UpdateHealth?.Invoke(_health);
+        PlayerDamagedFeedback?.Invoke(); // GameManager Feedback
         
         if (_health == 2 && !_damageLeftENG.activeSelf)
         {
