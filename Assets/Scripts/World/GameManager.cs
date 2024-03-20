@@ -50,6 +50,9 @@ public class GameManager : DontDestroyHelper<GameManager>
     //
     //
     [SerializeField]
+    private DifficultiesEnums.Modes _setMainDifficulty = DifficultiesEnums.Modes.easy;
+    //Give access to any instance type that will control the main difficulty
+    public DifficultiesEnums.Modes SetMainDifficulty { get { return _setMainDifficulty; } set { _setMainDifficulty = value; } }
     private float _currentDifficulty = 1;
     [SerializeField]
     [Range(0.0f, 1.0f)]
@@ -114,6 +117,8 @@ public class GameManager : DontDestroyHelper<GameManager>
     }
     private void GameStarted()
     {
+        _currentDifficulty = (float) _setMainDifficulty;
+        Debug.Log("current difficulty is " + _currentDifficulty); // delete test
         MasterDifficulty?.Invoke(_currentDifficulty);
     }
     private void OnDestroy()
