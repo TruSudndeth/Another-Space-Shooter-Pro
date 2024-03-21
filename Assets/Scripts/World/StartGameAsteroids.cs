@@ -34,7 +34,6 @@ public class StartGameAsteroids : MonoBehaviour
         transform.Rotate(0, 0, _rotationSpeed);
         if (transform.childCount <= 0)
         {
-            Debug.Log("Started Game");
             GameStarted?.Invoke();
             Destroy(gameObject);
         }

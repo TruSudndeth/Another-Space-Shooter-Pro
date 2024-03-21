@@ -113,10 +113,10 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     private void BossFightIntervals()
     {
         _bossFightInterval = _bossFightInterval == 0 ? 1 : _bossFightInterval;
-        Debug.Log("Somehow entered here at reset " + _waveCount + " INTERVAL " + _bossFightInterval + " " + _waveCount % _bossFightInterval);
+        // Debug.Log("Somehow entered here at reset " + _waveCount + " INTERVAL " + _bossFightInterval + " " + _waveCount % _bossFightInterval);
         if (_waveCount % _bossFightInterval == 0)
         {
-            Debug.Log("inside remainder " + _waveCount + " INTERVAL " + _bossFightInterval + " " + _waveCount % _bossFightInterval);
+            // Debug.Log("inside remainder " + _waveCount + " INTERVAL " + _bossFightInterval + " " + _waveCount % _bossFightInterval);
             if (_waveCount >= _maxIntValue)
             {
                 _waveCount = 1;

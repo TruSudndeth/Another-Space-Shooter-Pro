@@ -61,8 +61,6 @@ public class GameManager : DontDestroyHelper<GameManager>
 
 
     private float _enemySpawnRate = 0; // unsure if this will be used.
-    [SerializeField]
-    private float _masterDifficulty = 0;
     private int _enemiesKilled = 0;
     private int _enemiesSpawned = 0;
     [SerializeField]
@@ -118,7 +116,6 @@ public class GameManager : DontDestroyHelper<GameManager>
     private void GameStarted()
     {
         _currentDifficulty = (float) _setMainDifficulty;
-        Debug.Log("current difficulty is " + _currentDifficulty); // delete test
         MasterDifficulty?.Invoke(_currentDifficulty);
     }
     private void OnDestroy()

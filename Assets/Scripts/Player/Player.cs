@@ -315,7 +315,6 @@ public class Player : MonoBehaviour
     }
     private void UseLaserPool()
     {
-        Debug.Log("Fired a laser");
         if (_gameStarted)
         {
             if (_useBomb) //GDHQ: New Projectile UsingBomb

@@ -19,7 +19,6 @@ public class EnemySpawnManager : MonoBehaviour
     private List<Transform> _enemies;
     private int _enemyCount = 0;
     [Space]
-    private float _boundsOffset = 0;
     private readonly float _cameraAspecRatio = 1.7777778f;
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
@@ -200,11 +199,12 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void SpawnSystem()
     {
-        //Send GameManager the count of Enemy spawns Difficulty curve.
+        // keep track where the enemy was last spawned and alter adjustments based on that.
+        // Send GameManager the count of Enemy spawns Difficulty curve.
         SpawnFeedbackCount?.Invoke(_waveSize);
         if (_isPoolMaxed)
         {
-            Debug.Log("BPM " + _enemies[0].name + " CheckLoop");
+            // Debug.Log("BPM " + _enemies[0].name + " CheckLoop");
             int sifiDroneCount = _enemies.FindAll(x => x.name == Types.Enemy.Scifi_Drone_04.ToString() + "(Clone)" && x.gameObject.activeSelf).Count;
             bool hasSifiDrons = _enemies.FindIndex(x => x.name == Types.Enemy.Scifi_Drone_04.ToString() + "(Clone)" && !x.gameObject.activeSelf) != -1;
             int alienShipCount = _enemies.FindAll(x => x.name == Types.Enemy.Alien_Ship_001.ToString() + "(Clone)" && x.gameObject.activeSelf).Count;
@@ -250,7 +250,8 @@ public class EnemySpawnManager : MonoBehaviour
     private Vector3 RandomEnemySpawn() // DebugIt Move this script to EnemySpawnManager
     {
         //Todo: if eneymy already occupies space dont spawn there
-        float _randomRandx = Random.Range(-(_xyBounds.x - _boundsOffset) * 1000, _xyBounds.x * 1000);
+        // a better float random calculation
+        float _randomRandx = Random.Range(-(_xyBounds.x) * 1000, _xyBounds.x * 1000);
         _randomRandx *= 0.001f;
         return new Vector3(_randomRandx, _xyBounds.y, transform.position.z);
     }

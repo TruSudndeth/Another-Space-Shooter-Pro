@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 //Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
 public class Enemy_Move : MonoBehaviour
@@ -50,8 +51,17 @@ public class Enemy_Move : MonoBehaviour
         _xBounds = _yBounds * _cameraAspecRatio;
         _xyBounds = new Vector2(_xBounds, _yBounds);
     }
+    private float _masterDifficulty = 0;
     private void Start()
     {
+        GameManager.MasterDifficulty += (x) => { _masterDifficulty = x; };
+        GameManager.NewDifficulty += (x) => SpawnAnticipation(x);
+        if (_masterDifficulty == 0)
+        {
+            Debug.Log("Throw event error. difficulty", transform);
+            _masterDifficulty = (float) GameManager.Instance.SetMainDifficulty;
+        }
+        _currentDifficulty = _masterDifficulty;
         if (!_laserManager)
         {
             _laserManager = GameObject.Find("LaserManager").transform;
@@ -59,15 +69,36 @@ public class Enemy_Move : MonoBehaviour
         BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
         if (transform.TryGetComponent(out EnemyShoots enemyShoots))
             _Eshoots = enemyShoots;
+        SpawnAnticipation(_currentDifficulty);
     }
+    //Todo: add spawn anticipation Delay Move() function for a range of human reaction 0.125f - 0.5f
+    private float _spawnAnticipation_MS = 0;
+    private float _currentDifficulty = 0;
+    private float _anticipationTime = 0;
+    //Todo: Slow down enemies with 4 being current and 0 being a % slower.
+    //Todo: adjust laser attack probability to player but not to collectables.
     void FixedUpdate()
     {
         if (_move)
         {
-            Move();
-            if (_enemyType == Types.Enemy.Scifi_Drone_04)
-                TrackPlayer();
+            if(_anticipationTime + _spawnAnticipation_MS < Time.time)
+            {
+                Move();
+                if (_enemyType == Types.Enemy.Scifi_Drone_04)
+                    TrackPlayer();
+            }
         }
+    }
+    // Set this function as an event to change _spawnAnticipation_MS
+    private float SpawnAnticipation(float setDifficulty)
+    {
+        _currentDifficulty = setDifficulty;
+        int maxDifficulty = GameConstants.World.MaxDifficulty;
+        float humanReactMax = GameConstants.Player.HumanReactionMax;
+        float humanReactMin = GameConstants.Player.HumanReactionMin;
+        _spawnAnticipation_MS = MathFunctionsHelper.Map(_currentDifficulty, 0, maxDifficulty, humanReactMax, humanReactMin);
+        Debug.Log("Anticipation = " + _spawnAnticipation_MS + " and difficulty is " + _currentDifficulty);
+        return _spawnAnticipation_MS;
     }
     private void TrackPlayer()
     {
@@ -225,6 +256,7 @@ public class Enemy_Move : MonoBehaviour
     
     private void OnEnable()
     {
+        _anticipationTime = Time.time;
         _avoidShots = Random.Range(0, 101) < 15;
         _shiftProbability = Random.Range(0.0f, 1.0f);
         _shiftSpeed = Random.Range(_shiftSpeedMin, _ShiftSpeedMax);
@@ -238,6 +270,8 @@ public class Enemy_Move : MonoBehaviour
 
     private void OnDisable()
     {
+        GameManager.MasterDifficulty -= (x) => { _masterDifficulty = x; };
+        GameManager.NewDifficulty -= (x) => SpawnAnticipation(x);
         BackGroundMusic_Events.BGM_Events -= () => _isShifting = !_isShifting;
         transform.position = Vector3.zero;
         _move = false;
