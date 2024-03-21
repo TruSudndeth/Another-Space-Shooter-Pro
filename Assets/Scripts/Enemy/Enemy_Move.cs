@@ -69,7 +69,6 @@ public class Enemy_Move : MonoBehaviour
         BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
         if (transform.TryGetComponent(out EnemyShoots enemyShoots))
             _Eshoots = enemyShoots;
-        SpawnAnticipation(_currentDifficulty);
     }
     //Todo: add spawn anticipation Delay Move() function for a range of human reaction 0.125f - 0.5f
     private float _spawnAnticipation_MS = 0;
@@ -92,11 +91,13 @@ public class Enemy_Move : MonoBehaviour
     // Set this function as an event to change _spawnAnticipation_MS
     private float SpawnAnticipation(float setDifficulty)
     {
-        _currentDifficulty = setDifficulty;
         int maxDifficulty = GameConstants.World.MaxDifficulty;
         float humanReactMax = GameConstants.Player.HumanReactionMax;
         float humanReactMin = GameConstants.Player.HumanReactionMin;
-        _spawnAnticipation_MS = MathFunctionsHelper.Map(_currentDifficulty, 0, maxDifficulty, humanReactMax, humanReactMin);
+
+        _currentDifficulty = setDifficulty;
+        float invertDifficulty = maxDifficulty - _currentDifficulty;
+        _spawnAnticipation_MS = MathFunctionsHelper.Map(invertDifficulty, 0, maxDifficulty, humanReactMax, humanReactMin);
         Debug.Log("Anticipation = " + _spawnAnticipation_MS + " and difficulty is " + _currentDifficulty);
         return _spawnAnticipation_MS;
     }
@@ -256,6 +257,7 @@ public class Enemy_Move : MonoBehaviour
     
     private void OnEnable()
     {
+        SpawnAnticipation(_currentDifficulty);
         _anticipationTime = Time.time;
         _avoidShots = Random.Range(0, 101) < 15;
         _shiftProbability = Random.Range(0.0f, 1.0f);

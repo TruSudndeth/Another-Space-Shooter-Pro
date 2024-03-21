@@ -21,4 +21,10 @@ public static class MathFunctionsHelper
         float mappedValue = minOutput + normalizedValue * (maxOutput - minInput);
         return Mathf.Clamp(mappedValue, minOutput, maxOutput);
     }
+    public static float Maps(float value, float minInput, float maxInput, float minOutput, float maxOutput)
+    {
+        float normalizedValue = Mathf.Clamp01((value - minInput) / (maxInput - minInput));
+        float mappedValue = minOutput + normalizedValue * (maxOutput - minOutput);
+        return Mathf.Clamp(mappedValue, minOutput, maxOutput);
+    }
 }
