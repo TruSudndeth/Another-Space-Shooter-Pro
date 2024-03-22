@@ -22,21 +22,34 @@ public class EnemyShoots : MonoBehaviour
     [SerializeField][Range(0.0f, 1.0f)] float _inFrontRange = 0.1f;
     //Delete: _powerupTransform is never used ??
     //private Transform _powerupTransfrom;
+    private float _masterDifficulty = 0;
 
     private void Start()
     {
+        if (_masterDifficulty == 0)
+        {
+            _masterDifficulty = (float) GameManager.Instance.SetMainDifficulty;
+            _currentDifficulty = _masterDifficulty;
+        }
+        GameManager.NewDifficulty += (x) => CalculateNewDifficulty(x);
         if (!_player)
             _player = GameObject.FindGameObjectWithTag(Types.Tag.Player.ToString()).transform;
     }
     private void OnEnable()
     {
-        
-
         //_laserSpawnPoints = new(3);
         _fired = false;
         BackGroundMusic_Events.BGM_Events += Shoot;
     }
-
+    private float _currentDifficulty = 0;
+    private void CalculateNewDifficulty(float difficulty)
+    {
+        _currentDifficulty = difficulty;
+        //Set probability form 40% to 15%
+        //_shouldFire
+        _shouldFire = MathFunctionsHelper.Map(_currentDifficulty, 0, GameConstants.World.MaxDifficulty, 5, 40);
+        _shouldFire *= 0.01f;
+    }
     private void FixedUpdate()
     {
         //if player is behind Enemy rotate laser
@@ -59,12 +72,6 @@ public class EnemyShoots : MonoBehaviour
             }
         }
     }
-
-    private void RequestPowerupLineUp()
-    {
-        //request _Enemy_Move to lineup enemy shot in the x axes
-    }
-
     private void Shoot()
     {
         foreach(Transform powerup in CollectibleSpawnManager.Instance.GetActivePowerupPool())
@@ -105,5 +112,6 @@ public class EnemyShoots : MonoBehaviour
     private void OnDisable()
     {
         BackGroundMusic_Events.BGM_Events -= Shoot;
+        GameManager.NewDifficulty -= (x) => CalculateNewDifficulty(x);
     }
 }

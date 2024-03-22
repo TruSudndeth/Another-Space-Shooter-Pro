@@ -75,14 +75,14 @@ public class GameManager : DontDestroyHelper<GameManager>
         if (_enemiesSpawned >= _waveSize)
         {
             //increase difficulty by Scale
-            Debug.Log("difficulty is too easy");
-            Debug.Log("Difficulty " + (float)_enemiesSpawned / _waveSize + " remainder " + (float)_enemiesSpawned % _waveSize);
+            //Debug.Log("difficulty is too easy");
+            //Debug.Log("Difficulty " + (float)_enemiesSpawned / _waveSize + " remainder " + (float)_enemiesSpawned % _waveSize);
             _currentDifficultyAdjustment += _difficultyRateOfChange;
             NewDifficulty?.Invoke(_currentDifficulty + AdjustDifficultyRate(_currentDifficultyAdjustment));
         }
         else
         {
-            Debug.Log("difficulty is too hard");
+            //Debug.Log("difficulty is too hard");
             _currentDifficultyAdjustment -= _difficultyRateOfChange;
             NewDifficulty?.Invoke(_currentDifficulty + AdjustDifficultyRate(_currentDifficultyAdjustment));
         }

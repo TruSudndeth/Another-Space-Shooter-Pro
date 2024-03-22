@@ -76,7 +76,8 @@ public class Enemy_Move : MonoBehaviour
     //Complete: Slow down enemies with 4 being current and 0 being a % slower.
     private float _enemySpeedAdjustment = 0.50f;
     //Todo: adjust laser attack probability to player but not to collectables.
-    //Todo: difficulty curve adjust Eplayers speed all move towards player 
+    //Todo: difficulty curve adjust Eplayers speed all move towards player.
+    //Todo: limit number of enemies on screen on easy and slow.
     void FixedUpdate()
     {
         if (_move)
@@ -97,7 +98,7 @@ public class Enemy_Move : MonoBehaviour
         _currentDifficulty = setDifficulty;
         float invertDifficulty = _maxDifficulty - _currentDifficulty;
         _spawnAnticipation_MS = MathFunctionsHelper.Map(invertDifficulty, 0, _maxDifficulty, _humanReactMax, _humanReactMin);
-        Debug.Log("Anticipation = " + _spawnAnticipation_MS + " and difficulty is " + _currentDifficulty);
+        //Debug.Log("Anticipation = " + _spawnAnticipation_MS + " and difficulty is " + _currentDifficulty);
         return _spawnAnticipation_MS;
     }
     private void MoveDifficulty(float difficulty)
@@ -105,7 +106,7 @@ public class Enemy_Move : MonoBehaviour
         difficulty = _maxDifficulty - difficulty;
         _enemySpeedAdjustment = MathFunctionsHelper.Map(difficulty, 0, 4, 50, 100);
         _enemySpeedAdjustment *= 0.01f;
-        Debug.Log("enemy Adjustment = " + _enemySpeedAdjustment);
+        //Debug.Log("enemy Adjustment = " + _enemySpeedAdjustment);
     }
     private void AdjustDifficulty(float difficulty)
     {
