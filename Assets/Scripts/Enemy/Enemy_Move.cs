@@ -43,9 +43,6 @@ public class Enemy_Move : MonoBehaviour
     private bool _avoidShots = false;
     private bool _homingTagged = false;
     public bool HomingTagged { get { return _homingTagged; } private set {} }
-    //Todo: Eplayer behaviour to move towards player
-    //Todo: Eplayers All move Right all move left
-    //Todo: Eplayers all move towards player
     private void Awake()
     {
         _camera = Camera.main;
@@ -72,13 +69,14 @@ public class Enemy_Move : MonoBehaviour
         if (transform.TryGetComponent(out EnemyShoots enemyShoots))
             _Eshoots = enemyShoots;
     }
-    //Todo: add spawn anticipation Delay Move() function for a range of human reaction 0.125f - 0.5f
+    //Complete: add spawn anticipation Delay Move() function for a range of human reaction 0.125f - 0.5f
     private float _spawnAnticipation_MS = 0;
     private float _currentDifficulty = 0;
     private float _anticipationTime = 0;
-    //Todo: Slow down enemies with 4 being current and 0 being a % slower.
+    //Complete: Slow down enemies with 4 being current and 0 being a % slower.
     private float _enemySpeedAdjustment = 0.50f;
     //Todo: adjust laser attack probability to player but not to collectables.
+    //Todo: difficulty curve adjust Eplayers speed all move towards player 
     void FixedUpdate()
     {
         if (_move)
@@ -91,7 +89,6 @@ public class Enemy_Move : MonoBehaviour
             }
         }
     }
-    // Set this function as an event to change _spawnAnticipation_MS
     private int _maxDifficulty = GameConstants.World.MaxDifficulty;
     private float _humanReactMax = GameConstants.Player.HumanReactionMax;
     private float _humanReactMin = GameConstants.Player.HumanReactionMin;
@@ -150,7 +147,6 @@ public class Enemy_Move : MonoBehaviour
         //Todo: should _avoidShots be added to a difficulty curve?
         if (_avoidShots)
         {
-            
             movePlayer = AvoidShots(movePlayer);
         }
         movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
@@ -172,7 +168,6 @@ public class Enemy_Move : MonoBehaviour
         } else
             return false;
     }
-    //Todo: Combine AvoidShots with AvoidShots2 Logic
     //complete: only allow one laser avoid or a probability of 2
     private Transform _avoidClosestLaser = null;
     private Vector2 AvoidShots(Vector2 movement)
