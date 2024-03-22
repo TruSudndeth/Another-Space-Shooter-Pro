@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 
 //Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
+//Debug: Enemy ship Bug, some how speed is reduced to a crawl, not able to find reason.
 public class Enemy_Move : MonoBehaviour
 {
     private readonly float _cameraAspecRatio = 1.7777778f;
@@ -55,7 +57,8 @@ public class Enemy_Move : MonoBehaviour
     private void Start()
     {
         GameManager.MasterDifficulty += (x) => { _masterDifficulty = x; };
-        GameManager.NewDifficulty += (x) => SpawnAnticipation(x);
+        GameManager.NewDifficulty += (x) => AdjustDifficulty(x);
+        BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
         if (_masterDifficulty == 0)
         {
             Debug.Log("Throw event error. difficulty", transform);
@@ -66,7 +69,6 @@ public class Enemy_Move : MonoBehaviour
         {
             _laserManager = GameObject.Find("LaserManager").transform;
         }
-        BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
         if (transform.TryGetComponent(out EnemyShoots enemyShoots))
             _Eshoots = enemyShoots;
     }
@@ -75,6 +77,7 @@ public class Enemy_Move : MonoBehaviour
     private float _currentDifficulty = 0;
     private float _anticipationTime = 0;
     //Todo: Slow down enemies with 4 being current and 0 being a % slower.
+    private float _enemySpeedAdjustment = 0.50f;
     //Todo: adjust laser attack probability to player but not to collectables.
     void FixedUpdate()
     {
@@ -89,17 +92,29 @@ public class Enemy_Move : MonoBehaviour
         }
     }
     // Set this function as an event to change _spawnAnticipation_MS
+    private int _maxDifficulty = GameConstants.World.MaxDifficulty;
+    private float _humanReactMax = GameConstants.Player.HumanReactionMax;
+    private float _humanReactMin = GameConstants.Player.HumanReactionMin;
     private float SpawnAnticipation(float setDifficulty)
     {
-        int maxDifficulty = GameConstants.World.MaxDifficulty;
-        float humanReactMax = GameConstants.Player.HumanReactionMax;
-        float humanReactMin = GameConstants.Player.HumanReactionMin;
-
         _currentDifficulty = setDifficulty;
-        float invertDifficulty = maxDifficulty - _currentDifficulty;
-        _spawnAnticipation_MS = MathFunctionsHelper.Map(invertDifficulty, 0, maxDifficulty, humanReactMax, humanReactMin);
+        float invertDifficulty = _maxDifficulty - _currentDifficulty;
+        _spawnAnticipation_MS = MathFunctionsHelper.Map(invertDifficulty, 0, _maxDifficulty, _humanReactMax, _humanReactMin);
         Debug.Log("Anticipation = " + _spawnAnticipation_MS + " and difficulty is " + _currentDifficulty);
         return _spawnAnticipation_MS;
+    }
+    private void MoveDifficulty(float difficulty)
+    {
+        difficulty = _maxDifficulty - difficulty;
+        _enemySpeedAdjustment = MathFunctionsHelper.Map(difficulty, 0, 4, 50, 100);
+        _enemySpeedAdjustment *= 0.01f;
+        Debug.Log("enemy Adjustment = " + _enemySpeedAdjustment);
+    }
+    private void AdjustDifficulty(float difficulty)
+    {
+        _currentDifficulty = difficulty;
+        SpawnAnticipation(difficulty);
+        MoveDifficulty(difficulty);
     }
     private void TrackPlayer()
     {
@@ -120,10 +135,11 @@ public class Enemy_Move : MonoBehaviour
         float fixedTime = Time.fixedDeltaTime;
         if (DistanceFromPlayer())
         {
-            transform.position = Vector3.MoveTowards(transform.position, _trackPlayer.position, _speed * fixedTime);
+            float adjustSpeed = _speed;
+            transform.position = Vector3.MoveTowards(transform.position, _trackPlayer.position, adjustSpeed * fixedTime);
             return;
         }
-        Vector3 movePlayer = _speed * fixedTime * Vector3.down;
+        Vector3 movePlayer = (_speed * fixedTime) * Vector3.down;
         Vector3 shiftPlayer = ShiftWithBPM(fixedTime);
         if (_isAggressive)
         {
@@ -131,7 +147,12 @@ public class Enemy_Move : MonoBehaviour
             movePlayer.x = 0;
         }
         if (!_isShifting && _enemyType == Types.Enemy.Scifi_Drone_04 && !_isAggressive) movePlayer.y *= 0.01f;
-        if (_avoidShots) movePlayer = AvoidShots(movePlayer);
+        //Todo: should _avoidShots be added to a difficulty curve?
+        if (_avoidShots)
+        {
+            
+            movePlayer = AvoidShots(movePlayer);
+        }
         movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
 
         if (movePlayer.y == 0) gameObject.SetActive(false);
@@ -152,15 +173,26 @@ public class Enemy_Move : MonoBehaviour
             return false;
     }
     //Todo: Combine AvoidShots with AvoidShots2 Logic
+    //complete: only allow one laser avoid or a probability of 2
+    private Transform _avoidClosestLaser = null;
     private Vector2 AvoidShots(Vector2 movement)
     {
+        if(_avoidClosestLaser != null)
+        {
+            if(_avoidClosestLaser.gameObject.activeSelf == false)
+            {
+                _avoidClosestLaser = null;
+                if (Random.Range(0, 100) < 75) _avoidShots = false;
+                return movement;
+            }
+        }
         Transform[] activelasers = _laserManager.GetComponentsInChildren<Transform>().Where(x => x.CompareTag(Types.LaserTag.PlayerLaser.ToString())).Where(x => x.gameObject.activeSelf).ToArray();
         if (activelasers.Count() > 0)
         {
-            Transform closestLaser = GetClosestLaser();
-            if (Mathf.Abs(closestLaser.position.y - transform.position.y) < 1)
+            _avoidClosestLaser = GetClosestLaser();
+            if (Mathf.Abs(_avoidClosestLaser.position.y - transform.position.y) < 1)
             {
-                movement.x = Mathf.Sign(closestLaser.position.x - transform.position.x) * -1;
+                movement.x = Mathf.Sign(_avoidClosestLaser.position.x - transform.position.x) * -1;
                 movement.x *= _avoidSpeed * Time.fixedDeltaTime;
             }
             return movement;
@@ -168,31 +200,6 @@ public class Enemy_Move : MonoBehaviour
         else
             return movement;
     }
-    private Vector2 AvoidShots2(Vector2 movement)
-    {
-        var activelasers = new List<Transform>();
-        var laserTag = Types.LaserTag.PlayerLaser.ToString();
-        var playerPosition = transform.position;
-
-        for (int i = 0; i < _laserManager.transform.childCount; i++)
-        {
-            var laser = _laserManager.transform.GetChild(i);
-            if (laser.gameObject.activeSelf && laser.CompareTag(laserTag))
-            {
-                activelasers.Add(laser);
-
-                var distance = Mathf.Abs(laser.position.y - playerPosition.y);
-                if (distance < 1)
-                {
-                    movement.x = Mathf.Sign(laser.position.x - playerPosition.x) * -_avoidSpeed * Time.fixedDeltaTime;
-                    break;
-                }
-            }
-        }
-
-        return movement;
-    }
-
     private Transform GetClosestLaser()
     {
         Transform closestLaser = null;
@@ -257,11 +264,14 @@ public class Enemy_Move : MonoBehaviour
     
     private void OnEnable()
     {
-        SpawnAnticipation(_currentDifficulty);
+        //Debug: might want to move even listeners to on enable rather than start.
+        //Debug: performance, might be tax heavy with reg and unreg
+        AdjustDifficulty(_currentDifficulty);
+        
         _anticipationTime = Time.time;
-        _avoidShots = Random.Range(0, 101) < 15;
+        _avoidShots = Random.Range(0, 101) < 35;
         _shiftProbability = Random.Range(0.0f, 1.0f);
-        _shiftSpeed = Random.Range(_shiftSpeedMin, _ShiftSpeedMax);
+        _shiftSpeed = Random.Range(_shiftSpeedMin, _ShiftSpeedMax);// * _enemySpeedAdjustment;
         //Todo: Add a zero probability. (straight)
         _randomShiftLocation = Random.Range(0.0f, 1.0f) <= _shiftProbability ? Random.Range(-_xBounds, _xBounds) :
                 _randomShiftLocation;
@@ -273,7 +283,7 @@ public class Enemy_Move : MonoBehaviour
     private void OnDisable()
     {
         GameManager.MasterDifficulty -= (x) => { _masterDifficulty = x; };
-        GameManager.NewDifficulty -= (x) => SpawnAnticipation(x);
+        GameManager.NewDifficulty -= (x) => AdjustDifficulty(x);
         BackGroundMusic_Events.BGM_Events -= () => _isShifting = !_isShifting;
         transform.position = Vector3.zero;
         _move = false;
