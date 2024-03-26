@@ -142,7 +142,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             //InputManager.Instance.EnableRestart(false);
             InputManager.Instance.EnablePlayerIO(true);
             //Delete: Debuglog (GamePlay Inputs Eneabled)
-            Debug.Log("Game Play Inputs enabled");
+            //Debug.Log("Game Play Inputs enabled");
             //Debug: UIManager uncomment code bellow
             //RegisterAllCallbacks();
             UnregisterAllCallBacks();
@@ -361,7 +361,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             _rootMenu.visible = false;
             _rootGame.visible = true;
             //Delete: Debug Log, testing only
-            Debug.Log("ResetUIVisuals for GamePlay");
+            //Debug.Log("ResetUIVisuals for GamePlay");
             //Visual UI SetUp Game Play
             _healthBar.style.backgroundImage = _healthStatusStyle[_healthStatus.Count - 1];
             _gameOver.visible = false;

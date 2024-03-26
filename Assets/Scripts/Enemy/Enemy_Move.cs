@@ -75,9 +75,9 @@ public class Enemy_Move : MonoBehaviour
     private float _anticipationTime = 0;
     //Complete: Slow down enemies with 4 being current and 0 being a % slower.
     private float _enemySpeedAdjustment = 0.50f;
-    //Todo: adjust laser attack probability to player but not to collectables.
+    //Complete: adjust laser attack probability to player but not to collectables.
+    
     //Todo: difficulty curve adjust Eplayers speed all move towards player.
-    //Todo: limit number of enemies on screen on easy and slow.
     void FixedUpdate()
     {
         if (_move)

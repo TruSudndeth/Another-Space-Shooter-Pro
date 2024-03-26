@@ -1,3 +1,4 @@
+using Melanchall.DryWetMidi.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,7 +54,7 @@ public class GameManager : DontDestroyHelper<GameManager>
     private DifficultiesEnums.Modes _setMainDifficulty = DifficultiesEnums.Modes.easy;
     //Give access to any instance type that will control the main difficulty
     public DifficultiesEnums.Modes SetMainDifficulty { get { return _setMainDifficulty; } set { _setMainDifficulty = value; } }
-    private float _currentDifficulty = 1;
+    private float _currentDifficulty = 0;
     [SerializeField]
     [Range(0.0f, 1.0f)]
     private float _difficultyRateOfChange = 0.1f;
@@ -89,24 +90,44 @@ public class GameManager : DontDestroyHelper<GameManager>
         _enemiesSpawned = 0;
         // increase Ammo rate drop and reduced Damaged ammo probability.
     }
+    private void IncreaseDifficulty()
+    {
+        _currentDifficultyAdjustment += _difficultyRateOfChange;
+        NewDifficulty?.Invoke(_currentDifficulty + AdjustDifficultyRate(_currentDifficultyAdjustment));
+    }
     private float AdjustDifficultyRate(float value)
     {
         value = Mathf.Clamp(value, -1, 1);
         return value;
     }
+    private float _cameraOrthoSize = 0;
+    private float _cameraAspectRatio = GameConstants.World.CameraAspecRatio;
+    private float _xBounds = 0;
+    private float _yBounds = 0;
+    public Vector2 XYBounds { get; private set; }
+    private Transform _myCamera = null;
     private void Start()
     {
+        _myCamera = MainCamera.Instance.CameraTransform;
+        _currentDifficulty = (float) _setMainDifficulty;
+        if (_myCamera == null) Debug.Log("Throw exception _myCamera was null at start", transform);
+        _cameraOrthoSize = _myCamera.GetComponent<Camera>().orthographicSize;
+        _xBounds = _cameraOrthoSize * _cameraAspectRatio;
+        _yBounds = _cameraOrthoSize;
+        XYBounds = new Vector2(_xBounds, _yBounds);
+
         StartGameAsteroids.GameStarted += GameStarted;
         UIManager.ExitApplication += ExitGame;
         UIManager.Load_Scene += LoadScene;
         UIManager.ResetLevel += RestartCurrentLevel;
 
-        StartGameAsteroids.SetDifficulty += () => { _currentDifficulty++; };
+        StartGameAsteroids.SetDifficulty += () => { Mathf.Clamp(_currentDifficulty++, 0, 4); };
 
         // All Feedback for setting A difficulty curve
         EnemySpawnManager.SpawnFeedbackCount += (x) => { _enemiesSpawned++; _waveSize = x; };
         EnemySpawnManager.EnemiesKilledFeedBack += (x) => { _enemiesKilled++; _waveSize = x; };
         EnemySpawnManager.NewWaveEvent += () => CalculateDificulty();
+        EnemySpawnManager.IncreaseDifficultyCurve += (_) => IncreaseDifficulty();
         // Player Feedback
         Player.PlayerOutOfAmmoFeedback += () => { _outOfAmmoBeforeReload++; };
         Player.PlayerDamagedFeedback += () => CalculateDificulty();
@@ -122,7 +143,7 @@ public class GameManager : DontDestroyHelper<GameManager>
     {
         if (Instance == this)
         {
-            StartGameAsteroids.SetDifficulty -= () => { _currentDifficulty++; };
+            StartGameAsteroids.SetDifficulty -= () => { Mathf.Clamp(_currentDifficulty++, 0, 4); };
 
             UIManager.Load_Scene -= LoadScene;
             UIManager.ResetLevel -= RestartCurrentLevel;
@@ -131,6 +152,7 @@ public class GameManager : DontDestroyHelper<GameManager>
             EnemySpawnManager.NewWaveEvent -= () => CalculateDificulty();
             EnemySpawnManager.SpawnFeedbackCount -= (x) => { _enemiesSpawned++; _waveSize = x; };
             EnemySpawnManager.EnemiesKilledFeedBack -= (x) => { _enemiesKilled++; _waveSize = x; };
+            EnemySpawnManager.IncreaseDifficultyCurve -= (_) => IncreaseDifficulty();
             // Player Feedback
             Player.PlayerOutOfAmmoFeedback -= () => { _outOfAmmoBeforeReload++; };
             Player.PlayerDamagedFeedback -= () => CalculateDificulty();
@@ -152,7 +174,7 @@ public class GameManager : DontDestroyHelper<GameManager>
     }
     private void ResetVariables()
     {
-        _currentDifficulty = 1.0f;
+        _currentDifficulty = (float) SetMainDifficulty;
         _currentDifficultyAdjustment = 0.0f;
         MasterDifficulty?.Invoke(_currentDifficulty);
     }

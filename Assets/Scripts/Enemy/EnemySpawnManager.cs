@@ -14,6 +14,7 @@ public class EnemySpawnManager : MonoBehaviour
     public delegate void FeedBack(int maxCount);
     public static event FeedBack SpawnFeedbackCount;
     public static event FeedBack EnemiesKilledFeedBack;
+    public static event FeedBack IncreaseDifficultyCurve;
 
     [SerializeField] private List<Transform> _enemyAsset;
     private List<Transform> _enemies;
@@ -23,15 +24,12 @@ public class EnemySpawnManager : MonoBehaviour
     private Vector2 _xyBounds = Vector2.zero;
     [Space]
     [SerializeField] private int _maxPool = 10;
-    //Delete: Timmer might delete variable timmer && _iterateEnemy
-    //[SerializeField] private float _spawnRate = 0.5f; 
-    //private int _iterateEnemy = 0;
     private bool _isPoolMaxed = false;
     private bool _gameOver = false;
     private bool _gameStarted = false;
     [Space]
     private bool _beatEnemySpawner = false;
-    private float _difficulty = 1.0f;
+    private float _difficulty = 0.0f;
     [Space]
     [SerializeField] private float _spawnDelay = 5.0f; //Temp: Timmer might delete variable Timmer
     private float _canSpawnTime = 0.0f;
@@ -49,7 +47,8 @@ public class EnemySpawnManager : MonoBehaviour
     private bool _isWaveComplete = false;
     [SerializeField]
     private bool _isMotherShipActive = false;
-
+    //Todo: limit number of enemies on screen on easy and slow.
+    private int _enemiesSpawnCount = 0;
     private void Awake()
     {
         //_waveIsPaused = false;
@@ -57,44 +56,6 @@ public class EnemySpawnManager : MonoBehaviour
         _enemies = new(_maxPool);
         _enemyCount = _enemyAsset.Count;
         PopulatePool();
-    }
-    
-    private void PopulatePool()
-    {
-        for (int i = 0; i < _enemyAsset.Count; i++)
-        {
-            for (int j = 0; j < _maxPool / _enemyAsset.Count; j++)
-            {
-                _enemies.Add(Instantiate(_enemyAsset[i], new Vector3(0, 0, 0), Quaternion.identity, transform));
-                _enemies[^1].gameObject.SetActive(false);
-                _isPoolMaxed = true;
-            }
-        }
-    }
-
-    private void SetDifficulty(float setDifficulty)
-    {
-        //Master difficulty at game start
-        _multiSpawnProbability = MathFunctionsHelper.Map(_difficulty, 0, 4, 0, 100);
-        Debug.Log("Difficulty was set to " + setDifficulty);
-        _maxPool = Mathf.RoundToInt(_maxPool * _difficulty);
-    }
-    private int _multiSpawnProbability = 0;
-    private void SetNewDifficulty(float newDifficulty)
-    {
-        Debug.Log("SetDifficulty was called");
-        _difficulty = newDifficulty;
-        _multiSpawnProbability = MathFunctionsHelper.Map(_difficulty, 0, 4, 0, 100);
-        Debug.Log("percentage " + _multiSpawnProbability);
-        //must make equations to set a spawn difficulty using a float where hard (3) is 1 spawn per beat
-        //Adjust spawns per measure here _spawnsPerMeasure spawn rate where hard is equal to 4.
-        //Sputter some groups here adjust fixed update line 129
-        //current difficulty and test if we should increase dificulty. if so by how mucho
-        //Level 0 is 1 spawn per 8 beats and level 4 is 1 spawn each beat.
-        // only adjust selected diffictulty +- 1
-        //Eq. 8 - (newDifficulty * 2) When zero spawn more groups at the same time.
-        //Eq. 
-        
     }
     void Start()
     {
@@ -117,6 +78,85 @@ public class EnemySpawnManager : MonoBehaviour
 
         Player.Game_Over += PlayerIsDead;
         SpawnRandomEnemiesWave();
+        _enemiesSpawnCount = _waveSize;
+    }
+    private void PopulatePool()
+    {
+        // return an error if _enemyAset.count == 0;
+        int eAssetCount = _enemyAsset.Count;
+        Transform ePlaceHolder = null;
+        if(eAssetCount == 0)
+        {
+            Debug.Log("PopulatePool Failed no Assests found or cleaned before population");
+            return;
+        }
+        for (int i = 0; i < eAssetCount; i++)
+        {
+            for (int j = 0; j < _maxPool / eAssetCount; j++)
+            {
+                _enemies.Add(Instantiate(_enemyAsset[i], new Vector3(0, 0, 0), Quaternion.identity, transform));
+                ePlaceHolder = _enemies[^1];
+                Vector3 playerBounds = ePlaceHolder.GetComponentInChildren<Renderer>().bounds.size;
+                SetShipSize(playerBounds.y);
+                //Debug.Log("XYBounds " + playerBounds, transform);
+                ePlaceHolder.gameObject.SetActive(false);
+                _isPoolMaxed = true;
+            }
+        }
+    }
+    private void SetShipSize(float size)
+    {
+        if(size > _ESizeH)
+        _ESizeH = size;
+    }
+    private void SetDifficulty(float setDifficulty)
+    {
+        //Master difficulty at game start
+        _difficulty = setDifficulty;
+        _multiSpawnProbability = MathFunctionsHelper.Map(_difficulty, 0, 4, 0, 100);
+        Debug.Log("Difficulty was set to " + setDifficulty);
+        _maxPool = Mathf.RoundToInt(_maxPool * _difficulty);
+        CalculateSpawnCount();
+    }
+    private int _multiSpawnProbability = 0;
+    private void SetNewDifficulty(float newDifficulty)
+    {
+        _difficulty = newDifficulty;
+        _multiSpawnProbability = MathFunctionsHelper.Map(_difficulty, 0, 4, 0, 100);
+        Debug.Log("percentage " + _multiSpawnProbability);
+        CalculateSpawnCount();
+        //must make equations to set a spawn difficulty using a float where hard (3) is 1 spawn per beat
+        //Adjust spawns per measure here _spawnsPerMeasure spawn rate where hard is equal to 4.
+        //Sputter some groups here adjust fixed update line 129
+        //current difficulty and test if we should increase dificulty. if so by how mucho
+        //Level 0 is 1 spawn per 8 beats and level 4 is 1 spawn each beat.
+        // only adjust selected diffictulty +- 1
+        //Eq. 8 - (newDifficulty * 2) When zero spawn more groups at the same time.
+    }
+    [SerializeField]
+    private float _ESizeHBufferSize = 0.0f;
+    private float _ESizeH = 0.0f;
+    [Range(0.0f, 1.0f)]
+    public float _onScreenSpawnMultiplier = 0.1f;
+    private void CalculateSpawnCount()
+    {
+        // (Screen size height / (biggest EShip height + (buffer * 2) ) * current difficulty.
+        // Test for Divide by zero.
+        //Consider: Adding all the sizes and averaging them to get screen enemy screen count.
+        Vector2 screenSize = GameManager.Instance.XYBounds;
+        int eYCount = 0;
+        if (_ESizeH != 0)
+            eYCount = Mathf.RoundToInt(screenSize.y / _ESizeH);
+        else
+        {
+            Debug.Log("Devide by Zero", transform);
+            return;
+        }
+        // level 0 - 4 range. 1 spawn count to full _maxPool
+        float ECount = MathFunctionsHelper.Map(_difficulty, 0.0f, 4.0f, 1, eYCount);
+        _enemiesSpawnCount = Mathf.RoundToInt(ECount * _difficulty);
+        _enemiesSpawnCount = _enemiesSpawnCount <= 0 ? 1 : _enemiesSpawnCount;
+        Debug.Log(_enemiesSpawnCount + " Enemies spawned with difficulty " + _difficulty);
     }
     private void SpawnWaveState(bool isWavesPaused = false)
     {
@@ -166,6 +206,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         EnemiesKilledFeedBack?.Invoke(_waveSize);
         _enemiesKilled++;
+        _enemyKilledIncreaseDiff++;
         if (enemyName == Types.Enemy.Scifi_Drone_04.ToString()) _enemyDroneKilled++;
         if (enemyName == Types.Enemy.Alien_Ship_001.ToString()) _enemyMiniBossKilled++;
         if (enemyName == Types.Enemy.Enemy000.ToString()) _proEnemyKilled++;
@@ -182,7 +223,6 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void SpawnRandomEnemiesWave()
     {
-        Debug.Log("New Wave Called");
         NewWaveEvent?.Invoke();
         _enemyDroneCount = 0;
         _enemyMiniBossCount = 0;
@@ -197,13 +237,16 @@ public class EnemySpawnManager : MonoBehaviour
             _proEnemyCount++;
         }
     }
+    private int _enemyKilledIncreaseDiff = 0;
+    private int _enemySpawnIncreaseDiff = 0;
     private void SpawnSystem()
     {
         // keep track where the enemy was last spawned and alter adjustments based on that.
         // Send GameManager the count of Enemy spawns Difficulty curve.
-        SpawnFeedbackCount?.Invoke(_waveSize);
         if (_isPoolMaxed)
         {
+            SpawnFeedbackCount?.Invoke(_waveSize);
+            _enemySpawnIncreaseDiff++;
             // Debug.Log("BPM " + _enemies[0].name + " CheckLoop");
             int sifiDroneCount = _enemies.FindAll(x => x.name == Types.Enemy.Scifi_Drone_04.ToString() + "(Clone)" && x.gameObject.activeSelf).Count;
             bool hasSifiDrons = _enemies.FindIndex(x => x.name == Types.Enemy.Scifi_Drone_04.ToString() + "(Clone)" && !x.gameObject.activeSelf) != -1;
@@ -212,6 +255,22 @@ public class EnemySpawnManager : MonoBehaviour
             int defaultESCount = _enemies.FindAll(x => x.name == Types.Enemy.Enemy000.ToString() + "(Clone)" && x.gameObject.activeSelf).Count;
             bool HasdefaultES = _enemies.FindIndex(x => x.name == Types.Enemy.Enemy000.ToString() + "(Clone)" && !x.gameObject.activeSelf) != -1;
             
+            int count = sifiDroneCount + alienShipCount + defaultESCount;
+            Debug.Log("Enemies on screen is greater then _enemiesSpawned " + count + " then " + _enemiesSpawnCount);
+            int spawnCountLimit = CalcIncreaseDifficulty(_enemiesSpawnCount);
+            if (sifiDroneCount + alienShipCount + defaultESCount >= _enemiesSpawnCount)
+            {
+                //This Difficulty curve might be too fast rate of change
+                if(_enemyKilledIncreaseDiff >= spawnCountLimit || _enemySpawnIncreaseDiff >= spawnCountLimit)
+                {
+                    IncreaseDifficultyCurve?.Invoke(spawnCountLimit);
+                    _enemyKilledIncreaseDiff = 0;
+                    _enemySpawnIncreaseDiff = 0;
+                    Debug.Log("Increased Difficulty " + _difficulty + " " + count + " count of " + spawnCountLimit);
+                }
+                return;
+            }
+            else
             if (sifiDroneCount < _enemyDroneCount - _enemyDroneKilled && hasSifiDrons)
                 SpawnEnemyType(Types.Enemy.Scifi_Drone_04);
             else if (alienShipCount < _enemyMiniBossCount - _enemyMiniBossKilled && hasAlienShip)
@@ -222,8 +281,16 @@ public class EnemySpawnManager : MonoBehaviour
                 SpawnEnemyType(Types.Enemy.Enemy000);
             }
             else
+            {
+                //Debug: This triggered 6 times in one play threw to mother ship 2
                 Debug.Log("Could not find Enemy of type XXX", transform);
+            }
         }
+    }
+    private int CalcIncreaseDifficulty(int value)
+    {
+        int newCount = Mathf.RoundToInt(value * _difficulty);
+        return newCount == 0 ? value : newCount;
     }
     
     private void SpawnEnemyType(Types.Enemy enemyType)
@@ -238,7 +305,10 @@ public class EnemySpawnManager : MonoBehaviour
             }
         }
         else
+        {
+            //Debug: This triggered 6 times in one play threw to mother ship 2
             Debug.Log("Could not find Enemy of type XXX", transform);
+        }
     }
 
     private Vector3 CalcOffset(Transform enemyAsset)
