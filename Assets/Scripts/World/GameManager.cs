@@ -108,7 +108,7 @@ public class GameManager : DontDestroyHelper<GameManager>
     private Transform _myCamera = null;
     private void Start()
     {
-        _myCamera = MainCamera.Instance.CameraTransform;
+        _myCamera = MainCamera.Instance.gameObject.transform;
         _currentDifficulty = (float) _setMainDifficulty;
         if (_myCamera == null) Debug.Log("Throw exception _myCamera was null at start", transform);
         _cameraOrthoSize = _myCamera.GetComponent<Camera>().orthographicSize;

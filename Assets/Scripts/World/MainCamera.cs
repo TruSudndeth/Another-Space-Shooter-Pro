@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class MainCamera : DontDestroyHelper<MainCamera>
 {
-    public Transform CameraTransform { get; private set; }
-    // Start is called before the first frame update
-    void Awake()
+#if UNITY_EDITOR
+    private void OnDestroy()
     {
-        //Debug: Camera Refference might be too slow in start might switch to Awake
-        CameraTransform = this.transform;
+        Debug.Log("Camera was destroyed");
     }
+#endif
 }
