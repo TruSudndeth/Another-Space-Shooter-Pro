@@ -22,6 +22,9 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     public delegate void ResetBoss();
     public static event ResetBoss ResetBossEvent;
 
+    public delegate void MotherShipDestroyed(int adjustBy);
+    public static event MotherShipDestroyed SetDifficulty;
+
     [Space(20)]
     [Header("Boss Stage Collider Setup")]
     [SerializeField]
@@ -31,6 +34,12 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     [SerializeField]
     private List<BossParts> _stage3Parts;
     private List<List<BossParts>> _stages;
+
+    [SerializeField]
+    private int _damagePerPart = 3;
+    public int DamagePerPart {  get { return _damagePerPart; } private set {  _damagePerPart = value; } }
+    [SerializeField]
+    private int _motherShipsDestroyed = 0;
 
     [Space(20)]
     [Header("Prefab Setup")]
@@ -84,11 +93,15 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
         BossExplosions.OnDisablePart += RegisterPartDestroid;
         EnemySpawnManager.NewWaveEvent += BossFightIntervals;
         UIManager.ResetLevel += ResetGame;
+
+        GameManager.MasterDifficulty += (x) => { _currentDifficulty = x; };
+        GameManager.NewDifficulty += (x) => { _currentDifficulty = x; };
     }
     public void StartBossFight()
     {
         if (!_hasStarted)
         {
+            SetDifficultyCurve();
             //Pause Waves when ship rolls in
             PauseWaves?.Invoke(true);
             //Other stuff
@@ -135,6 +148,7 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     private void ResetGame()
     {
         _waveCount = 1;
+        _motherShipsDestroyed = 0;
         ResetBossFight();
     }
     private void ResetBossFight()
@@ -194,8 +208,32 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
             _hasStarted = false;
             _stage03 = true;
             _BossDestroyed = true;
+            _motherShipsDestroyed++;
             MoveBossToNextPosition();
         }
+    }
+    private float _currentDifficulty = -1;
+    private void SetDifficultyCurve()
+    {
+        //Difficulty calculation current RandomRange(round-int(difficulty), round-int(difficulty^2)) * current boss fight.
+
+        if(_currentDifficulty < 0)
+        {
+            Debug.Log("Difficulty was never set by GameManager " + _currentDifficulty);
+            _currentDifficulty = 1;
+        }
+        //Variables used
+        int difficultySqr = Mathf.RoundToInt(_currentDifficulty * _currentDifficulty);
+        int mothershipDifficulty = 0;
+        //Todo: Mothership fight will get boring with no enemies to fight when _mothershipsDestroyed gets too large
+        //Limit _mothershipsDestroyed or add exception difficulty when high.
+        //Todo: Mother Ship, when a wave is complete and a part is destroyed spawn new wave.
+        //Todo: Mother ship can attack when _motherShipsDestryed is > then ?
+        mothershipDifficulty = Random.Range(Mathf.RoundToInt(_currentDifficulty), difficultySqr) * _motherShipsDestroyed;
+
+        Debug.Log("Mothership difficulty was set to " + mothershipDifficulty);
+        mothershipDifficulty = mothershipDifficulty <= 0 ? 1 : mothershipDifficulty;
+        SetDifficulty(mothershipDifficulty);
     }
     private void MoveBossToNextPosition()
     {
@@ -233,5 +271,8 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
         BossExplosions.OnDisablePart -= RegisterPartDestroid;
         EnemySpawnManager.NewWaveEvent -= BossFightIntervals;
         UIManager.ResetLevel -= ResetGame;
+
+        GameManager.MasterDifficulty -= (x) => { _currentDifficulty = x; };
+        GameManager.NewDifficulty -= (x) => { _currentDifficulty = x; };
     }
 }

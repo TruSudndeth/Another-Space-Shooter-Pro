@@ -64,7 +64,7 @@ public class DamageMaterialFX : MonoBehaviour
     public bool TakeDamage = false; //Delete Temp variable
     private void Awake()
     {
-        _currentHealth = _health;
+        _currentHealth = _health; //Delete: This health set is not used
         _bossPartFunctions = GetComponentInChildren<BossPartFunction>(true);
         if (TryGetComponent(out MeshRenderer meshRend))
             _meshRenderer = meshRend;
@@ -78,7 +78,15 @@ public class DamageMaterialFX : MonoBehaviour
         BossExplosions.OnDisablePart += DisablePartFunction;
         BossColliderParts.OnBossColliderParts += DamagePart;
         BossFightManager.ResetBossEvent += ResetAll;
+
+        BossFightManager.SetDifficulty += (x) => SetCurrentHealth(x);
     }
+    private void SetCurrentHealth(int health)
+    {
+        _currentHealth = health;
+        _health = health;
+    }
+
     private void DamagePart(BossParts part)
     {
         if (part == _motherShipPart)
@@ -130,7 +138,7 @@ public class DamageMaterialFX : MonoBehaviour
     }
     private void ResetAll()
     {
-        _currentHealth = _health;
+        _currentHealth = _health; //Delete: this health set is not used
         _isDestroid = false;
         SetupMaterialProperties(false);
     }
@@ -223,6 +231,8 @@ public class DamageMaterialFX : MonoBehaviour
         BossExplosions.OnDisablePart -= DisablePartFunction;
         BossColliderParts.OnBossColliderParts -= DamagePart;
         BossFightManager.ResetBossEvent -= ResetAll;
+
+        BossFightManager.SetDifficulty -= (x) => SetCurrentHealth(x);
     }
 }
 public enum BossParts
