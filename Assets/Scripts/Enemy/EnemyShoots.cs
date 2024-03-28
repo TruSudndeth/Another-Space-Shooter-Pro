@@ -9,7 +9,9 @@ public class EnemyShoots : MonoBehaviour
     [SerializeField] private List<Transform> _laserSpawnPoints;
     [Space]
     [Tooltip("If random 01 float is greater than this value")]
-    [SerializeField] private float _shouldFire = 0.25f;
+    [SerializeField] private float _shouldFireProbability = 0.25f;  //Delete [SerializeField] attribute
+    [SerializeField]
+    private Transform _chargeLaserFX;
     private bool _fired = false;
     public bool Fired { get => _fired; }
 
@@ -26,6 +28,7 @@ public class EnemyShoots : MonoBehaviour
 
     private void Start()
     {
+        if (!_chargeLaserFX) Debug.Log("Charge laser prefab was not loaded");
         if (_masterDifficulty == 0)
         {
             _masterDifficulty = (float) GameManager.Instance.SetMainDifficulty;
@@ -47,8 +50,8 @@ public class EnemyShoots : MonoBehaviour
         _currentDifficulty = difficulty;
         //Set probability form 40% to 15%
         //_shouldFire
-        _shouldFire = MathFunctionsHelper.Map(_currentDifficulty, 0, GameConstants.World.MaxDifficulty, 5, 40);
-        _shouldFire *= 0.01f;
+        _shouldFireProbability = MathFunctionsHelper.Map(_currentDifficulty, 0, GameConstants.World.MaxDifficulty, 5, 40);
+        _shouldFireProbability *= 0.01f;
     }
     private void FixedUpdate()
     {
@@ -72,6 +75,9 @@ public class EnemyShoots : MonoBehaviour
             }
         }
     }
+    //Todo: show Anticipation beofre Enemy player shoots.
+    private bool _chargingShoot = false;
+    private bool _shouldFire = false;
     private void Shoot()
     {
         foreach(Transform powerup in CollectibleSpawnManager.Instance.GetActivePowerupPool())
@@ -83,9 +89,20 @@ public class EnemyShoots : MonoBehaviour
         }
         if (ShouldFire() && !_fired)
         {
-            _fired = true;
-            LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()], false);
-            AudioManager.Instance.PlayAudioOneShot(_sfx);
+            if (_chargingShoot)
+            {
+                _fired = true;
+                _shouldFire = false;
+                _chargingShoot = false;
+                LaserManager.Instance.LaserPool(_laserSpawnPoints[RandomGun()], false);
+                AudioManager.Instance.PlayAudioOneShot(_sfx); 
+            }
+
+            if (!_fired && _shouldFire)
+            {
+                _chargeLaserFX.gameObject.SetActive(true);
+                _chargingShoot = true;
+            }
         }
     }
 
@@ -106,7 +123,9 @@ public class EnemyShoots : MonoBehaviour
     
     private bool ShouldFire()
     {
-        return Random.Range(0.0f, 1.0f) < _shouldFire;
+        if(_shouldFire) return true;
+        if(Random.Range(0.0f, 1.0f) < _shouldFireProbability) _shouldFire = true;
+        return _shouldFire;
     }
 
     private void OnDisable()

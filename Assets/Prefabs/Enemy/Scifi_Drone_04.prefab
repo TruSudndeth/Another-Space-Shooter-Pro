@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a6a2e8d1f35eb45a589365130d81f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyType: 1
   _sfxType: 2
   _enemyPointValue: 20
   _shield: {fileID: 3645627102141033059}
@@ -168,8 +169,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4273339059823214585}
-  - component: {fileID: 2636697214077560419}
   - component: {fileID: 5668841486132494326}
+  - component: {fileID: 2636697214077560419}
   m_Layer: 0
   m_Name: Scifi_Drone_04
   m_TagString: Enemies
@@ -192,26 +193,10 @@ Transform:
   - {fileID: 4482947696053862137}
   - {fileID: 8695741709634575293}
   - {fileID: 3645627102141033059}
+  - {fileID: 1255149087243599027}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2636697214077560419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3315487887674032792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd7ed004442bfa14f808ba60fd58c7e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sfx: 17
-  _laserSpawnPoints:
-  - {fileID: 8695741709634575293}
-  _shouldFire: 0.15
-  _inFrontRange: 0.1
 --- !u!114 &5668841486132494326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +220,99 @@ MonoBehaviour:
   _aggressiveProbability: 0.5
   _trackerSpeedReduction: 0.25
   _laserManager: {fileID: 0}
+--- !u!114 &2636697214077560419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3315487887674032792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7ed004442bfa14f808ba60fd58c7e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sfx: 17
+  _laserSpawnPoints:
+  - {fileID: 8695741709634575293}
+  _shouldFire: 0.15
+  _chargeLaserFX: {fileID: 1255149087243599027}
+  _inFrontRange: 0.1
+--- !u!1001 &7359909391988636210
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4273339059823214585}
+    m_Modifications:
+    - target: {fileID: 6242189010582926854, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_Name
+      value: VFX_Charge_Laser
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed8037c34154607469aaf433c9838884, type: 3}
+--- !u!4 &1255149087243599027 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8595271523290596993, guid: ed8037c34154607469aaf433c9838884,
+    type: 3}
+  m_PrefabInstance: {fileID: 7359909391988636210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8543222459736107441
 PrefabInstance:
   m_ObjectHideFlags: 0

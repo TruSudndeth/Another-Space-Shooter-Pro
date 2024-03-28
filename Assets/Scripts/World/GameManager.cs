@@ -38,14 +38,14 @@ public class GameManager : DontDestroyHelper<GameManager>
     //      listen to enemies lasers count
     //Eq.   Lasers spawned/ player hit
     //
-    // Calculate spawn rate difficulty
+    // Calculate spawn rate difficulty (complete)
     //      listen to Enemies killed
     //      listen to Enemies spawned
     //      listen to Enemies collided with player
     //Eq.   Enemies killed/ player hit
     //Eq.   Enemies spawned/ player hit
     // 
-    // Mother ship Difficulty curve
+    // Mother ship Difficulty curve (complete)
     //      how many mother ships were killed
     //      increase the number of hits required
     //
@@ -115,6 +115,8 @@ public class GameManager : DontDestroyHelper<GameManager>
         _xBounds = _cameraOrthoSize * _cameraAspectRatio;
         _yBounds = _cameraOrthoSize;
         XYBounds = new Vector2(_xBounds, _yBounds);
+
+
 
         StartGameAsteroids.GameStarted += GameStarted;
         UIManager.ExitApplication += ExitGame;
