@@ -179,6 +179,10 @@ public class UIManager : DontDestroyHelper<UIManager>
         _difficultySlider.value = _difficulty;
         _soundSlider.value = _soundVolume;
         _musicSlider.value = _musicVolume;
+        //Set Visuals
+        _difficultySlider.style.display = _optionsIsVisible;
+        _soundSlider.style.display = _optionsIsVisible;
+        _musicSlider.style.display = _optionsIsVisible;
     }
     private void UpdateListeners()
     {
@@ -259,12 +263,13 @@ public class UIManager : DontDestroyHelper<UIManager>
         if (!_isMainMenu)
         ResetLevel?.Invoke();
     }
+    private DisplayStyle _optionsIsVisible = DisplayStyle.None;
     private void OptionsEnableDisable()
     {
-        DisplayStyle isVisible = _musicSlider.style.display.value == DisplayStyle.Flex ? DisplayStyle.None : DisplayStyle.Flex;
-        _musicSlider.style.display = isVisible;
-        _soundSlider.style.display = isVisible;
-        _difficultySlider.style.display = isVisible;
+        _optionsIsVisible = _musicSlider.style.display.value == DisplayStyle.Flex ? DisplayStyle.None : DisplayStyle.Flex;
+        _musicSlider.style.display = _optionsIsVisible;
+        _soundSlider.style.display = _optionsIsVisible;
+        _difficultySlider.style.display = _optionsIsVisible;
     }
     private void Update()
     {
