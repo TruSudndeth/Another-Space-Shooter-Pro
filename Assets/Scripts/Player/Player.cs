@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Player : MonoBehaviour
 {
+    //Todo: Player Easy mode health must add full health
+    //Todo: Player ammo refils should be increased
     //Player Feedback to game manager
     public delegate void Feedback();
     public static event Feedback PlayerDamagedFeedback;

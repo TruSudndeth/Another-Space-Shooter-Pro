@@ -4,9 +4,11 @@ using UnityEngine;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.ShaderGraph;
 
 //Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
 //Debug: Enemy ship Bug, some how speed is reduced to a crawl, not able to find reason.
+//Todo: Enemy Easy mode ships don't move towards player if anything only a probability of ships do.
 public class Enemy_Move : MonoBehaviour
 {
     private readonly float _cameraAspecRatio = 1.7777778f;
@@ -51,8 +53,14 @@ public class Enemy_Move : MonoBehaviour
         _xyBounds = new Vector2(_xBounds, _yBounds);
     }
     private float _masterDifficulty = 0;
+    private Quaternion _masterRotation;
     private void Start()
     {
+        _masterRotation = transform.rotation;
+        _rigidbody = GetComponent<Rigidbody>();
+        if ( _rigidbody == null )
+            Debug.Log("Failed to get Rigidbody component!");
+
         GameManager.MasterDifficulty += (x) => { _masterDifficulty = x; };
         GameManager.NewDifficulty += (x) => AdjustDifficulty(x);
         BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
@@ -170,6 +178,8 @@ public class Enemy_Move : MonoBehaviour
             return false;
     }
     //complete: only allow one laser avoid or a probability of 2
+    //Todo: add a Range for lasers, note: avoid might be to slow with small ranges
+    //Todo: add a Range for aggressive drones, when far just drop down slow.
     private Transform _avoidClosestLaser = null;
     private Vector2 AvoidShots(Vector2 movement)
     {
@@ -257,7 +267,7 @@ public class Enemy_Move : MonoBehaviour
     {
         _homingTagged = true;
     }
-    
+    private Rigidbody _rigidbody;
     private void OnEnable()
     {
         //Debug: might want to move even listeners to on enable rather than start.
@@ -273,7 +283,14 @@ public class Enemy_Move : MonoBehaviour
                 _randomShiftLocation;
         _randomShiftLocation = transform.position.x;
         _move = true;
+        if (_rigidbody != null) DoRigidBodyStuff();
         NextWave();
+    }
+    private void DoRigidBodyStuff()
+    {
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.angularVelocity = Vector3.zero;
+        transform.rotation = Quaternion.identity;
     }
 
     private void OnDisable()
