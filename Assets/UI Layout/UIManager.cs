@@ -295,6 +295,9 @@ public class UIManager : DontDestroyHelper<UIManager>
         }
         VolumeSetup();
     }
+    [SerializeField]
+    private float _SFXReffTrigger = 0.1f;
+    private float _currentSFXReffTrigger = 0;
     private void VolumeSetup()
     {
         //update Volume if different then current volume
@@ -305,13 +308,13 @@ public class UIManager : DontDestroyHelper<UIManager>
         }
         if (_soundVolume != _currentSoundVolume)
         {
-            _currentSoundVolume = _soundVolume;
+            if (Mathf.Abs(_soundVolume - _currentSFXReffTrigger) > _SFXReffTrigger)
+            {
+                AudioManager.Instance.PlayAudioOneShot(Types.SFX.MiniBossLaser);
+                _currentSoundVolume = _soundVolume;
+            }
             AudioManager.Instance.UpdateSFXVolume(_soundVolume);
         }
-    }
-    private void DifficultySetup()
-    {
-
     }
     private void ThrusterCoolDown(float time)
     {
