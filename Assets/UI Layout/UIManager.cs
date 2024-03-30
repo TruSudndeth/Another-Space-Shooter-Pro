@@ -17,6 +17,7 @@ using System.Diagnostics.CodeAnalysis;
 
 public class UIManager : DontDestroyHelper<UIManager>
 {
+    //Todo: Add Difficulty visual feedback. Test, Easy, Mid, Hard (Add text for each setting, update UI)
     //LeftOff: _mainMenue is fucking things up. when in the main menu starting game we need to unsubscribe from UIDocument
     //When in game space we need to subscribe to UIDocument
     //when space is hit in game the game restarts.
