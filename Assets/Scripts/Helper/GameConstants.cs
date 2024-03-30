@@ -12,7 +12,9 @@ public static class GameConstants
     public static class World
     {
         public const float CameraAspecRatio = 1.7777778f;
-        public const int MaxDifficulty = 4;
-        public const int MinDifficulty = 0;
+        public const int MaxDifficulty = 3;
+        public const int MinDifficulty = 1;
+        public const int MinDifficulty_Test = 0;
+        public const int MaxDifficulty_Test = 4;
     }
 }

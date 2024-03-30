@@ -68,8 +68,6 @@ public class GameManager : DontDestroyHelper<GameManager>
     private int _waveSize = 0;
     private float _playerHit = 0;
     private float _outOfAmmoBeforeReload = 0;
-    //private
-
     private void CalculateDificulty()
     {
         // Wave Spawn Rate logic
@@ -122,6 +120,7 @@ public class GameManager : DontDestroyHelper<GameManager>
         UIManager.ExitApplication += ExitGame;
         UIManager.Load_Scene += LoadScene;
         UIManager.ResetLevel += RestartCurrentLevel;
+        UIManager.SetDifficultyUI += (x) => _currentDifficulty = x;
 
         StartGameAsteroids.SetDifficulty += () => { Mathf.Clamp(_currentDifficulty++, 0, 4); };
 
@@ -138,7 +137,8 @@ public class GameManager : DontDestroyHelper<GameManager>
     }
     private void GameStarted()
     {
-        _currentDifficulty = (float) _setMainDifficulty;
+        //Todo: Astroids no longer set difficulty
+        //_currentDifficulty = (float) _setMainDifficulty;
         MasterDifficulty?.Invoke(_currentDifficulty);
     }
     private void OnDestroy()
@@ -150,6 +150,7 @@ public class GameManager : DontDestroyHelper<GameManager>
             UIManager.Load_Scene -= LoadScene;
             UIManager.ResetLevel -= RestartCurrentLevel;
             UIManager.ExitApplication -= ExitGame;
+            UIManager.SetDifficultyUI -= (x) => _currentDifficulty = x;
 
             EnemySpawnManager.NewWaveEvent -= () => CalculateDificulty();
             EnemySpawnManager.SpawnFeedbackCount -= (x) => { _enemiesSpawned++; _waveSize = x; };
@@ -176,7 +177,7 @@ public class GameManager : DontDestroyHelper<GameManager>
     }
     private void ResetVariables()
     {
-        _currentDifficulty = (float) SetMainDifficulty;
+        //_currentDifficulty = (float) SetMainDifficulty;
         _currentDifficultyAdjustment = 0.0f;
         MasterDifficulty?.Invoke(_currentDifficulty);
     }

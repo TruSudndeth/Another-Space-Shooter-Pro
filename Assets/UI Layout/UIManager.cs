@@ -28,6 +28,9 @@ public class UIManager : DontDestroyHelper<UIManager>
     public delegate void ExitApp();
     public static event ExitApp ExitApplication;
 
+    public delegate void UISetsDifficulty(int difficulty);
+    public static event UISetsDifficulty SetDifficultyUI;
+
     [Space]
     private UIDocument _UIDocGame;
     private UIDocument _UIDocMenu;
@@ -45,6 +48,7 @@ public class UIManager : DontDestroyHelper<UIManager>
     private Button _quitBTN;
     private Slider _musicSlider;
     private Slider _soundSlider;
+    private SliderInt _difficultySlider;
     private float _musicVolume = 0.5f;
     private float _currentMusicVolume = 0;
     private float _soundVolume = 0.5f;
@@ -101,7 +105,7 @@ public class UIManager : DontDestroyHelper<UIManager>
         SetUIRef();
         //Debug: UIManager sub to events for Menu
         SubscribeToEvents();
-        
+
         UpdateUIVisuals();
         SetSceneInputs(); //Delete: Unknown if needed here
     }
@@ -111,10 +115,10 @@ public class UIManager : DontDestroyHelper<UIManager>
         InputManager.Instance.Exit.performed += _ => ExitGame();
         // Game Play Events
         InputManager.Instance.Restart.performed += _ => _hasRestarted = true;
-        BackGroundMusic_Events.BGM_Events += () => _thrustBPM = true; 
+        BackGroundMusic_Events.BGM_Events += () => _thrustBPM = true;
         Player.Thruster += ThrusterCoolDown;
         Player.UpdateAmmo += UpdateAmmo;
-        Player.Score += UpdateScore; 
+        Player.Score += UpdateScore;
         Player.UpdateHealth += UpdateHealth;
         Player.Game_Over += GameOver;
         StartGameAsteroids.GameStarted += GameStarted;
@@ -126,7 +130,7 @@ public class UIManager : DontDestroyHelper<UIManager>
             Debug.Log("Application closed in Main Menu");
             ExitApplication?.Invoke();
         }
-        if(!_isMainMenu)
+        if (!_isMainMenu)
         {
             _isMainMenu = true;
             ResetGame();
@@ -153,15 +157,38 @@ public class UIManager : DontDestroyHelper<UIManager>
             Debug.Log("Main Menu Inputs enabled");
             //Do Basic Setup here.
             InputManager.Instance.UIDisabled(false);
-            
+
             //Debug: UIManager Uncoment code bellow
             RegisterAllCallbacks();
+            SetSlidersMaxMin();
+            UpdateListeners();
         }
+    }
+    [SerializeField]
+    private int _difficulty = 1;
+    private void SetSlidersMaxMin()
+    {
+        _musicSlider.lowValue = 0.0f;
+        _musicSlider.highValue = 1.0f;
+        _soundSlider.lowValue = 0.0f;
+        _soundSlider.highValue = 1.0f;
+        _difficultySlider.lowValue = 0;
+        _difficultySlider.highValue = 3;
+        //Difficulty set to easy
+        _difficultySlider.value = _difficulty;
+        _soundSlider.value = _soundVolume;
+        _musicSlider.value = _musicVolume;
+    }
+    private void UpdateListeners()
+    {
+        SetDifficultyUI?.Invoke(_difficulty);
+        AudioManager.Instance.UpdateMusicVolume(_currentMusicVolume);
+        AudioManager.Instance.UpdateSFXVolume(_currentSoundVolume);
     }
     private void RegisterAllCallbacks()
     {
         _quitBTN.clicked += Application.Quit;
-        _optionsBTN.clicked += AudioEnableDisable;
+        _optionsBTN.clicked += OptionsEnableDisable;
         _startBTN.clicked += LoadLevelOne;
         //Delete: Debug Log, testing only
         Debug.Log("Registering all callbacks");
@@ -175,13 +202,14 @@ public class UIManager : DontDestroyHelper<UIManager>
         _quitBTN.RegisterCallback<ClickEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Click));
 
         //Todo: Add Audio Settings
-        _musicSlider.RegisterValueChangedCallback((evt) => _musicVolume = evt.newValue * 0.01f);
-        _soundSlider.RegisterValueChangedCallback((evt) => _soundVolume = evt.newValue * 0.01f);
+        _musicSlider.RegisterValueChangedCallback((evt) => _musicVolume = evt.newValue);
+        _soundSlider.RegisterValueChangedCallback((evt) => _soundVolume = evt.newValue);
+        _difficultySlider.RegisterValueChangedCallback((evt) => { SetDifficultyUI?.Invoke(evt.newValue); });
     }
     private void UnregisterAllCallBacks()
     {
         _quitBTN.clicked -= Application.Quit;
-        _optionsBTN.clicked -= AudioEnableDisable;
+        _optionsBTN.clicked -= OptionsEnableDisable;
         _startBTN.clicked -= LoadLevelOne;
         //Delete: Debug Log, testing only
         Debug.Log("Unregistering all callbacks");
@@ -196,6 +224,7 @@ public class UIManager : DontDestroyHelper<UIManager>
         //Todo: Add Audio Settings
         _musicSlider.UnregisterValueChangedCallback((evt) => _musicVolume = evt.newValue * 0.01f);
         _soundSlider.UnregisterValueChangedCallback((evt) => _soundVolume = evt.newValue * 0.01f);
+        _difficultySlider.UnregisterValueChangedCallback((evt) => { SetDifficultyUI?.Invoke(evt.newValue); });
     }
     private void GameStarted()
     {
@@ -229,11 +258,12 @@ public class UIManager : DontDestroyHelper<UIManager>
         if (!_isMainMenu)
         ResetLevel?.Invoke();
     }
-    private void AudioEnableDisable()
+    private void OptionsEnableDisable()
     {
         DisplayStyle isVisible = _musicSlider.style.display.value == DisplayStyle.Flex ? DisplayStyle.None : DisplayStyle.Flex;
         _musicSlider.style.display = isVisible;
         _soundSlider.style.display = isVisible;
+        _difficultySlider.style.display = isVisible;
     }
     private void Update()
     {
@@ -277,6 +307,10 @@ public class UIManager : DontDestroyHelper<UIManager>
             _currentSoundVolume = _soundVolume;
             AudioManager.Instance.UpdateSFXVolume(_soundVolume);
         }
+    }
+    private void DifficultySetup()
+    {
+
     }
     private void ThrusterCoolDown(float time)
     {
@@ -421,6 +455,7 @@ public class UIManager : DontDestroyHelper<UIManager>
         _quitBTN = _rootMenu.Q<Button>("Quit");
         _musicSlider = _rootMenu.Q<Slider>("Music");
         _soundSlider = _rootMenu.Q<Slider>("Sound");
+        _difficultySlider = _rootMenu.Q<SliderInt>("Difficulty");
     }
     private void OnDisable()
     {

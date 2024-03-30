@@ -5,6 +5,7 @@
         <ui:VisualElement style="flex-direction: column; align-items: stretch; justify-content: space-between; width: auto; margin-left: 30px; margin-bottom: 30px;">
             <ui:Button text="Start" display-tooltip-when-elided="true" name="Start" class="button" style="white-space: nowrap;" />
             <ui:Button text="Options" display-tooltip-when-elided="true" name="Options" class="button" />
+            <ui:SliderInt picking-mode="Ignore" label="Difficulty" value="42" high-value="100" name="Difficulty" class="slider" />
             <ui:Slider picking-mode="Ignore" label="Music" value="50" high-value="100" name="Music" class="slider" />
             <ui:Slider picking-mode="Ignore" label="Sound" value="50" high-value="100" name="Sound" class="slider" />
             <ui:Button text="Quit" display-tooltip-when-elided="true" name="Quit" class="button" />
