@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
+    //Bug: Camera Shakes when game starts _shakeTimer was changed from 0.0f to -1 (couldn't recreate behaviour)
     [SerializeField] private float shakeTime = 0.5f;
     [SerializeField] [Range(1.0f,5.0f)] private float _shakeAmplitude = 1f;
-    private float _shakeTimer = 0;
+    private float _shakeTimer = -1;
     private CinemachineVirtualCamera _cameraCMV;
     void Start()
     {
