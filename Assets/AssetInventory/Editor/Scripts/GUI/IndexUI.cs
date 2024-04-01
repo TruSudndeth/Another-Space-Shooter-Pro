@@ -804,7 +804,7 @@ namespace AssetInventory
                     _searchScrollPos = GUILayout.BeginScrollView(_searchScrollPos, false, false);
                     if (EditorGUI.EndChangeCheck())
                     {
-                        // TODO: implement paged endless scrolling, needs some pixel calculations though
+                        // TODO : implement paged endless scrolling, needs some pixel calculations though
                         // if (_textureLoading != null) EditorCoroutineUtility.StopCoroutine(_textureLoading);
                         // _textureLoading = EditorCoroutineUtility.StartCoroutine(LoadTextures(false), this);
                     }
@@ -2967,7 +2967,7 @@ namespace AssetInventory
                 {
                     string[] arr = _assetNames[_selectedAsset].Split('/');
                     string asset = arr[arr.Length - 1];
-                    wheres.Add("Asset.SafeName = ?"); // TODO: going via In would be more efficient but not available at this point
+                    wheres.Add("Asset.SafeName = ?"); // TODO : going via In would be more efficient but not available at this point
                     args.Add($"{asset}");
                 }
 
@@ -3164,7 +3164,7 @@ namespace AssetInventory
 
             // preview images
             if (_textureLoading != null) EditorCoroutineUtility.StopCoroutine(_textureLoading);
-            _textureLoading = EditorCoroutineUtility.StartCoroutine(LoadTextures(false), this); // TODO: should be true once pages endless scrolling is in
+            _textureLoading = EditorCoroutineUtility.StartCoroutine(LoadTextures(false), this); // TODO : should be true once pages endless scrolling is in
 
             // pagination
             _contents = _files.Select(file =>

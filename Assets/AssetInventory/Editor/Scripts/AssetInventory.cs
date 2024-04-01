@@ -927,7 +927,7 @@ namespace AssetInventory
             {
                 if (File.Exists(info.Location)) File.Delete(info.Location);
                 if (Directory.Exists(info.Location)) Directory.Delete(info.Location, true);
-                // TODO: delete preview images as well
+                // TODO : delete preview images as well
             }
             Asset existing = ForgetAsset(info);
             if (existing == null) return;
@@ -1043,7 +1043,7 @@ namespace AssetInventory
             asset.PreferredVersion = version;
             info.PreferredVersion = version;
 
-            // TODO: update minimal Unity version
+            // TODO : update minimal Unity version
 
             DBAdapter.DB.Update(asset);
         }

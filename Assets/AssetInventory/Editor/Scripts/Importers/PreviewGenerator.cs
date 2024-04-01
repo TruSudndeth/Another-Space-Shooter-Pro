@@ -171,7 +171,7 @@ namespace AssetInventory
         {
             if (includeProblematic)
             {
-                // TODO: will need dependency materialization
+                // TODO : will need dependency materialization
                 // Materials will not have correct texture references but stock shaders and colors will work
                 // Prefabs always have a reference to another object and will always be broken
                 return AssetInventory.IsFileType(file, "Audio")

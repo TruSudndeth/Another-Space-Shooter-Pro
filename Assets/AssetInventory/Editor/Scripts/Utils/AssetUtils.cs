@@ -110,7 +110,7 @@ namespace AssetInventory
             string previewFile = Path.Combine(previewFolder, assetInfo.AssetId.ToString(), assetInfo.PreviewImage);
             if (!File.Exists(previewFile))
             {
-                // TODO: mark file as invalid
+                // TODO : mark file as invalid
                 yield break;
             }
 
