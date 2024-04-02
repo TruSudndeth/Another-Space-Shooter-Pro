@@ -1,3 +1,5 @@
+using System.Numerics;
+
 public static class GameConstants
 {
     public static class Player
@@ -7,6 +9,7 @@ public static class GameConstants
     }
     public static class World
     {
+        public static Vector2 DefaultLocation = new Vector2(-50, 0);
         public const float CameraAspecRatio = 1.7777778f;
         public const int MaxDifficulty = 3;
         public const int MinDifficulty = 1;

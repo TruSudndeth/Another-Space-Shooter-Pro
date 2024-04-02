@@ -3,6 +3,7 @@ using UnityEngine.UIElements;
 using System.Text;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class UIManager : DontDestroyHelper<UIManager>
 {
@@ -28,6 +29,14 @@ public class UIManager : DontDestroyHelper<UIManager>
     [Space(20)]
     [SerializeField] private Transform _mainMenuUI;
     [SerializeField] private Transform _gamePlayUI;
+
+    //Todo: if pool is too small grow the list
+    [SerializeField]
+    private Transform _pointPoolParent;
+    [SerializeField]
+    private Transform _pointTextFX;
+    private List<Transform> _pointPoolFX;
+    private int _pointCount = 10;
 
     private Types.GameState _gameState;
     private bool _isMainMenu = true;
@@ -98,6 +107,38 @@ public class UIManager : DontDestroyHelper<UIManager>
 
         UpdateUIVisuals();
         SetSceneInputs(); //Delete: Unknown if needed here
+        _pointPoolFX = new(_pointCount);
+        PopulateTextPool();
+    }
+    private void PopulateTextPool()
+    {
+        Vector2 worldPositions = new Vector2 (GameConstants.World.DefaultLocation.X, GameConstants.World.DefaultLocation.Y);
+        Vector3 currentPosition = new Vector3();
+        for (int i = 0; i < _pointCount; i++)
+        {
+            _pointPoolFX.Add(Instantiate(_pointTextFX, Vector2.zero, Quaternion.identity, _pointPoolParent));
+            currentPosition = _pointPoolFX[^1].position;
+            currentPosition = new Vector3(worldPositions.x, worldPositions.y, currentPosition.z);
+            _pointPoolFX[^1].position = currentPosition;
+            _pointPoolFX[^1].gameObject.SetActive(false);
+        }
+    }
+    private Transform _currentTextTransform = null;
+    public void RequestText(string text, Vector3 position)
+    {
+        CollectablePointsFX requestText = null;
+        _currentTextTransform = null;
+        _currentTextTransform = _pointPoolFX.FirstOrDefault(x => !x.gameObject.activeSelf);
+        requestText = _currentTextTransform.GetComponent<CollectablePointsFX>();
+        if(!_currentTextTransform || !requestText)
+        {
+            Debug.Log("Text Request was not found or all requests are being used");
+        }else
+        {
+            _currentTextTransform.gameObject.SetActive(true);
+            _currentTextTransform.position = position;
+            requestText.PreviewTextRequest(text);
+        }
     }
     private void SubscribeToEvents()
     {

@@ -180,13 +180,21 @@ public class Player : MonoBehaviour
     }
     public void AddHealth(bool Anti_Powerup)
     {
-        //Todo: Add a negative Override to health
+        //Todo: Dynamic health when playing easy then disply it popup
+        //complete: Add a negative Override to health
         //50% chance to remove a health else add a health. This can kill the player.
-        //Todo: Add Health Sound FX
+        //complete: Add Health Sound FX
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
         PlayPowerupSound(antiProbablility);
         if (_health >= 3 && !antiProbablility) return;
-        if (antiProbablility) Damage(Types.Tag.Player, 1); else _health++; //Glitch found Damaged caused by Collectable not damaged by player
+        if (antiProbablility) 
+            Damage(Types.Tag.Player, 1); 
+        else
+        {
+            int addHealth = 1;
+            UIManager.Instance.RequestText($"+{addHealth}up", transform.position);
+            _health += addHealth; //Glitch found Damaged caused by Collectable not damaged by player
+        }
         if (_health >= 3)
         {
             _damageLeftENG.SetActive(false);
@@ -203,15 +211,28 @@ public class Player : MonoBehaviour
         //Todo: Add a negative overide to Ammo
         //Override will ony have a 50% change to give full ammo else give 3
         //Todo: Ammo Reload Sound effect
+        int addedAmmoCount = 0;
         if(_ammoBank == 0)
         PlayerOutOfAmmoFeedback?.Invoke(); // feedback to gamemanager out of ammo and collectected powerup.
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
         PlayPowerupSound(antiProbablility);
-        if (_ammoBank == _ammoBankMax && antiProbablility) return;
+        if (_ammoBank >= _ammoBankMax && antiProbablility) return;
         if(Anti_Powerup)
-        _ammoBank = !antiProbablility ? _ammoBankMax : Mathf.Clamp(_ammoBank + Mathf.RoundToInt(_ammoBankMax / 4), 0, _ammoBankMax);
+        {
+            addedAmmoCount = Mathf.RoundToInt(_ammoBankMax / 4);
+            addedAmmoCount = !antiProbablility ? _ammoBankMax : addedAmmoCount;
+            if(_ammoBank + addedAmmoCount >= _ammoBankMax)
+            {
+                addedAmmoCount = _ammoBankMax - _ammoBank;
+            }
+            _ammoBank = Mathf.Clamp(_ammoBank + addedAmmoCount, 0, _ammoBankMax);
+        }
         else
+        {
+            addedAmmoCount = _ammoBankMax - _ammoBank;
             _ammoBank = _ammoBankMax;
+        }
+        UIManager.Instance.RequestText($"+{addedAmmoCount}up", transform.position);
         UpdateAmmo(_ammoBank, _ammoBankMax);
     }
     public void SpeedBoost(bool Anti_Powerup)
