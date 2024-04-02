@@ -7,11 +7,12 @@ using System.Linq;
 
 public class UIManager : DontDestroyHelper<UIManager>
 {
+    //Todo: When killing an enemy shot points added on the top right adding points (increment or popup text)
     //Todo: Add Difficulty visual feedback. Test, Easy, Mid, Hard (Add text for each setting, update UI)
-    //LeftOff: _mainMenue is fucking things up. when in the main menu starting game we need to unsubscribe from UIDocument
+    //debug: _mainMenue is fucking things up. when in the main menu starting game we need to unsubscribe from UIDocument
     //When in game space we need to subscribe to UIDocument
     //when space is hit in game the game restarts.
-    //Player inputs might be working but must double check.
+    //Debug: Player inputs might be working but must double check.
     public delegate void Reset();
     public static event Reset ResetLevel;
     public delegate void LoadScene(Types.GameState index);
