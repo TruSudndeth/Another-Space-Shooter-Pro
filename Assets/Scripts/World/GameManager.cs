@@ -1,9 +1,5 @@
-using Melanchall.DryWetMidi.Tools;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngineInternal;
 using static Types;
 
 public class GameManager : DontDestroyHelper<GameManager>

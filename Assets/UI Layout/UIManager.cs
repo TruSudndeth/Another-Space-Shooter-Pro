@@ -1,19 +1,8 @@
-using Mono.Cecil.Cil;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
-
-using UnityEngine.EventSystems;
-using NUnit.Framework.Internal.Filters;
-using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using UnityEngine;
+using System;
 
 public class UIManager : DontDestroyHelper<UIManager>
 {

@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.ShaderGraph;
 
 //Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
 //Debug: Enemy ship Bug, some how speed is reduced to a crawl, not able to find reason.
 //Todo: Enemy Easy mode ships don't move towards player if anything only a probability of ships do.
+//Todo: Enemy Move, dodge shots reduce probability
 public class Enemy_Move : MonoBehaviour
 {
     private readonly float _cameraAspecRatio = 1.7777778f;
