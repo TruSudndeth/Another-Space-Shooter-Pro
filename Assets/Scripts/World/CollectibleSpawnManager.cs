@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CollectibleSpawnManager : MonoBehaviour
 {
+    //complete: Collectable pools
     public static CollectibleSpawnManager Instance;
 
     [SerializeField] private List<Transform> _powerupAssets;
@@ -28,6 +29,15 @@ public class CollectibleSpawnManager : MonoBehaviour
             Destroy(this);
         StartGameAsteroids.GameStarted += GameStarted;
         BackGroundMusic_Events.BGM_Events += () => _spawningBPM = true;
+        PopulatePool();
+    }
+    private void PopulatePool()
+    {
+        for (int i = 0; i < _powerupAssets.Count; i++)
+        {
+            _collectableList.Add(Instantiate(_powerupAssets[i], RandomXSpawn(), Quaternion.identity, transform));
+            _collectableList[^1].gameObject.SetActive(false);
+        }
     }
     
     void GameStarted()
@@ -43,16 +53,29 @@ public class CollectibleSpawnManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    private Transform _currentCollectable = null;
     void FixedUpdate()
     {
-        //Add if statment to spawn every 7 seconds Time.time
+        //Todo: Add if statment to spawn every 7 seconds Time.time
         if (_powerupAssets.Count == 0 || !_gameStarted) return;
         if (_currentSpawnTime + _spawnRate <= Time.time && _spawningBPM)
         {
             _spawningBPM = false;
             _currentSpawnTime = Time.time;
             int randomPrefab = RandomInt();
-            _collectableList.Add(Instantiate(_powerupAssets[randomPrefab], RandomXSpawn(), Quaternion.identity, transform)); //Debugit: IndexOut of Range -1, < collection
+            _currentCollectable = null;
+            //Todo: Check if randomPrefab exist already and enable it and position it.
+            _currentCollectable = _collectableList.Where(x => !x.gameObject.activeSelf).FirstOrDefault(x => x.GetType() == _powerupAssets[randomPrefab].GetType());
+            if (_currentCollectable != null) 
+            {
+                _currentCollectable.gameObject.SetActive(true);
+                _currentCollectable.position = RandomXSpawn();
+            }
+            else
+            {
+                _collectableList.Add(Instantiate(_powerupAssets[randomPrefab], RandomXSpawn(), Quaternion.identity, transform)); //Debugit: IndexOut of Range -1, < collection
+                _currentCollectable = _collectableList[^1];
+            }
         }
         else
             _spawningBPM = false;

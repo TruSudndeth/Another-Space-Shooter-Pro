@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class PowerUpBehavior : MonoBehaviour
 {
-    //Todo: Collectable pools
     //Todo: Burner Add Quantity amount when a numeric collectable is picked up. Ammo, health.
     //Todo: PowerUp Shield energy depleating Timmer warning. Sound (OutOfTimeShield)
     //Complete: When powerup is faulty add a positive sound and a negative sound when collected
@@ -26,13 +25,15 @@ public class PowerUpBehavior : MonoBehaviour
 
     private void Awake()
     {
-        _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity; //Fix: Move to enabled for pooling
         //Complete: Add a negative visual to the powerup
-        CheckIfVisualExistAndSet(_antiPowerups);
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
     }
-    
+    private void OnEnable()
+    {
+        _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity; //Fix: Move to enabled for pooling
+        CheckIfVisualExistAndSet(_antiPowerups);
+    }
     private void CheckIfVisualExistAndSet(bool isActive)
     {
         if (_negativePowerupVisual != null)
