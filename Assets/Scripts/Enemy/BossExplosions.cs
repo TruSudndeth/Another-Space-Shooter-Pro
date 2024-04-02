@@ -19,6 +19,8 @@ public class BossExplosions : MonoBehaviour
     [SerializeField]
     private Types.VFX vfxType;
     [SerializeField]
+    private Types.SFX _partsExplotionSFX = Types.SFX.BossDeath;
+    [SerializeField]
     private BossParts _motherShipPart;
     [SerializeField]
     private Transform[] _locations;
@@ -63,7 +65,8 @@ public class BossExplosions : MonoBehaviour
             _multiExplosion = _multiExplosion >= _locations.Length ? _locations.Length : _multiExplosion;
             if (iterate < _locations.Length - _multiExplosion)
                 yield return new WaitForSeconds(timeDelay);
-            //play sound as well
+            //Todo: BossExplosions Audio Must Fix
+            AudioManager.Instance.PlayAudioOneShot(_partsExplotionSFX);
             iterate++;
             timeDelay = TimeDelayRange();
             if (iterate >= _locations.Length)

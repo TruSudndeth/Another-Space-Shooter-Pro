@@ -32,6 +32,11 @@ public class AudioManager : DontDestroyHelper<AudioManager>
     public void PopulateClipPool()
     {
         _clipPool = new(10);
+        if(!_audioSourcePrefab)
+        {
+            Debug.Log("_audioSourcePrefab is null ");
+            return;
+        }
         for (int i = 0; i < _poolMax; i++)
         {
             Transform prefab = Instantiate(_audioSourcePrefab, transform);

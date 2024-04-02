@@ -1107,21 +1107,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: VCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 4753678655421102739, guid: 595d9278a1e448547b31f41e47225097,
-        type: 3}
-      propertyPath: m_Lens.Dutch
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753678655421102739, guid: 595d9278a1e448547b31f41e47225097,
-        type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753678656760159401, guid: 595d9278a1e448547b31f41e47225097,
-        type: 3}
-      propertyPath: m_AmplitudeGain
-      value: 1.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 595d9278a1e448547b31f41e47225097, type: 3}
 --- !u!1001 &6140642930754714188
@@ -1200,14 +1185,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1565107436, guid: 33552a9482b5fc445b59983103086a3f, type: 3}
-      propertyPath: _clipAssets.Array.size
-      value: 22
-      objectReference: {fileID: 0}
-    - target: {fileID: 1565107436, guid: 33552a9482b5fc445b59983103086a3f, type: 3}
-      propertyPath: _clipAssets.Array.data[21]
-      value: 
-      objectReference: {fileID: 8300000, guid: b2ad8db59fe4904499ee8fe83656434e, type: 3}
     - target: {fileID: 6839550174193508192, guid: 33552a9482b5fc445b59983103086a3f,
         type: 3}
       propertyPath: m_Name

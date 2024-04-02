@@ -184,6 +184,7 @@ public class Player : MonoBehaviour
         //50% chance to remove a health else add a health. This can kill the player.
         //Todo: Add Health Sound FX
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
+        PlayPowerupSound(antiProbablility);
         if (_health >= 3 && !antiProbablility) return;
         if (antiProbablility) Damage(Types.Tag.Player, 1); else _health++; //Glitch found Damaged caused by Collectable not damaged by player
         if (_health >= 3)
@@ -205,9 +206,10 @@ public class Player : MonoBehaviour
         if(_ammoBank == 0)
         PlayerOutOfAmmoFeedback?.Invoke(); // feedback to gamemanager out of ammo and collectected powerup.
         bool antiProbablility = Anti_Powerup ? Random.Range(1, 100) > 50 : false;
+        PlayPowerupSound(antiProbablility);
         if (_ammoBank == _ammoBankMax && antiProbablility) return;
         if(Anti_Powerup)
-        _ammoBank = antiProbablility ? _ammoBankMax : Mathf.Clamp(_ammoBank + Mathf.RoundToInt(_ammoBankMax / 4), 0, _ammoBankMax);
+        _ammoBank = !antiProbablility ? _ammoBankMax : Mathf.Clamp(_ammoBank + Mathf.RoundToInt(_ammoBankMax / 4), 0, _ammoBankMax);
         else
             _ammoBank = _ammoBankMax;
         UpdateAmmo(_ammoBank, _ammoBankMax);
@@ -216,6 +218,7 @@ public class Player : MonoBehaviour
     {
         //Todo: Add a negative override to speed boost
         //will give the player an Ugly speed boost for a short time
+        PlayPowerupSound(Anti_Powerup);
         _isAntiSpeed = Anti_Powerup;
         _isSpeedBoostActive = true;
         _speedBoostTime = Time.time;
@@ -224,6 +227,7 @@ public class Player : MonoBehaviour
     {
         //Todo: Add a negative override to tripple shot
         //Override Tripple shot will take 3 x ammo
+        PlayPowerupSound(Anti_Powerup);
         _antiTrippleShot = Anti_Powerup;
         _isTrippleShot = true;
         _powerUpTime = Time.time;
@@ -235,6 +239,7 @@ public class Player : MonoBehaviour
         //Todo: add Defective Shield visual and sound
         if (_isShieldActive)
         {
+            PlayPowerupSound(Anti_Powerup);
             _defectiveShield = Anti_Powerup;
             _resetShield = true;
             Damage(Types.Tag.Player, 0);
@@ -249,6 +254,13 @@ public class Player : MonoBehaviour
         //GDHQ: New Projectile Prt 2 for a 5 Second Time out.
         _useBomb = true;
         _bombTime = Time.time;
+    }
+    private void PlayPowerupSound(bool antiPowerup)
+    {
+        if (antiPowerup)
+            AudioManager.Instance.PlayAudioOneShot(Types.SFX.ErrorSound);
+        else
+            AudioManager.Instance.PlayAudioOneShot(Types.SFX.PickUp);
     }
     public void Damage(Types.Tag damagedBy, int damageBy)
     {
@@ -308,6 +320,7 @@ public class Player : MonoBehaviour
     public void HomingMissleActive(bool antiHoming)
     {
         //Todo: add a negative override to Homing Missle
+        PlayPowerupSound(antiHoming);
         _homingLasers = true;
         _homingLasersTime = Time.time;
     }
@@ -379,6 +392,7 @@ public class Player : MonoBehaviour
     }
     private void OnDisable()
     {
+        //Bug: Something is instantiating InputManager in OnDisable()
         StartGameAsteroids.GameStarted -= () => GameStarted();
         InputManager.Instance.Thrust.started -= _ => _actuateThrust = true;
         EnemyCollisons.EnemyPointsEvent -= UpdateScore;

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PowerUpBehavior : MonoBehaviour
 {
-    //Todo: Add Quantity amount when a numeric collectable is picked up. Ammo, health.
+    //Todo: Collectable pools
+    //Todo: Burner Add Quantity amount when a numeric collectable is picked up. Ammo, health.
     //Todo: PowerUp Shield energy depleating Timmer warning. Sound (OutOfTimeShield)
+    //Complete: When powerup is faulty add a positive sound and a negative sound when collected
     [SerializeField] private Types.PowerUps _powerUpType;
     public Types.PowerUps PowerUpType { get { return _powerUpType; } private set { } }
     [Space]
@@ -25,7 +27,7 @@ public class PowerUpBehavior : MonoBehaviour
     private void Awake()
     {
         _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity; //Fix: Move to enabled for pooling
-        //Todo: Add a negative visual to the powerup
+        //Complete: Add a negative visual to the powerup
         CheckIfVisualExistAndSet(_antiPowerups);
         _xyBounds.y = Camera.main.orthographicSize;
         _xyBounds.x = _xyBounds.y * _cameraAspecRatio;
@@ -89,9 +91,7 @@ public class PowerUpBehavior : MonoBehaviour
                         Debug.Log(transform + "Power Up type not set");
                         break;
                 }
-                if(_antiPowerups)
-                    AudioManager.Instance.PlayAudioOneShot(Types.SFX.ErrorSound);
-                else
+                if(!_antiPowerups)
                     AudioManager.Instance.PlayAudioOneShot(Types.SFX.PickUp);
             }
         }

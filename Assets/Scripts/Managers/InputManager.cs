@@ -8,11 +8,11 @@ public class InputManager : DontDestroyHelper<InputManager>
     //Found a bug that doesn't let me shoot when i move diagnal (-1, 1) (-1, -1) (1, -1)
     private MyBaseInputs _playerInputs;
     
+    [HideInInspector] public InputAction Restart { get; private set; }
+    [HideInInspector] public InputAction Thrust { get; private set; }
     [HideInInspector] public InputAction WSAD { get; private set; }
     [HideInInspector] public InputAction Fire { get; private set; }
-    [HideInInspector] public InputAction Restart { get; private set; }
     [HideInInspector] public InputAction Exit { get; private set; }
-    [HideInInspector] public InputAction Thrust { get; private set; }
 
     protected override void Awake()
     {
@@ -21,10 +21,11 @@ public class InputManager : DontDestroyHelper<InputManager>
         
         _playerInputs = new();
 
+        //Player
         Thrust = _playerInputs.Player.Thrust;
         WSAD = _playerInputs.Player.Move;
         Fire = _playerInputs.Player.Fire; 
-
+        //UI
         Exit = _playerInputs.UI.Exit;
         Restart = _playerInputs.UI.Restart;
 
@@ -69,6 +70,7 @@ public class InputManager : DontDestroyHelper<InputManager>
         }
         else
         {
+
             Thrust.Disable();
             WSAD.Disable();
             Fire.Disable();
@@ -81,9 +83,10 @@ public class InputManager : DontDestroyHelper<InputManager>
     }
     private void DisableAllPlayerInputs()
     {
-        if(Thrust != null) Thrust.Disable();
-        if(Restart != null) Restart.Disable();
-        if(WSAD != null) WSAD.Disable();
-        if(Fire != null) Fire.Disable();
+        //if (_playerInputs != null) _playerInputs.Disable();
+        if (Restart != null)    Restart.Disable();
+        if (Thrust != null)     Thrust.Disable();
+        if (WSAD != null)       WSAD.Disable();
+        if (Fire != null)       Fire.Disable();
     }
 }

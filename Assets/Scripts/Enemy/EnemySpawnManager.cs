@@ -123,7 +123,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         _difficulty = newDifficulty;
         _multiSpawnProbability = MathFunctionsHelper.Map(_difficulty, 0, 4, 0, 100);
-        Debug.Log("percentage " + _multiSpawnProbability);
+        // Debug.Log("percentage " + _multiSpawnProbability);
         CalculateSpawnCount();
         //must make equations to set a spawn difficulty using a float where hard (3) is 1 spawn per beat
         //Adjust spawns per measure here _spawnsPerMeasure spawn rate where hard is equal to 4.
@@ -156,7 +156,7 @@ public class EnemySpawnManager : MonoBehaviour
         float ECount = MathFunctionsHelper.Map(_difficulty, 0.0f, 4.0f, 1, eYCount);
         _enemiesSpawnCount = Mathf.RoundToInt(ECount * _difficulty);
         _enemiesSpawnCount = _enemiesSpawnCount <= 0 ? 1 : _enemiesSpawnCount;
-        Debug.Log(_enemiesSpawnCount + " Enemies spawned with difficulty " + _difficulty);
+        // Debug.Log(_enemiesSpawnCount + " Enemies spawned with difficulty " + _difficulty);
     }
     private void SpawnWaveState(bool isWavesPaused = false)
     {

@@ -35,7 +35,10 @@ public class StartingAsteroids : MonoBehaviour
         {
             //Debug: StartingAstroids OnDestroy on editor Stop
             _vfx.PlayVFX();
-            AudioManager.Instance.PlayAudioOneShot(_sfxType);
+            if (AudioManager.Instance == null) 
+                Debug.Log("AudioManager.instance is null ");
+            else
+                AudioManager.Instance.PlayAudioOneShot(_sfxType);
         }
     }
 }

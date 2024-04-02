@@ -66,7 +66,7 @@ public class Enemy_Move : MonoBehaviour
         BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
         if (_masterDifficulty == 0)
         {
-            Debug.Log("Throw event error. difficulty", transform);
+            //Debug.Log("Throw event error. difficulty", transform);
             _masterDifficulty = (float) GameManager.Instance.SetMainDifficulty;
         }
         _currentDifficulty = _masterDifficulty;
@@ -137,7 +137,7 @@ public class Enemy_Move : MonoBehaviour
         }
     }
     private void Move()
-    {
+    {   //Todo: Enemy Move, Turn moves into bools add a straight move. and add a difficulty curve
         float fixedTime = Time.fixedDeltaTime;
         if (DistanceFromPlayer())
         {

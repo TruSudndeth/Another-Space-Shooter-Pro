@@ -217,7 +217,7 @@ public class UIManager : DontDestroyHelper<UIManager>
         _optionsBTN.clicked -= OptionsEnableDisable;
         _startBTN.clicked -= LoadLevelOne;
         //Delete: Debug Log, testing only
-        Debug.Log("Unregistering all callbacks");
+        // Debug.Log("Unregistering all callbacks");
         _startBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _optionsBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
         _quitBTN.UnregisterCallback<MouseOverEvent>(evt => AudioManager.Instance.PlayAudioOneShot(Types.SFX.UI_Hover));
@@ -468,7 +468,7 @@ public class UIManager : DontDestroyHelper<UIManager>
     }
     private void OnDisable()
     {
-        if (Instance != this) return;
+        if (Instance != this) return;  //Bug: Something is instantiating InputManager in OnDisable()
         //Debug: redundant event un-subscription during gameplay mode
         UpdateDisabled();
         UnregisterAllCallBacks();

@@ -178,6 +178,8 @@ MonoBehaviour:
   _stage1Parts: 070000000800000005000000
   _stage2Parts: 0300000002000000
   _stage3Parts: 01000000
+  _damagePerPart: 3
+  _motherShipsDestroyed: 0
   _MotherShip: {fileID: 5262201631330361256}
   _positions: {fileID: 6235951448674506672}
   _bossSpeed: 1
@@ -251,6 +253,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6235951450136710354}
     m_Modifications:
+    - target: {fileID: 4913729636034442038, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
+        type: 3}
+      propertyPath: m_Name
+      value: MotherShipParts
+      objectReference: {fileID: 0}
     - target: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
         type: 3}
       propertyPath: m_RootOrder

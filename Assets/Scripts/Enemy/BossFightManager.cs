@@ -36,6 +36,7 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
     [SerializeField]
     private List<BossParts> _stage3Parts;
     private List<List<BossParts>> _stages;
+    
 
     [SerializeField]
     private int _damagePerPart = 3;
@@ -171,7 +172,7 @@ public class BossFightManager : DontDestroyHelper<BossFightManager>
         //StartBossFight();
         ResetBossEvent?.Invoke();
         BossSetup();
-        Debug.Log("Boss was reset and invoked");
+        //Debug.Log("Boss was reset and invoked");
     }
     private void RegisterPartDestroid(BossParts parts)
     {
