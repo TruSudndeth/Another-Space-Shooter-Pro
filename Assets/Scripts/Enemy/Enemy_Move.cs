@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Linq;
 
-//Todo: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
+//Colmplete: Change Enemy laser Transform tags to EnemyLaser and player transform laser to PlayerLaser
 //Debug: Enemy ship Bug, some how speed is reduced to a crawl, not able to find reason.
-//Todo: Enemy Easy mode ships don't move towards player if anything only a probability of ships do.
-//Todo: Enemy Move, dodge shots reduce probability
+//Complete: Enemy Easy mode ships don't move towards player if anything only a probability of ships do.
+//Complete: Enemy Move, dodge shots reduce probability
 public class Enemy_Move : MonoBehaviour
 {
     private readonly float _cameraAspecRatio = 1.7777778f;
@@ -20,9 +20,7 @@ public class Enemy_Move : MonoBehaviour
     [SerializeField] private float _shiftSpeedMin = 0.5f;
     [SerializeField] private float _ShiftSpeedMax = 2.0f;
     private float _shiftSpeed = 0.5f;
-    private float _shiftProbability = 0.25f;
-    private bool _isShifting = false;
-    private float _randomShiftLocation;
+    private float _randomShiftDirection;
 
     [Space]
     [SerializeField] private Types.Enemy _enemyType = Types.Enemy.Default;
@@ -33,12 +31,22 @@ public class Enemy_Move : MonoBehaviour
 
     [Space(25)]
     [SerializeField] private float _aggressiveCrash = 5.0f;
-    [SerializeField] private bool _isAggressive = false;
     [SerializeField][Range(0.0f, 1.0f)] private float _aggressiveProbability = 0.25f;
     [SerializeField][Range(0.0f, 1.0f)] private float _trackerSpeedReduction = 0.25f;
     [SerializeField] private Transform _laserManager;
+
+    [Space]
+    [SerializeField] private bool _isAggressive = false;
+    [SerializeField] private bool _avoidShots = false;
+    [SerializeField] private bool _isBPMove = false;
+    [SerializeField] private bool _canTrackPlayer = false;
+    [SerializeField] private bool _isShifiting = false;
+
+
+    //Fix: isShifingBPM is pulsed
+    [SerializeField] private bool _moveWithBPM = false;
+
     private bool _aggressiveTracking = false;
-    private bool _avoidShots = false;
     private bool _homingTagged = false;
     public bool HomingTagged { get { return _homingTagged; } private set {} }
     private void Awake()
@@ -59,7 +67,7 @@ public class Enemy_Move : MonoBehaviour
 
         GameManager.MasterDifficulty += (x) => { _masterDifficulty = x; };
         GameManager.NewDifficulty += (x) => AdjustDifficulty(x);
-        BackGroundMusic_Events.BGM_Events += () => _isShifting = !_isShifting;
+        BackGroundMusic_Events.BGM_Events += () => _moveWithBPM = !_moveWithBPM;
         if (_masterDifficulty == 0)
         {
             //Debug.Log("Throw event error. difficulty", transform);
@@ -89,7 +97,7 @@ public class Enemy_Move : MonoBehaviour
             if(_anticipationTime + _spawnAnticipation_MS < Time.time)
             {
                 Move();
-                if (_enemyType == Types.Enemy.Scifi_Drone_04)
+                if (_canTrackPlayer && _enemyType == Types.Enemy.Scifi_Drone_04)
                     TrackPlayer();
             }
         }
@@ -128,34 +136,41 @@ public class Enemy_Move : MonoBehaviour
         {
             if (_enemyType == Types.Enemy.Scifi_Drone_04)
             {
-                _randomShiftLocation = Vector2.Dot(Vector2.left, transform.position - _trackPlayer.position);
+                _randomShiftDirection = Vector2.Dot(Vector2.left, transform.position - _trackPlayer.position);
             }
         }
     }
     private void Move()
     {   //Todo: Enemy Move, Turn moves into bools add a straight move. and add a difficulty curve
+        //Enemy_Move: Aggressive (Target locked)
         float fixedTime = Time.fixedDeltaTime;
         if (DistanceFromPlayer())
         {
-            float adjustSpeed = _speed;
+            float adjustSpeed = _speed; //Todo: EMove Adjust speed based on difficulty
             transform.position = Vector3.MoveTowards(transform.position, _trackPlayer.position, adjustSpeed * fixedTime);
             return;
         }
-        Vector3 movePlayer = (_speed * fixedTime) * Vector3.down;
-        Vector3 shiftPlayer = ShiftWithBPM(fixedTime);
+        //Enemy_Move: Aggressive (Target not locked)
+        Vector3 movePlayer = (_speed * fixedTime) * Vector3.down; //Todo: do this only when on easy
+        //Enemy_Move: is shifting
+        Vector3 shiftPlayer = MoveWithBPM(fixedTime);
         if (_isAggressive)
         {
             movePlayer *= _trackerSpeedReduction;
             movePlayer.x = 0;
         }
-        if (!_isShifting && _enemyType == Types.Enemy.Scifi_Drone_04 && !_isAggressive) movePlayer.y *= 0.01f;
+        //Enemy_Move: Shifiting
+        if (_isBPMove && !_moveWithBPM && _enemyType == Types.Enemy.Scifi_Drone_04 && !_isAggressive) movePlayer.y *= 0.01f;
         //Todo: should _avoidShots be added to a difficulty curve?
+        //Enemy_Move: Avoid Shots
         if (_avoidShots)
         {
             movePlayer = AvoidShots(movePlayer);
         }
-        movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
+        //EnemyMove: Move Straight
 
+        //Enemy_Move: Finish move
+        movePlayer = OutOfBounds.CalculateMove(transform, movePlayer + shiftPlayer, _xyBounds);
         if (movePlayer.y == 0) gameObject.SetActive(false);
         transform.position += movePlayer;
     }
@@ -176,6 +191,8 @@ public class Enemy_Move : MonoBehaviour
     //complete: only allow one laser avoid or a probability of 2
     //Todo: add a Range for lasers, note: avoid might be to slow with small ranges
     //Todo: add a Range for aggressive drones, when far just drop down slow.
+    //Todo: Enemy_Move Fix avoid shot probability.
+    //Todo: Enemy_Move Avoid Shots VFX and SFX
     private Transform _avoidClosestLaser = null;
     private Vector2 AvoidShots(Vector2 movement)
     {
@@ -184,7 +201,8 @@ public class Enemy_Move : MonoBehaviour
             if(_avoidClosestLaser.gameObject.activeSelf == false)
             {
                 _avoidClosestLaser = null;
-                if (Random.Range(0, 100) < 75) _avoidShots = false;
+                if (Random.Range(0, 100) < 90 - Mathf.RoundToInt(10 * _currentDifficulty)) 
+                    _avoidShots = false;
                 return movement;
             }
         }
@@ -231,33 +249,36 @@ public class Enemy_Move : MonoBehaviour
             }
         return closestLaser;
     }
-    private Vector3 ShiftWithBPM(float fixedTime)
+    private Vector3 MoveWithBPM(float fixedTime)
     {
-        if (_isShifting || _aggressiveTracking)
+        if (_canTrackPlayer || (_isShifiting && (_moveWithBPM || _aggressiveTracking)))
         {
-            Vector3 shiftPlayer = _shiftSpeed * fixedTime * Mathf.Sign(_randomShiftLocation) * (Vector3.right);
+            Vector3 shiftPlayer = _shiftSpeed * fixedTime * Mathf.Sign(_randomShiftDirection) * (Vector3.right);
             return shiftPlayer;
         }
         else
             return Vector3.zero;
     }
-    
-    private void NextWave()
+    private float _currentAggressiveProbability = 0;
+    private bool NextWave()
     {
         //LeftOff: Next wave to reset all used asssets
         if (_enemyType != Types.Enemy.Scifi_Drone_04)
-            return;
+            return false;
         float aggressiveProbability = Random.Range(0.0f, 1.0f);
-        if(aggressiveProbability <= _aggressiveProbability)
+        if(aggressiveProbability <= _currentAggressiveProbability)
         {
-            _isAggressive = true;
             _aggressiveTracking = true;
+            _canTrackPlayer = true;
+            _isAggressive = true;
         }
         else
         {
-            _isAggressive = false;
             _aggressiveTracking = false;
+            _canTrackPlayer = false;
+            _isAggressive = false;
         }
+        return _isAggressive;
     }
     public void HasBeenTaggedByLaser()
     {
@@ -269,18 +290,32 @@ public class Enemy_Move : MonoBehaviour
         //Debug: might want to move even listeners to on enable rather than start.
         //Debug: performance, might be tax heavy with reg and unreg
         AdjustDifficulty(_currentDifficulty);
-        
+
+        //Difficulty settings _isAggressive, _avoidShots, _isBPMove, _canTrckPlayer, _isShifting
+        //00000 = straight, 00001 = Random direction, 
+        //masterDifficulty + 1 == current difficulty
+        //LeftOff: Setting up Difficulty from easy to hard.
+        //Bug: Enemy_Move is _aggresive is too fast
+        int masterDifficulty = Mathf.RoundToInt(_masterDifficulty) == 0 ? 1 : Mathf.RoundToInt(_masterDifficulty);
+        _currentAggressiveProbability = Random.Range(0.0f, _aggressiveProbability);
+        _isAggressive = NextWave(); //Todo: Balance Aggressive probability Skip if one already exist easy - hard
+        _canTrackPlayer = _canTrackPlayer || Random.Range(0, 101) < 10 * masterDifficulty;
+        _avoidShots = Random.Range(0, 101) < 10 * masterDifficulty;
+        _isBPMove = Random.Range(0,101) < 10 * masterDifficulty; //Todo: Set range based on difficulty
+        _isShifiting = Random.Range(0, 101) < 10 * masterDifficulty; ;
+
+        if(_currentDifficulty >= masterDifficulty + 0.5f) //HardCode: hard coded 0.5f
+        {
+            int mDifficultSquared = Mathf.RoundToInt(_currentDifficulty * _currentDifficulty);
+            _isShifiting = _isShifiting || Random.Range(0, 101) < 10 * (mDifficultSquared);
+            _randomShiftDirection = Random.Range(-_xBounds, _xBounds);
+        }
+
         _anticipationTime = Time.time;
-        _avoidShots = Random.Range(0, 101) < 35;
-        _shiftProbability = Random.Range(0.0f, 1.0f);
         _shiftSpeed = Random.Range(_shiftSpeedMin, _ShiftSpeedMax);// * _enemySpeedAdjustment;
-        //Todo: Add a zero probability. (straight)
-        _randomShiftLocation = Random.Range(0.0f, 1.0f) <= _shiftProbability ? Random.Range(-_xBounds, _xBounds) :
-                _randomShiftLocation;
-        _randomShiftLocation = transform.position.x;
+        //_randomShiftLocation = transform.position.x;
         _move = true;
         if (_rigidbody != null) DoRigidBodyStuff();
-        NextWave();
     }
     private void DoRigidBodyStuff()
     {
@@ -293,7 +328,7 @@ public class Enemy_Move : MonoBehaviour
     {
         GameManager.MasterDifficulty -= (x) => { _masterDifficulty = x; };
         GameManager.NewDifficulty -= (x) => AdjustDifficulty(x);
-        BackGroundMusic_Events.BGM_Events -= () => _isShifting = !_isShifting;
+        BackGroundMusic_Events.BGM_Events -= () => _moveWithBPM = !_moveWithBPM;
         transform.position = Vector3.zero;
         _move = false;
         _homingTagged = false;

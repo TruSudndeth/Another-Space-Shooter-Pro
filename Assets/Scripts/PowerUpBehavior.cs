@@ -31,7 +31,7 @@ public class PowerUpBehavior : MonoBehaviour
     }
     private void OnEnable()
     {
-        _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity; //Fix: Move to enabled for pooling
+        _antiPowerups = Random.Range(0.0f, 100.0f) < _antiProbablity; //Complete: Move to enabled for pooling
         CheckIfVisualExistAndSet(_antiPowerups);
     }
     private void CheckIfVisualExistAndSet(bool isActive)

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollectibleSpawnManager : MonoBehaviour
 {
     //complete: Collectable pools
+    //Todo: Collectable Difficulty setup, Higher probability on needed collectables. 
     public static CollectibleSpawnManager Instance;
 
     [SerializeField] private List<Transform> _powerupAssets;
