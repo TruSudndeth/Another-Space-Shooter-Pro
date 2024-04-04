@@ -237,7 +237,7 @@ public class Player : MonoBehaviour
     }
     public void SpeedBoost(bool Anti_Powerup)
     {
-        //Todo: Add a negative override to speed boost
+        //Complete: Add a negative override to speed boost
         //will give the player an Ugly speed boost for a short time
         PlayPowerupSound(Anti_Powerup);
         _isAntiSpeed = Anti_Powerup;
@@ -246,7 +246,7 @@ public class Player : MonoBehaviour
     }
     public void TripleShotActive(bool Anti_Powerup)
     {
-        //Todo: Add a negative override to tripple shot
+        //Complete: Add a negative override to tripple shot
         //Override Tripple shot will take 3 x ammo
         PlayPowerupSound(Anti_Powerup);
         _antiTrippleShot = Anti_Powerup;
@@ -255,7 +255,7 @@ public class Player : MonoBehaviour
     }
     public void ShieldActive(bool Anti_Powerup)
     {
-        //Todo: Add a negative override to Shield
+        //Complete: Add a negative override to Shield
         //Override Shild has a 50% change to protect player from damage
         //Todo: add Defective Shield visual and sound
         if (_isShieldActive)

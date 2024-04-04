@@ -253,6 +253,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6235951450136710354}
     m_Modifications:
+    - target: {fileID: 771432901, guid: 10e1c49735e0bdb479a5e7fdaf35a531, type: 3}
+      propertyPath: _beconShieldFX
+      value: 
+      objectReference: {fileID: 6235951449667506587}
     - target: {fileID: 4913729636034442038, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
         type: 3}
       propertyPath: m_Name
@@ -323,6 +327,12 @@ PrefabInstance:
 --- !u!4 &5262201631330361256 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5254417116382421623, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
+    type: 3}
+  m_PrefabInstance: {fileID: 138600071579680223}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6235951449667506587 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6297972686003514436, guid: 10e1c49735e0bdb479a5e7fdaf35a531,
     type: 3}
   m_PrefabInstance: {fileID: 138600071579680223}
   m_PrefabAsset: {fileID: 0}

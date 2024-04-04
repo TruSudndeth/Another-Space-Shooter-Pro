@@ -42,7 +42,7 @@ public class EnemySpawnManager : MonoBehaviour
     private bool _isWaveComplete = false;
     [SerializeField]
     private bool _isMotherShipActive = false;
-    //Todo: limit number of enemies on screen on easy and slow.
+    //Complete: limit number of enemies on screen on easy and slow.
     private int _enemiesSpawnCount = 0;
     private void Awake()
     {

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DamageMaterialFX : MonoBehaviour
 {
-    //Todo: VFX Boss Battle
+    //Bug: MotherShip reset Failed - then reset completed - after reaching a way point.
+    //Complete: VFX Boss Battle
     //Disable colliders when part is destroyed
     //SetMaterial to damaged after multi expolosion
     //- when destroied Trigger Explosion FX When done continue to the next task
@@ -73,6 +74,7 @@ public class DamageMaterialFX : MonoBehaviour
     }
     void Start()
     {
+        if (_motherShipPart == BossParts.Beacon) SetupBeconShield();
         SetupMaterialProperties();
         BossFightManager.EnableStageColliderPart += EnableAllCollidersInChildren;
         BossExplosions.OnDisablePart += DisablePartFunction;
@@ -81,19 +83,52 @@ public class DamageMaterialFX : MonoBehaviour
 
         BossFightManager.SetDifficulty += (x) => SetCurrentHealth(x);
     }
+    private void SetupBeconShield()
+    {
+        if (!_beconShieldFX)
+        {
+            Debug.Log("Failed to initiate _beconShieldFX");
+            _beconShieldFX = transform.GetComponentInChildren<ParticleSystem>().transform.parent;
+            if (_beconShieldFX) 
+                Debug.Log("_beconShieldFX was set");
+            else
+            {
+                Debug.Log("Failed to set _beconShieldFX");
+                return;
+            }
+        }
+        _beconShieldFX.gameObject.SetActive(true);
+        _hasShield = true;
+    }
     private void SetCurrentHealth(int health)
     {
         _currentHealth = health;
         _health = health;
+        if (_hasShield) _shieldHealth = health * 2;
     }
 
     private void DamagePart(BossParts part)
     {
         if (part == _motherShipPart)
         {
+            if(_hasShield)
+            {
+                _shieldHealth--;
+                if(_shieldHealth <= 0)
+                {
+                    _hasShield = false;
+                    _beconShieldFX.gameObject.SetActive(false);
+                }
+                return;
+            }
             DoDamage(1);
         }
     }
+    //Todo: Shield has 2X helth then part health if 0 then its at least 1.
+    private bool _hasShield = false;
+    private int _shieldHealth = 1;
+    [SerializeField]
+    private Transform _beconShieldFX;
     private void DoDamage(int damage)
     {
         if (!_isDestroid)
@@ -125,7 +160,6 @@ public class DamageMaterialFX : MonoBehaviour
     }
     private void EnableAllCollidersInChildren(BossParts thisPart)
     {
-        //Todo: Move this code to BossColliderParts
         CheckObjectAssignment(thisPart);
         if (thisPart == _motherShipPart)
         {
@@ -140,6 +174,7 @@ public class DamageMaterialFX : MonoBehaviour
     {
         _currentHealth = _health; //Delete: this health set is not used
         _isDestroid = false;
+        if (_motherShipPart == BossParts.Beacon) SetupBeconShield();
         SetupMaterialProperties(false);
     }
     private void SetupMaterialProperties(bool isDamaged = false)

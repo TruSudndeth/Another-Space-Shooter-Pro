@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BossFightManager : DontDestroyHelper<BossFightManager>
 {
-    //Bug: Boss moves to next wave before the wave is even complete. move boss when wave is complete only. 
     //Todo: Fix Boss Battle Beacken Shield Function
+
+    //Bug: Boss moves to next wave before the wave is even complete. move boss when wave is complete only. 
     //Todo: Fix Boss Parts Explotion sound FX
     //public static BossFightManager Instance;
 

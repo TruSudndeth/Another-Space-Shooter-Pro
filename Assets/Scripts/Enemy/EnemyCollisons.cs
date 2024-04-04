@@ -16,7 +16,7 @@ public class EnemyCollisons : MonoBehaviour
 
     private void Awake()
     {
-        //Todo: dirty and a temp fix
+        //Fix: dirty and a temp fix
         _hasChildren = transform.parent.childCount > 0 && transform.parent.name != "EnemySpwanManager";
         _life = Random.Range(0.0f, 100.0f) < _shieldProbability ? 2 : 1;
         if (_life > 1) _shield.gameObject.SetActive(true);
