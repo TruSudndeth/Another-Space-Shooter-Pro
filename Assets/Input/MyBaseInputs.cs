@@ -157,6 +157,28 @@ public partial class @MyBaseInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""dfc8a152-faeb-4d70-b067-fce4e4afb13c"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b389c2fb-775c-4877-848b-2013869aef66"",
+                    ""path"": ""<XInputController>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5771126c-4483-4fd5-b950-847d5ace7d08"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -168,11 +190,33 @@ public partial class @MyBaseInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""355b7727-4c96-47f7-9fa7-c32ae873f9a2"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1f7a877f-1c93-4b91-928b-a2af0d4e2773"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Thrust"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7fd9d1a4-5f72-416b-a418-8277f154c322"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Thrust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -718,6 +762,17 @@ public partial class @MyBaseInputs : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27373023-9499-4ce5-8d24-7328b20ffb70"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

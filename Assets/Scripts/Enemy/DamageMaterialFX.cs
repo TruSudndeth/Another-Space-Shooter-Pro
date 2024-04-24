@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageMaterialFX : MonoBehaviour
 {
-    //Bug: MotherShip reset Failed - then reset completed - after reaching a way point.
+    //Bug: MotherShip reset Failed - then reset completed - after reaching a way point (waypoint 2).
     //Complete: VFX Boss Battle
     //Disable colliders when part is destroyed
     //SetMaterial to damaged after multi expolosion
